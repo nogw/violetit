@@ -1,0 +1,17 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "resolveJsonModule": true,
+    "moduleResolution": "node",
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
+    "module": "ESNext",
+    "baseUrl": "./src",
+    "paths": {
+      "@/*": ["./*"],
+      "@/tests/*": ["./../test"]
+    }
+  },
+  "include": ["./src"],
+  "exclude": ["node_modules", "./src/**/*.test.tsx", "./test"]
+}

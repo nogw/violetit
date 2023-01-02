@@ -1,11 +1,8 @@
 {
   "name": "violetit",
-  "version": "1.0.0",
-  "license": "MIT",
+  "version": "0.0.1",
   "private": true,
-  "engines": {
-    "node": "18.12.1"
-  },
+  "license": "MIT",
   "workspaces": {
     "packages": [
       "packages/*"
