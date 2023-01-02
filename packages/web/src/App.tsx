@@ -1,5 +1,11 @@
+import { Providers } from './router/providers';
+import { Routes } from './router';
 import './styles/index.css';
 
-export default function App() {
-  return <h1 className="text-3xl font-bold underline">Hello world!</h1>;
-}
+const App = () => (
+  <Providers>
+    <Routes />
+  </Providers>
+);
+
+export default App;
