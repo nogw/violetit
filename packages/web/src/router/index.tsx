@@ -1,12 +1,12 @@
+import { LoginRoutes } from '../modules/user/LoginRoutes';
 import { Routes as Router, Route } from 'react-router-dom';
+import FeedPage from '../modules/feed/FeedPage';
 
 export const Routes = () => {
   return (
     <Router>
-      <Route
-        path="/"
-        element={<h1 className="text-3xl font-bold underline">Hello world!</h1>}
-      />
+      <Route path="/auth/*" element={<LoginRoutes />} />
+      <Route path="/" element={<FeedPage />} />
     </Router>
   );
 };
