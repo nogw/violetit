@@ -3,7 +3,7 @@ import { useState } from 'react';
 import * as yup from 'yup';
 
 import { ErrorText, Button } from '@violetit/ui';
-import { Input } from '@/components/InputField';
+import { Input } from '@/shared-components/InputField';
 
 type signUpValues = {
   username: string;

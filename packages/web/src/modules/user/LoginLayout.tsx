@@ -1,5 +1,5 @@
 import { Outlet, Navigate, useLocation } from 'react-router-dom';
-import { Link } from '@/components/Link';
+import { Link } from '@/shared-components/Link';
 
 const SignUpOrLoginLink = ({ pathname }: { pathname: string }) => {
   const isSignUpScreen = pathname === '/auth/signup';

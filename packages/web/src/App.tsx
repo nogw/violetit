@@ -1,5 +1,5 @@
-import { Providers } from './router/providers';
-import { Routes } from './router';
+import { Providers } from './providers';
+import { Routes } from '.';
 import './styles/index.css';
 
 const App = () => (
