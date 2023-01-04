@@ -16,7 +16,7 @@ export const Input: React.FC<InputProps> = ({ name, ...props }) => {
 
   return (
     <input
-      className={clsx(className, 'rounded border px-2 py-2 text-xl', {
+      className={clsx(className, 'rounded border px-2 py-2 text-base', {
         'border-gray-300': !hasAnErrorAndHasBeenTouched,
         'border-red-500': hasAnErrorAndHasBeenTouched,
       })}

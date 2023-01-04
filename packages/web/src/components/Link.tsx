@@ -1,10 +1,13 @@
 import { Link as RRDLink, LinkProps as RRDLinkProps } from 'react-router-dom';
 
-interface LinkProps {
+type LinkProps = RRDLinkProps & {
   children: React.ReactNode;
-  props: RRDLinkProps;
-}
+};
 
-export const Link: React.FC<LinkProps> = ({ children, props }) => {
-  return <RRDLink {...props}>{children}</RRDLink>;
+export const Link: React.FC<LinkProps> = ({ children, ...props }) => {
+  return (
+    <RRDLink className="text-blue-500 font-bold hover:underline" {...props}>
+      {children}
+    </RRDLink>
+  );
 };
