@@ -1,10 +1,15 @@
 export interface DataLoaders {
-  UserLoader?: ReturnType<typeof import('../user/UserLoader').getLoader>;
+  UserLoader: ReturnType<typeof import('../user/UserLoader').getLoader>;
+  CommunityLoader: ReturnType<
+    typeof import('../community/CommunityLoader').getLoader
+  >;
 }
 
-const loaders: {
-  [Name in keyof DataLoaders]: () => DataLoaders[Name];
-} = {};
+type Loaders =
+  | { [Name in keyof DataLoaders]: () => DataLoaders[Name] }
+  | Record<string, () => unknown>;
+
+const loaders: Loaders = {};
 
 const registerLoader = <Name extends keyof DataLoaders>(
   key: Name,
@@ -13,13 +18,13 @@ const registerLoader = <Name extends keyof DataLoaders>(
   loaders[key] = getLoader;
 };
 
-const getAllDataLoaders = (): DataLoaders =>
-  Object.entries(loaders).reduce(
-    (obj, [loaderKey, loaderFn]) => ({
-      ...obj,
-      [loaderKey]: loaderFn(),
+const getDataloaders = (): DataLoaders =>
+  (Object.keys(loaders) as (keyof DataLoaders)[]).reduce(
+    (prev, loaderKey) => ({
+      ...prev,
+      [loaderKey]: loaders[loaderKey](),
     }),
     {},
-  );
+  ) as DataLoaders;
 
-export { registerLoader, getAllDataLoaders };
+export { registerLoader, getDataloaders };
