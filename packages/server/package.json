@@ -2,11 +2,19 @@
   "name": "@violetit/server",
   "version": "0.0.1",
   "main": "dist/index.js",
+  "scripts": {
+    "prebuild": "[ -d ./dist ]; rm -rf ./dist",
+    "build": "tsc",
+    "schema:generate": "ts-node scripts/generateSchema.ts",
+    "start:prod": "node dist/tsc/src/index.ts",
+    "start:dev": "ts-node-dev src/index.ts"
+  },
   "dependencies": {
     "@entria/graphql-mongo-helpers": "^1.1.2",
     "@koa/cors": "^4.0.0",
     "@koa/router": "^12.0.0",
     "bcryptjs": "^2.4.3",
+    "dataloader": "^2.1.0",
     "dotenv-safe": "^8.2.0",
     "graphql": "^16.6.0",
     "graphql-relay": "^0.10.0",
@@ -19,6 +27,7 @@
   "devDependencies": {
     "@types/bcryptjs": "^2.4.2",
     "@types/dotenv-safe": "^8.1.2",
+    "@types/jsonwebtoken": "^9.0.0",
     "@types/koa": "^2.13.5",
     "@types/koa-bodyparser": "^4.3.10",
     "@types/koa-router": "^7.4.4",
