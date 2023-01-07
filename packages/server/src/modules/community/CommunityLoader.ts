@@ -12,4 +12,4 @@ const Loader = createLoader({
 export const { Wrapper: User, getLoader, clearCache, load, loadAll } = Loader;
 export default Loader;
 
-registerLoader('UserLoader', getLoader);
+registerLoader('CommunityLoader', getLoader);
