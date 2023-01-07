@@ -1,1 +1,3 @@
 /graphql
+node_modules
+.env
