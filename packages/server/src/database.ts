@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-import { config } from './environment';
+import { config } from './config';
 
 export const connectDatabase = async (): Promise<void> => {
   mongoose.connection
