@@ -8,9 +8,10 @@ dotenv.config({
   sample: root('.env.example'),
 });
 
-const { PORT, MONGO_URI } = process.env;
+const { PORT, MONGO_URI, JWT_SECRET } = process.env;
 
 export const config = {
-  MONGO_URI: MONGO_URI || 'mongodb://localhost/violetit',
   PORT: PORT || 3000,
+  MONGO_URI: MONGO_URI || 'mongodb://localhost/violetit',
+  JWT_SECRET: JWT_SECRET || 'secret_key',
 };

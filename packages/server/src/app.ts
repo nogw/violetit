@@ -1,7 +1,7 @@
 import Koa, { Request } from 'koa';
 import { graphqlHTTP, OptionsData } from 'koa-graphql';
 import bodyParser from 'koa-bodyparser';
-import Router from 'koa-router';
+import Router from '@koa/router';
 import cors from '@koa/cors';
 
 import { getContext } from './getContext';
@@ -20,9 +20,11 @@ const graphQLSettingsPerReq = async (req: Request): Promise<OptionsData> => {
     pretty: true,
     context: getContext({ user }),
     customFormatErrorFn: ({ message, locations, stack }) => {
+      /* eslint-disable no-console */
       console.log(message);
       console.log(locations);
       console.log(stack);
+      /* eslint-enable no-console */
 
       return {
         message,

@@ -10,6 +10,7 @@ import app from './app';
   const server = createServer(app.callback());
 
   server.listen(config.PORT, () => {
+    // eslint-disable-next-line no-console
     console.log(`server running on port ${config.PORT}`);
   });
 })();
