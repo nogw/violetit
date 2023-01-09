@@ -1,10 +1,16 @@
-import { Providers } from './providers';
-import { Routes } from '.';
+import React from 'react';
+
+import { Providers } from './Providers';
+
+import { Loading } from '@violetit/ui';
+
 import './styles/index.css';
 
 const App = () => (
   <Providers>
-    <Routes />
+    <React.Suspense fallback={'Loading...'}>
+      <Loading />
+    </React.Suspense>
   </Providers>
 );
 
