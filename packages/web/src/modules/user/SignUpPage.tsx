@@ -1,9 +1,15 @@
-import { Form, useFormik, FormikProvider } from 'formik';
 import { useState } from 'react';
+import { Form, useFormik, FormikProvider, FormikHelpers } from 'formik';
+import { useNavigate } from 'react-router-dom';
+import { useMutation } from 'react-relay';
 import * as yup from 'yup';
 
 import { ErrorText, Button } from '@violetit/ui';
 import { Input } from '@/shared-components/InputField';
+import { useAuth } from '../auth/useAuth';
+
+import { UserRegisterMutation } from './__generated__/UserRegisterMutation.graphql';
+import { UserRegister } from './UserRegisterMutation';
 
 type signUpValues = {
   username: string;
@@ -13,21 +19,47 @@ type signUpValues = {
 };
 
 const LoginPage = () => {
+  const { signin } = useAuth();
+  const navigate = useNavigate();
+
   const [error, setError] = useState({
     status: false,
     message: '',
   });
 
-  const onSubmit = (values: signUpValues) => {
-    const config = {
-      username: values.username,
-      email: values.email,
-      password: values.password,
-      passwordConfirm: values.passwordConfirm,
-    };
+  const [userRegister, isPending] =
+    useMutation<UserRegisterMutation>(UserRegister);
 
-    console.log(config);
-    setError({ status: true, message: 'TODO' });
+  const onSubmit = (
+    values: signUpValues,
+    actions: FormikHelpers<signUpValues>,
+  ) => {
+    userRegister({
+      variables: values,
+      onCompleted: ({ userRegisterMutation }, error) => {
+        if (error && error.length > 0) {
+          const inputs: Array<keyof typeof values> = [
+            'email',
+            'password',
+            'username',
+          ];
+
+          inputs.forEach(input => {
+            actions.setFieldValue(input, '', false);
+            actions.setFieldTouched(input, false);
+          });
+
+          actions.setSubmitting(false);
+
+          setError({ status: true, message: error[0].message });
+          return;
+        }
+
+        signin(userRegisterMutation?.token, () => {
+          navigate('/feed', { replace: true });
+        });
+      },
+    });
   };
 
   const formik = useFormik<signUpValues>({
@@ -65,7 +97,7 @@ const LoginPage = () => {
             type="password"
             placeholder="Password Confirm"
           />
-          <Button type="submit" disabled={!isValid}>
+          <Button type="submit" disabled={!isValid || isPending}>
             {isSubmitting ? 'Wait...' : 'Create Account'}
           </Button>
         </div>
