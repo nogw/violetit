@@ -1,5 +1,8 @@
-import { Outlet, Navigate, useLocation } from 'react-router-dom';
 import { Link } from '@/shared-components/Link';
+
+import { Outlet, Navigate, useLocation } from 'react-router-dom';
+
+import { useAuth } from '../auth/useAuth';
 
 const SignUpOrLoginLink = ({ pathname }: { pathname: string }) => {
   const isSignUpScreen = pathname === '/auth/signup';
@@ -21,7 +24,12 @@ const SignUpOrLoginLink = ({ pathname }: { pathname: string }) => {
 
 const LoginLayout = () => {
   const { pathname } = useLocation();
-  // todo: redirect user if has token
+  const { token } = useAuth();
+
+  if (token) {
+    return <Navigate to="/feed" replace />;
+  }
+
   return (
     <main className="h-screen flex justify-center items-center">
       <div className="w-full max-w-xs">
