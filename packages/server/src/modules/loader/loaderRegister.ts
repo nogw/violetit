@@ -1,5 +1,6 @@
 export interface DataLoaders {
   UserLoader: ReturnType<typeof import('../user/UserLoader').getLoader>;
+  PostLoader: ReturnType<typeof import('../post/PostLoader').getLoader>;
   CommunityLoader: ReturnType<
     typeof import('../community/CommunityLoader').getLoader
   >;

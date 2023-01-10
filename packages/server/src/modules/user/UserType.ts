@@ -7,6 +7,8 @@ import {
 } from '@entria/graphql-mongo-helpers';
 
 import { globalIdField } from 'graphql-relay';
+
+import { GraphQLContext } from '../../graphql/types';
 import { registerTypeLoader, nodeInterface } from '../node/typeRegister';
 
 import { IUser } from './UserModel';
@@ -15,8 +17,8 @@ import { load } from './UserLoader';
 import { CommunityConnection } from '../community/CommunityType';
 import CommunityLoader from '../community/CommunityLoader';
 
-export const UserType = new GraphQLObjectType<IUser>({
-  name: 'USer',
+export const UserType = new GraphQLObjectType<IUser, GraphQLContext>({
+  name: 'User',
   fields: () => ({
     id: globalIdField(),
     username: {

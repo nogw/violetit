@@ -6,23 +6,27 @@ import {
   GraphQLNonNull,
 } from 'graphql';
 
-import { globalIdField } from 'graphql-relay';
-
 import {
   withFilter,
   connectionArgs,
   connectionDefinitions,
 } from '@entria/graphql-mongo-helpers';
 
-import { UserConnection } from '../user/UserType';
-import UserLoader from '../user/UserLoader';
+import { globalIdField } from 'graphql-relay';
 
+import { GraphQLContext } from '../../graphql/types';
 import { registerTypeLoader, nodeInterface } from '../node/typeRegister';
 
 import { ICommunityDocument } from './CommunityModel';
 import { load } from './CommunityLoader';
 
-export const CommunityType = new GraphQLObjectType<ICommunityDocument>({
+import { UserConnection } from '../user/UserType';
+import UserLoader from '../user/UserLoader';
+
+export const CommunityType = new GraphQLObjectType<
+  ICommunityDocument,
+  GraphQLContext
+>({
   name: 'Community',
   fields: () => ({
     id: globalIdField('Community'),

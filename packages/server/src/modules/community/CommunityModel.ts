@@ -5,6 +5,8 @@ export interface ICommunity {
   admin: Types.ObjectId;
   members: Types.ObjectId[];
   mods: Types.ObjectId;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export interface ICommunityDocument extends ICommunity, Document {}
@@ -34,6 +36,7 @@ const CommunitySchema = new Schema(
     },
   },
   {
+    collection: 'Community',
     timestamps: {
       createdAt: true,
       updatedAt: true,
