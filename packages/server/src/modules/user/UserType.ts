@@ -11,13 +11,13 @@ import { globalIdField } from 'graphql-relay';
 import { GraphQLContext } from '../../graphql/types';
 import { registerTypeLoader, nodeInterface } from '../node/typeRegister';
 
-import { IUser } from './UserModel';
+import { IUserDocument } from './UserModel';
 import { load } from './UserLoader';
 
 import { CommunityConnection } from '../community/CommunityType';
 import CommunityLoader from '../community/CommunityLoader';
 
-export const UserType = new GraphQLObjectType<IUser, GraphQLContext>({
+export const UserType = new GraphQLObjectType<IUserDocument, GraphQLContext>({
   name: 'User',
   fields: () => ({
     id: globalIdField(),

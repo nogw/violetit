@@ -13,13 +13,13 @@ import { GraphQLContext } from '../../graphql/types';
 import { UserConnection } from '../user/UserType';
 import UserLoader from '../user/UserLoader';
 
-import { IPost } from './PostModel';
+import { IPostDocument } from './PostModel';
 import { load } from './PostLoader';
 
 import { CommunityConnection } from '../community/CommunityType';
 import CommunityLoader from '../community/CommunityLoader';
 
-const PostType = new GraphQLObjectType<IPost, GraphQLContext>({
+const PostType = new GraphQLObjectType<IPostDocument, GraphQLContext>({
   name: 'Post',
   fields: () => ({
     id: globalIdField('Post'),
