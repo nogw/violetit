@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 import { config } from './config';
 
 export const connectDatabase = async (): Promise<void> => {
+  mongoose.set('strictQuery', true);
   /* eslint-disable no-console */
   mongoose.connection
     .once('open', () => console.log('database connected'))
