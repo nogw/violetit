@@ -7,7 +7,8 @@
     "build": "tsc",
     "schema:generate": "ts-node scripts/generateSchema.ts",
     "start:prod": "node dist/tsc/src/index.ts",
-    "start:dev": "ts-node-dev src/index.ts"
+    "start:dev": "ts-node-dev src/index.ts",
+    "copy-env": "cp .env.example .env"
   },
   "dependencies": {
     "@entria/graphql-mongo-helpers": "^1.1.2",

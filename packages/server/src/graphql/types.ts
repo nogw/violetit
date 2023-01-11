@@ -1,8 +1,8 @@
 import { DataLoaders } from '../modules/loader/loaderRegister';
-import { IUser } from '../modules/user/UserModel';
+import { IUserDocument } from '../modules/user/UserModel';
 import { Maybe } from '@violetit/types';
 
 export type GraphQLContext = {
-  user?: Maybe<IUser>;
+  user?: Maybe<IUserDocument>;
   dataloaders: DataLoaders;
 };
