@@ -15,27 +15,29 @@ export const postCreateMutation = mutationWithClientMutationId({
     community: { type: new GraphQLNonNull(GraphQLID) },
   },
   mutateAndGetPayload: async (
-    { title, content, community },
+    { title, community, ...rest },
     context: GraphQLContext,
   ) => {
     if (!context.user) {
       throw new Error('You are not logged in!');
     }
 
-    const communityById = await CommunityModel.findById(community);
+    const communityFound = await CommunityModel.findById(community);
 
-    if (!communityById) {
+    if (!communityFound) {
       throw new Error('Community not found');
     }
 
     const post = await new PostModel({
+      ...rest,
       title,
-      content,
       author: context.user._id,
-      community: communityById._id,
+      community: communityFound._id,
     }).save();
 
-    return { post };
+    return {
+      post,
+    };
   },
   outputFields: () => ({
     post: {

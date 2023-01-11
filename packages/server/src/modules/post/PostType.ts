@@ -1,4 +1,9 @@
-import { GraphQLObjectType, GraphQLString, GraphQLNonNull } from 'graphql';
+import {
+  GraphQLObjectType,
+  GraphQLString,
+  GraphQLNonNull,
+  GraphQLInt,
+} from 'graphql';
 
 import {
   connectionArgs,
@@ -19,7 +24,9 @@ import { load } from './PostLoader';
 import { CommunityConnection } from '../community/CommunityType';
 import CommunityLoader from '../community/CommunityLoader';
 
-const PostType = new GraphQLObjectType<IPostDocument, GraphQLContext>({
+import { VoteModel } from '../vote/VoteModel';
+
+export const PostType = new GraphQLObjectType<IPostDocument, GraphQLContext>({
   name: 'Post',
   fields: () => ({
     id: globalIdField('Post'),
@@ -28,22 +35,27 @@ const PostType = new GraphQLObjectType<IPostDocument, GraphQLContext>({
       resolve: post => post.title,
     },
     content: {
-      type: GraphQLString,
+      type: new GraphQLNonNull(GraphQLString),
       resolve: post => post.content,
     },
     author: {
       type: new GraphQLNonNull(UserConnection.connectionType),
       args: { ...connectionArgs },
-      resolve: async ({ author }, _, context) => {
-        return UserLoader.load(context, author);
+      resolve: async (post, _, context) => {
+        return UserLoader.load(context, post.author);
       },
     },
     community: {
       type: new GraphQLNonNull(CommunityConnection.connectionType),
       args: { ...connectionArgs },
-      resolve: async ({ community }, _, context) => {
-        return CommunityLoader.load(context, community);
+      resolve: async (post, _, context) => {
+        return CommunityLoader.load(context, post.community);
       },
+    },
+    votesCount: {
+      type: new GraphQLNonNull(GraphQLInt),
+      resolve: async post =>
+        (await VoteModel.countVotes({ post: post._id }))?.total,
     },
   }),
   interfaces: () => [nodeInterface],

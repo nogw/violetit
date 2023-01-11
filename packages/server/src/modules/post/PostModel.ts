@@ -19,6 +19,7 @@ const PostSchema = new Schema(
       maxlength: 300,
     },
     content: {
+      require: true,
       type: String,
     },
     author: {
