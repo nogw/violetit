@@ -3,10 +3,10 @@ import { Request } from 'koa';
 
 import { getDataloaders } from './modules/loader/loaderRegister';
 import { GraphQLContext } from './graphql/types';
-import { IUser } from './modules/user/UserModel';
+import { IUserDocument } from './modules/user/UserModel';
 
 type ContextVars = {
-  user?: Maybe<IUser>;
+  user?: Maybe<IUserDocument>;
   req?: Request;
 };
 

@@ -1,7 +1,7 @@
 import mongoose, { Document, Schema, Types } from 'mongoose';
 import bcrypt from 'bcryptjs';
 
-export interface IUser extends Document {
+export interface IUser {
   username: string;
   email: string;
   password: string;
@@ -10,7 +10,7 @@ export interface IUser extends Document {
   updatedAt: Date;
 }
 
-export interface IUserDocument extends IUser {
+export interface IUserDocument extends IUser, Document {
   authenticate(password: string): Promise<boolean>;
   hashPassword(plainPassword: string): Promise<string>;
 }

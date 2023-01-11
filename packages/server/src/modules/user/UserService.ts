@@ -1,12 +1,14 @@
 import { Maybe } from '@violetit/types';
-import { UserModel, IUser } from './UserModel';
+import { UserModel, IUserDocument } from './UserModel';
 
-export const findUserByEmail = async (email: string): Promise<Maybe<IUser>> => {
+export const findUserByEmail = async (
+  email: string,
+): Promise<Maybe<IUserDocument>> => {
   return await UserModel.findOne({ email });
 };
 
 export const findUserByUsername = async (
   username: string,
-): Promise<Maybe<IUser>> => {
+): Promise<Maybe<IUserDocument>> => {
   return await UserModel.findOne({ username });
 };
