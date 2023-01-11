@@ -2,12 +2,11 @@ import { GraphQLNonNull, GraphQLString } from 'graphql';
 import { mutationWithClientMutationId } from 'graphql-relay';
 
 import { GraphQLContext } from '../../../graphql/types';
-
 import { CommunityModel } from '../CommunityModel';
 import { CommunityType } from '../CommunityType';
 
-export const communityJoin = mutationWithClientMutationId({
-  name: 'CommunityJoin',
+export const communityExit = mutationWithClientMutationId({
+  name: 'CommunityExit',
   inputFields: {
     community: { type: new GraphQLNonNull(GraphQLString) },
   },
@@ -31,23 +30,24 @@ export const communityJoin = mutationWithClientMutationId({
     );
 
     if (foundMemberIdInCommunity || foundCommunityIdInUser) {
-      throw new Error('You are already a member of this community');
+      throw new Error('You are not a member of this community');
     }
 
+    if (communityFound.admin.equals(context.user._id)) {
+      throw new Error(
+        'You are the community admin, use communityExitAsAdmin to exit',
+      );
+    }
+
+    // todo: delete user in mods?
     await Promise.all([
-      community.updateOne({
-        $addToSet: { members: [...community.members, context.user._id] },
-      }),
-      context.user.updateOne({
-        $addToSet: {
-          communities: [...(context.user.communities || []), community._id],
-        },
-      }),
+      communityFound.updateOne({ $pull: { members: context.user._id } }),
+      context.user.updateOne({ $pull: { members: context.user._id } }),
     ]);
 
     return {
       userId: context.user._id,
-      communityId: community._id,
+      communityId: communityFound._id,
     };
   },
   outputFields: () => ({
