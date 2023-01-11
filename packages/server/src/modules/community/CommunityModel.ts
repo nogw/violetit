@@ -5,7 +5,7 @@ export interface ICommunity {
   title: string;
   admin: Types.ObjectId;
   members: Types.ObjectId[];
-  mods: Types.ObjectId;
+  mods: Types.ObjectId[];
   createdAt: Date;
   updatedAt: Date;
 }

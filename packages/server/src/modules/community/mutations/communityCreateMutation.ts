@@ -2,6 +2,7 @@ import { GraphQLNonNull, GraphQLString } from 'graphql';
 import { mutationWithClientMutationId } from 'graphql-relay';
 
 import { GraphQLContext } from '../../../graphql/types';
+
 import { CommunityModel } from '../CommunityModel';
 import { CommunityType } from '../CommunityType';
 
