@@ -34,6 +34,10 @@ export const CommunityType = new GraphQLObjectType<
       type: new GraphQLNonNull(GraphQLString),
       resolve: community => community.name,
     },
+    title: {
+      type: new GraphQLNonNull(GraphQLString),
+      resolve: community => community.title,
+    },
     admin: {
       type: new GraphQLNonNull(GraphQLID),
     },

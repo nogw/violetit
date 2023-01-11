@@ -2,6 +2,7 @@ import mongoose, { Schema, Types, Document } from 'mongoose';
 
 export interface ICommunity {
   name: string;
+  title: string;
   admin: Types.ObjectId;
   members: Types.ObjectId[];
   mods: Types.ObjectId;
@@ -18,6 +19,10 @@ const CommunitySchema = new Schema(
       required: true,
       unique: true,
       maxlength: 21, // todo: use reddit small pattern?
+    },
+    title: {
+      type: String,
+      required: true,
     },
     admin: {
       type: Schema.Types.ObjectId,
