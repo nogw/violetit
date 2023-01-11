@@ -2,6 +2,7 @@ import { GraphQLNonNull, GraphQLString } from 'graphql';
 import { mutationWithClientMutationId } from 'graphql-relay';
 
 import { GraphQLContext } from '../../../graphql/types';
+
 import { CommunityModel } from '../CommunityModel';
 import { CommunityType } from '../CommunityType';
 
@@ -29,6 +30,10 @@ export const communityExit = mutationWithClientMutationId({
       community._id,
     );
 
+    const foundMemberIdInCommunityMods = community.mods.includes(
+      context.user._id,
+    );
+
     if (foundMemberIdInCommunity || foundCommunityIdInUser) {
       throw new Error('You are not a member of this community');
     }
@@ -39,7 +44,10 @@ export const communityExit = mutationWithClientMutationId({
       );
     }
 
-    // todo: delete user in mods?
+    if (foundMemberIdInCommunityMods) {
+      await communityFound.updateOne({ $pull: { members: context.user._id } });
+    }
+
     await Promise.all([
       communityFound.updateOne({ $pull: { members: context.user._id } }),
       context.user.updateOne({ $pull: { members: context.user._id } }),
