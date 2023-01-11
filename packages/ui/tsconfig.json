@@ -5,7 +5,7 @@
     "resolveJsonModule": true,
     "moduleResolution": "node",
     "lib": ["DOM", "DOM.Iterable", "ESNext"],
-    "module": "ESNext",
+    "module": "ESNext"
   },
   "include": ["./src"],
   "exclude": ["node_modules"]

@@ -5,7 +5,7 @@ type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   children: React.ReactElement | string;
 };
 
-export const Button: React.FC<ButtonProps> = ({ children, ...rest }) => {
+export const Button = ({ children, ...props }: ButtonProps) => {
   return (
     <button
       className={clsx(
@@ -13,7 +13,7 @@ export const Button: React.FC<ButtonProps> = ({ children, ...rest }) => {
         'flex-auto py-2 px-4 rounded',
         'text-white font-bold pointer',
       )}
-      {...rest}
+      {...props}
     >
       {children}
     </button>
