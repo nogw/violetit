@@ -4,8 +4,8 @@ import { mutationWithClientMutationId } from 'graphql-relay';
 import { GraphQLContext } from '../../../graphql/types';
 import { VoteModel } from '../VoteModel';
 
-import { PostModel } from 'src/modules/post/PostModel';
-import { PostType } from 'src/modules/post/PostType';
+import { PostModel } from '../../post/PostModel';
+import { PostType } from '../../post/PostType';
 
 export const VoteCreate = mutationWithClientMutationId({
   name: 'VoteCreate',

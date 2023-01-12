@@ -1,8 +1,8 @@
 import { GraphQLID, GraphQLNonNull, GraphQLString } from 'graphql';
 import { mutationWithClientMutationId } from 'graphql-relay';
-import { CommunityModel } from 'src/modules/community/CommunityModel';
 
 import { GraphQLContext } from '../../../graphql/types';
+import { CommunityModel } from '../../community/CommunityModel';
 
 import { PostModel } from '../PostModel';
 import { PostType } from '../PostType';
