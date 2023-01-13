@@ -10,6 +10,7 @@ import {
   withFilter,
   connectionArgs,
   connectionDefinitions,
+  objectIdResolver,
 } from '@entria/graphql-mongo-helpers';
 
 import { globalIdField } from 'graphql-relay';
@@ -30,6 +31,7 @@ export const CommunityType = new GraphQLObjectType<
   name: 'Community',
   fields: () => ({
     id: globalIdField('Community'),
+    ...objectIdResolver,
     name: {
       type: new GraphQLNonNull(GraphQLString),
       resolve: community => community.name,

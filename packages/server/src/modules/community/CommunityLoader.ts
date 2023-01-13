@@ -9,7 +9,13 @@ const Loader = createLoader({
   shouldValidateContextUser: true,
 });
 
-export const { Wrapper: User, getLoader, clearCache, load, loadAll } = Loader;
+export const {
+  Wrapper: Community,
+  getLoader,
+  clearCache,
+  load,
+  loadAll,
+} = Loader;
 export default Loader;
 
 registerLoader('CommunityLoader', getLoader);

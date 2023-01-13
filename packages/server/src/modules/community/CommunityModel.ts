@@ -1,4 +1,6 @@
-import mongoose, { Schema, Types, Document } from 'mongoose';
+import mongoose, { Document, Types, Schema } from 'mongoose';
+
+const { ObjectId } = mongoose.Schema.Types;
 
 export interface ICommunity {
   name: string;
@@ -10,7 +12,9 @@ export interface ICommunity {
   updatedAt: Date;
 }
 
-export interface ICommunityDocument extends ICommunity, Document {}
+export interface ICommunityDocument extends ICommunity, Document {
+  _id: Types.ObjectId;
+}
 
 const CommunitySchema = new Schema(
   {
@@ -18,26 +22,26 @@ const CommunitySchema = new Schema(
       type: String,
       required: true,
       unique: true,
-      maxlength: 21, // todo: use reddit small pattern?
+      maxlength: 21,
     },
     title: {
       type: String,
       required: true,
     },
     admin: {
-      type: Schema.Types.ObjectId,
+      type: ObjectId,
       ref: 'User',
       require: true,
     },
     mods: {
-      type: [Schema.Types.ObjectId],
+      type: [ObjectId],
       ref: 'User',
       default: [],
     },
     members: {
-      type: [Schema.Types.ObjectId],
+      type: [ObjectId],
       ref: 'User',
-      require: true, // todo: add admin as a member?
+      require: true,
     },
   },
   {
