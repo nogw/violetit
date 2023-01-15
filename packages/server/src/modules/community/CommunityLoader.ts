@@ -6,7 +6,6 @@ import { CommunityModel } from './CommunityModel';
 const Loader = createLoader({
   model: CommunityModel,
   loaderName: 'CommunityLoader',
-  shouldValidateContextUser: true,
 });
 
 export const {

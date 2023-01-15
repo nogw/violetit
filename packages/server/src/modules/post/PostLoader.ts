@@ -6,10 +6,9 @@ import { PostModel } from './PostModel';
 const Loader = createLoader({
   model: PostModel,
   loaderName: 'PostLoader',
-  shouldValidateContextUser: true,
 });
 
-export const { Wrapper: User, getLoader, clearCache, load, loadAll } = Loader;
+export const { Wrapper: Post, getLoader, clearCache, load, loadAll } = Loader;
 export default Loader;
 
 registerLoader('PostLoader', getLoader);
