@@ -3,6 +3,7 @@ import mongoose, { Document, Types, Schema } from 'mongoose';
 const { ObjectId } = mongoose.Schema.Types;
 
 export interface ICommunity {
+  _id: Types.ObjectId;
   name: string;
   title: string;
   admin: Types.ObjectId;
@@ -12,9 +13,7 @@ export interface ICommunity {
   updatedAt: Date;
 }
 
-export interface ICommunityDocument extends ICommunity, Document {
-  _id: Types.ObjectId;
-}
+export type ICommunityDocument = ICommunity & Document;
 
 const CommunitySchema = new Schema(
   {
