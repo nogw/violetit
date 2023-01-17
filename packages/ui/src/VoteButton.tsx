@@ -9,14 +9,14 @@ type VoteButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
 
 export const VoteButton = ({ direction, ...props }: VoteButtonProps) => {
   const iconClsx =
-    'text-neutral-500 px-0.5 h-5 w-5 duration-150 hover:bg-gray-100 rounded-sm';
+    'text-neutral-400 px-0 h-6 w-6 duration-150 hover:bg-gray-100 rounded-sm';
 
   return (
     <button {...props}>
       {direction === 'up' ? (
-        <TbArrowBigTop className={clsx(iconClsx, 'hover:text-orange-300')} />
+        <TbArrowBigTop className={clsx(iconClsx, 'hover:text-orange-400')} />
       ) : (
-        <TbArrowBigDown className={clsx(iconClsx, 'hover:text-sky-300')} />
+        <TbArrowBigDown className={clsx(iconClsx, 'hover:text-sky-400')} />
       )}
     </button>
   );
