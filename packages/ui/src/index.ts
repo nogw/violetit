@@ -7,3 +7,4 @@ export { Flex } from './Flex';
 export { Card } from './Card';
 export { CardActions } from './CardActions';
 export { CardContent } from './CardContent';
+export { LoadingPostSkeleton } from './LoadingPostSkeleton';

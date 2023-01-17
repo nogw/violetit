@@ -10,7 +10,7 @@ export const CardContent = ({
   ...props
 }: CardContentProps) => {
   return (
-    <div className={clsx('flex my-0 mx-auto p-8', className)} {...props}>
+    <div className={clsx('flex mx-1', className)} {...props}>
       {children}
     </div>
   );
