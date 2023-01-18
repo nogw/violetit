@@ -12,7 +12,7 @@ import InfiniteScroll from 'react-infinite-scroller';
 import { FeedListPostsPaginationQuery } from './__generated__/FeedListPostsPaginationQuery.graphql';
 import { FeedListPosts$key } from './__generated__/FeedListPosts.graphql';
 
-import { PostDetail } from '../post/PostDetail';
+import { PostDetail } from './post/PostDetail';
 
 const FeedListFragment = graphql`
   fragment FeedList_query on Query

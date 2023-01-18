@@ -7,7 +7,7 @@ import { graphql, useFragment } from 'react-relay';
 
 import { PostDetail_post$key } from './__generated__/PostDetail_post.graphql';
 
-import { VoteButtons } from '../vote/VoteButtons';
+import { VoteButtons } from '../../vote/VoteButtons';
 import PostHeader from './PostHeader';
 
 type PostDetailProps = {
