@@ -4,7 +4,7 @@ type LinkProps = RRDLinkProps & {
   children: React.ReactNode;
 };
 
-export const Link: React.FC<LinkProps> = ({ children, ...props }) => {
+export const Link = ({ children, ...props }: LinkProps) => {
   return (
     <RRDLink className="text-blue-500 font-bold hover:underline" {...props}>
       {children}
