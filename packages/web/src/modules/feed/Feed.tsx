@@ -1,6 +1,6 @@
 import { graphql } from 'relay-runtime';
 
-import { PostComposer } from './post/PostComposer';
+import { PostComposer } from '../post/PostComposer';
 import { FeedList } from './FeedList';
 
 const feedPostsLazyLoadQuery = graphql`
