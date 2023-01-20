@@ -1,6 +1,7 @@
 import { graphql } from 'relay-runtime';
 
-import FeedList from './FeedList';
+import { PostComposer } from './post/PostComposer';
+import { FeedList } from './FeedList';
 
 const feedPostsLazyLoadQuery = graphql`
   query FeedPostsQuery {
@@ -12,7 +13,12 @@ const feedPostsLazyLoadQuery = graphql`
 `;
 
 const Feed = () => {
-  return <FeedList lazyLoadQuery={feedPostsLazyLoadQuery} />;
+  return (
+    <div className="px-4">
+      <PostComposer />
+      <FeedList lazyLoadQuery={feedPostsLazyLoadQuery} />
+    </div>
+  );
 };
 
 export default Feed;
