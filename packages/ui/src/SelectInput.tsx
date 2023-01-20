@@ -2,7 +2,7 @@ import clsx from 'clsx';
 
 type SelectInputProps = React.SelectHTMLAttributes<HTMLSelectElement> & {
   initial: string;
-  options: string[];
+  options: Array<{ value: string; text: string }>;
 };
 
 export const SelectInput = ({
@@ -21,8 +21,8 @@ export const SelectInput = ({
     >
       <option defaultValue={initial}>{initial}</option>
       {options.map((option, index) => (
-        <option key={index} value={option}>
-          {option}
+        <option key={index} value={option.value}>
+          {option.text}
         </option>
       ))}
     </select>
