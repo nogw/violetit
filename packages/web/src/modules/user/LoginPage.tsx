@@ -3,7 +3,7 @@ import { useState } from 'react';
 import * as yup from 'yup';
 
 import { ErrorText, Button } from '@violetit/ui';
-import { Input } from '@/shared-components/InputField';
+import { InputField } from '@/shared-components/InputField';
 import { useAuth } from '../auth/useAuth';
 import { useNavigate } from 'react-router-dom';
 import { UserLoginMutation } from './__generated__/UserLoginMutation.graphql';
@@ -73,8 +73,8 @@ const LoginPage = () => {
     <FormikProvider value={formik}>
       <Form>
         <div className="flex flex-col gap-2">
-          <Input name="email" placeholder="Email" />
-          <Input name="password" type="password" placeholder="Password" />
+          <InputField name="email" placeholder="Email" />
+          <InputField name="password" type="password" placeholder="Password" />
           <Button type="submit" disabled={!isValid || isPending}>
             {isSubmitting ? 'Wait...' : 'Log in'}
           </Button>

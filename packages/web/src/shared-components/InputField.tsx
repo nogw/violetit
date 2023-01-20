@@ -6,7 +6,7 @@ type InputProps = InputHTMLAttributes<HTMLInputElement> & {
   name: string;
 };
 
-export const Input: React.FC<InputProps> = ({ name, ...props }) => {
+export const InputField: React.FC<InputProps> = ({ name, ...props }) => {
   const { className, ...rest } = props;
 
   const [field, meta] = useField(name);

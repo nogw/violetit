@@ -5,7 +5,7 @@ import { useMutation } from 'react-relay';
 import * as yup from 'yup';
 
 import { ErrorText, Button } from '@violetit/ui';
-import { Input } from '@/shared-components/InputField';
+import { InputField } from '@/shared-components/InputField';
 import { useAuth } from '../auth/useAuth';
 
 import { UserRegisterMutation } from './__generated__/UserRegisterMutation.graphql';
@@ -89,10 +89,10 @@ const LoginPage = () => {
     <FormikProvider value={formik}>
       <Form>
         <div className="flex flex-col gap-2">
-          <Input name="username" placeholder="Username" />
-          <Input name="email" placeholder="Email" />
-          <Input name="password" type="password" placeholder="Password" />
-          <Input
+          <InputField name="username" placeholder="Username" />
+          <InputField name="email" placeholder="Email" />
+          <InputField name="password" type="password" placeholder="Password" />
+          <InputField
             name="passwordConfirm"
             type="password"
             placeholder="Password Confirm"
