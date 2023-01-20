@@ -17,14 +17,14 @@ const VotesSkeleton = () => {
 
 export const LoadingPostSkeleton = () => {
   return (
-    <Card className="py-2 rounded border border-solid border-gray-100 hover:border-gray-400">
+    <Card className="py-2 rounded border border-solid border-gray-200 hover:border-gray-400">
       <VotesSkeleton />
       <CardContent className="animate-pulse flex-1">
         <div className="flex-1 space-y-4 py-1">
-          <div className="h-2 w-52 bg-gray-100 rounded" />
-          <div className="h-4 w-80 bg-gray-100 rounded" />
+          <div className="h-2 w-52 bg-gray-200 rounded" />
+          <div className="h-4 w-80 bg-gray-200 rounded" />
           <div className="space-y-2">
-            <div className="h-14 bg-gray-100 rounded" />
+            <div className="h-14 bg-gray-200 rounded" />
           </div>
         </div>
       </CardContent>
