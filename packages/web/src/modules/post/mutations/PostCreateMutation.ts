@@ -12,6 +12,9 @@ export const PostCreate = graphql`
       postEdge {
         node {
           id
+          community {
+            name
+          }
         }
       }
     }
