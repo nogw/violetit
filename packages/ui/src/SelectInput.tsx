@@ -9,6 +9,7 @@ export const SelectInput = ({
   className,
   initial,
   options,
+  ...props
 }: SelectInputProps) => {
   return (
     <select
@@ -18,6 +19,7 @@ export const SelectInput = ({
         'w-full outline-none cursor-pointer bg-white p-2',
         className,
       )}
+      {...props}
     >
       <option defaultValue={initial}>{initial}</option>
       {options.map((option, index) => (
