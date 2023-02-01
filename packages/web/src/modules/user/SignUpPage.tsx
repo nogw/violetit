@@ -9,7 +9,7 @@ import { InputField } from '@/shared-components/InputField';
 import { useAuth } from '../auth/useAuth';
 
 import { UserRegisterMutation } from './__generated__/UserRegisterMutation.graphql';
-import { UserRegister } from './UserRegisterMutation';
+import { UserRegister } from './mutations/UserRegisterMutation';
 
 type signUpValues = {
   username: string;
@@ -97,7 +97,11 @@ const LoginPage = () => {
             type="password"
             placeholder="Password Confirm"
           />
-          <Button type="submit" disabled={!isValid || isPending}>
+          <Button
+            className="flex-auto"
+            type="submit"
+            disabled={!isValid || isPending}
+          >
             {isSubmitting ? 'Wait...' : 'Create Account'}
           </Button>
         </div>
