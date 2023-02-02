@@ -7,7 +7,7 @@ import { PostFiltersInputType } from '../modules/post/PostFilterInputType';
 import { PostConnection } from '../modules/post/PostType';
 import PostLoader from '../modules/post/PostLoader';
 
-import { CommunityFiltersInputType } from 'src/modules/community/CommunityFilterInputType';
+import { CommunityFiltersInputType } from '../modules/community/CommunityFilterInputType';
 import { CommunityConnection } from '../modules/community/CommunityType';
 import CommunityLoader from '../modules/community/CommunityLoader';
 
