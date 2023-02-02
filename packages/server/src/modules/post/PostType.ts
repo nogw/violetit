@@ -6,8 +6,8 @@ import {
 } from 'graphql';
 
 import {
-  connectionArgs,
   connectionDefinitions,
+  timestampResolver,
 } from '@entria/graphql-mongo-helpers';
 
 import { globalIdField } from 'graphql-relay';
@@ -15,13 +15,13 @@ import { globalIdField } from 'graphql-relay';
 import { nodeInterface, registerTypeLoader } from '../node/typeRegister';
 import { GraphQLContext } from '../../graphql/types';
 
-import { UserConnection } from '../user/UserType';
+import { UserType } from '../user/UserType';
 import UserLoader from '../user/UserLoader';
 
 import { IPostDocument } from './PostModel';
 import { load } from './PostLoader';
 
-import { CommunityConnection } from '../community/CommunityType';
+import { CommunityType } from '../community/CommunityType';
 import CommunityLoader from '../community/CommunityLoader';
 
 import { VoteModel } from '../vote/VoteModel';
@@ -39,24 +39,20 @@ export const PostType = new GraphQLObjectType<IPostDocument, GraphQLContext>({
       resolve: post => post.content,
     },
     author: {
-      type: new GraphQLNonNull(UserConnection.connectionType),
-      args: { ...connectionArgs },
-      resolve: async (post, _, context) => {
-        return UserLoader.load(context, post.author);
-      },
+      type: UserType,
+      resolve: ({ author }, _, context) => UserLoader.load(context, author),
     },
     community: {
-      type: new GraphQLNonNull(CommunityConnection.connectionType),
-      args: { ...connectionArgs },
-      resolve: async (post, _, context) => {
-        return CommunityLoader.load(context, post.community);
-      },
+      type: CommunityType,
+      resolve: ({ community }, _, context) =>
+        CommunityLoader.load(context, community),
     },
     votesCount: {
       type: new GraphQLNonNull(GraphQLInt),
       resolve: async post =>
         (await VoteModel.countVotes({ post: post._id }))?.total,
     },
+    ...timestampResolver,
   }),
   interfaces: () => [nodeInterface],
 });
