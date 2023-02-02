@@ -6,7 +6,6 @@ import { UserModel } from './UserModel';
 const Loader = createLoader({
   model: UserModel,
   loaderName: 'UserLoader',
-  shouldValidateContextUser: true,
 });
 
 export const { Wrapper: User, getLoader, clearCache, load, loadAll } = Loader;

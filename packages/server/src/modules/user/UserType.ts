@@ -32,11 +32,12 @@ export const UserType = new GraphQLObjectType<IUserDocument, GraphQLContext>({
     communities: {
       type: new GraphQLNonNull(CommunityConnection.connectionType),
       args: { ...connectionArgs },
-      resolve: async (user, args, context) =>
-        await CommunityLoader.loadAll(
+      resolve: async (user, args, context) => {
+        return CommunityLoader.loadAll(
           context,
           withFilter(args, { members: user._id }),
-        ),
+        );
+      },
     },
   }),
   interfaces: () => [nodeInterface],
