@@ -3,10 +3,11 @@ import { connectionArgs } from '@entria/graphql-mongo-helpers';
 
 import { nodeField, nodesField } from '../modules/node/typeRegister';
 
-import { PostFilterInputType } from '../modules/post/PostFilterInputType';
+import { PostFiltersInputType } from '../modules/post/PostFilterInputType';
 import { PostConnection } from '../modules/post/PostType';
 import PostLoader from '../modules/post/PostLoader';
 
+import { CommunityFiltersInputType } from 'src/modules/community/CommunityFilterInputType';
 import { CommunityConnection } from '../modules/community/CommunityType';
 import CommunityLoader from '../modules/community/CommunityLoader';
 
@@ -22,6 +23,7 @@ export const QueryType = new GraphQLObjectType({
 
     me: {
       type: UserType,
+      description: 'Logged user',
       resolve: (_root, _args, context) => {
         return UserLoader.load(context, context.user?._id);
       },
@@ -32,9 +34,11 @@ export const QueryType = new GraphQLObjectType({
       description: 'Connection to all communities',
       args: {
         ...connectionArgs,
+        filters: {
+          type: CommunityFiltersInputType,
+        },
       },
-      resolve: async (_, args, context) =>
-        CommunityLoader.loadAll(context, args),
+      resolve: async (_, args, context) => CommunityLoader.loadAll(context, args),
     },
 
     posts: {
@@ -43,7 +47,7 @@ export const QueryType = new GraphQLObjectType({
       args: {
         ...connectionArgs,
         filters: {
-          type: PostFilterInputType,
+          type: PostFiltersInputType,
         },
       },
       resolve: async (_, args, context) => PostLoader.loadAll(context, args),

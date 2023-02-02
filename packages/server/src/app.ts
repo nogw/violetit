@@ -4,7 +4,7 @@ import bodyParser from 'koa-bodyparser';
 import Router from '@koa/router';
 import cors from '@koa/cors';
 
-import { getContext } from './getContext';
+import { getContext } from './context';
 import { getUser } from './auth';
 import { schema } from './schema/schema';
 
