@@ -1,11 +1,13 @@
 import { GraphQLID, GraphQLNonNull, GraphQLString } from 'graphql';
-import { mutationWithClientMutationId } from 'graphql-relay';
+import { mutationWithClientMutationId, toGlobalId } from 'graphql-relay';
 
 import { GraphQLContext } from '../../../graphql/types';
 import { CommunityModel } from '../../community/CommunityModel';
 
+import { PostConnection } from '../PostType';
 import { PostModel } from '../PostModel';
-import { PostType } from '../PostType';
+import PostLoader from '../PostLoader';
+import { getObjectId } from '@entria/graphql-mongo-helpers';
 
 export const postCreateMutation = mutationWithClientMutationId({
   name: 'PostCreate',
@@ -22,27 +24,41 @@ export const postCreateMutation = mutationWithClientMutationId({
       throw new Error('You are not logged in!');
     }
 
-    const communityFound = await CommunityModel.findById(community);
+    const communityFound = await CommunityModel.findById(
+      getObjectId(community),
+    );
 
     if (!communityFound) {
       throw new Error('Community not found');
     }
 
     const post = await new PostModel({
-      ...rest,
       title,
       author: context.user._id,
       community: communityFound._id,
+      ...rest,
     }).save();
 
     return {
-      post,
+      id: post._id,
     };
   },
   outputFields: () => ({
-    post: {
-      type: PostType,
-      resolve: post => post,
+    postEdge: {
+      type: PostConnection.edgeType,
+      resolve: async ({ id }, _, context) => {
+        // temp-anno: load new edge from loader
+        const post = await PostLoader.load(context, id);
+        // temp-anno: returns null if no node was loaded
+        if (!post) {
+          return null;
+        }
+
+        return {
+          cursor: toGlobalId('Post', post._id),
+          node: post,
+        };
+      },
     },
   }),
 });
