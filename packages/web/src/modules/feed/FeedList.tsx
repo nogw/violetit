@@ -1,28 +1,18 @@
 import { LoadingPostSkeleton } from '@violetit/ui';
 
-import {
-  graphql,
-  GraphQLTaggedNode,
-  useLazyLoadQuery,
-  usePaginationFragment,
-} from 'react-relay';
-
+import { graphql, usePaginationFragment } from 'react-relay';
+import { useCallback, useEffect, useTransition } from 'react';
 import InfiniteScroll from 'react-infinite-scroller';
 
-import { FeedListPostsPaginationQuery } from './__generated__/FeedListPostsPaginationQuery.graphql';
-import { FeedListPosts$key } from './__generated__/FeedListPosts.graphql';
-
+import { FeedListPaginationQuery } from './__generated__/FeedListPaginationQuery.graphql';
+import { FeedList_query$key } from './__generated__/FeedList_query.graphql';
 import { PostDetail } from '../post/PostDetail';
 
 const FeedListFragment = graphql`
   fragment FeedList_query on Query
-  @argumentDefinitions(
-    first: { type: Int, defaultValue: 10 }
-    after: { type: String }
-  )
+  @argumentDefinitions(first: { type: Int, defaultValue: 10 }, after: { type: String }, filters: { type: PostFilter })
   @refetchable(queryName: "FeedListPaginationQuery") {
-    posts(first: $first, after: $after)
-      @connection(key: "Feed_posts", filters: []) {
+    posts(first: $first, after: $after, filters: $filters) @connection(key: "Feed_posts") {
       endCursorOffset
       startCursorOffset
       count
@@ -43,28 +33,36 @@ const FeedListFragment = graphql`
 `;
 
 type FeedListProps = {
-  lazyLoadQuery: GraphQLTaggedNode;
+  query: FeedList_query$key;
+  queryVariables?: { community?: string };
 };
 
-export const FeedList = ({ lazyLoadQuery }: FeedListProps) => {
-  // todo: refactor 'query'
-  const query = useLazyLoadQuery<FeedListPostsPaginationQuery>(
-    lazyLoadQuery,
-    {},
-  );
+export const FeedList = ({ query, queryVariables }: FeedListProps) => {
+  const [isPending, startTransition] = useTransition();
 
-  const { data, loadNext, isLoadingNext } = usePaginationFragment<
-    FeedListPostsPaginationQuery,
-    FeedListPosts$key
+  const { data, refetch, hasNext, loadNext, isLoadingNext } = usePaginationFragment<
+    FeedListPaginationQuery,
+    FeedList_query$key
   >(FeedListFragment, query);
 
-  const loadMore = () => {
-    if (isLoadingNext) {
+  useEffect(() => {
+    startTransition(() => {
+      const variables = {
+        first: 10,
+        filters: queryVariables,
+      };
+
+      refetch(variables, { fetchPolicy: 'store-or-network' });
+    });
+  }, [isPending, queryVariables, refetch]);
+
+  const loadMore = useCallback(() => {
+    if (isLoadingNext || !hasNext) {
       return;
     }
 
     loadNext(5);
-  };
+  }, [hasNext, isLoadingNext, loadNext]);
 
   return (
     <InfiniteScroll
@@ -79,7 +77,7 @@ export const FeedList = ({ lazyLoadQuery }: FeedListProps) => {
           return <PostDetail key={post.node.id} post={post.node} />;
         }
 
-        return null;
+        return;
       })}
     </InfiniteScroll>
   );
