@@ -35,13 +35,11 @@ export const PostDetail = (props: PostDetailProps) => {
     ? { Component: React.Fragment, props: { to: {} } }
     : { Component: Link, props: { to: `/post/${post.id}`, className: '' } };
 
-  const PostContentWrapper = isDetail
-    ? { className: 'text-sm' }
-    : { className: 'line-clamp-3 text-sm my-2' };
+  const PostContentWrapper = isDetail ? { className: 'text-sm' } : { className: 'line-clamp-3 text-sm my-2' };
 
   return (
     <Wrapper.Component {...Wrapper.props}>
-      <Card className="border-gray-200 hover:border-gray-400">
+      <Card className="hover:border-gray-400">
         <VoteButtons votes={post.votesCount} postId="test" />
         <CardContent className="flex-col">
           <PostHeader post={post} />
