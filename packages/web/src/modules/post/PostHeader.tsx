@@ -18,6 +18,7 @@ const PostHeader = (props: PostHeaderProps) => {
           username
         }
         community {
+          id
           name
         }
         createdAt
@@ -30,7 +31,7 @@ const PostHeader = (props: PostHeaderProps) => {
 
   return (
     <Flex className="text-xs text-gray-500 gap-2">
-      <Link to={`/r/${community?.name}`}>
+      <Link to={`/r/${community?.id}`}>
         <h3 className="text-black font-medium">{`r/${community?.name}`}</h3>
       </Link>
       <p className="text-gray-400">•</p>
@@ -39,7 +40,7 @@ const PostHeader = (props: PostHeaderProps) => {
         <Link to={`/u/${author?.username}`}>
           <p className="mr-1 text-gray-500 font-normal">{`u/${author?.username}`}</p>
         </Link>
-        <p>{`${timeAgo(new Date(post.createdAt || ''))} ago`}</p>
+        <p>{timeAgo(new Date(post.createdAt || ''))}</p>
       </Flex>
     </Flex>
   );
