@@ -1,24 +1,29 @@
+import { Flex } from '@violetit/ui';
+
+import { useLazyLoadQuery } from 'react-relay';
 import { graphql } from 'relay-runtime';
 
+import { FeedListPaginationQuery } from './__generated__/FeedListPaginationQuery.graphql';
 import { PostComposer } from '../post/PostComposer';
 import { FeedList } from './FeedList';
 
 const feedPostsLazyLoadQuery = graphql`
   query FeedPostsQuery {
     ...FeedList_query
-    me {
-      id
-    }
   }
 `;
 
-const Feed = () => {
-  return (
-    <div className="px-4">
-      <PostComposer />
-      <FeedList lazyLoadQuery={feedPostsLazyLoadQuery} />
-    </div>
-  );
+type FeedProps = {
+  community?: string;
 };
 
-export default Feed;
+export const Feed = (props: FeedProps) => {
+  const query = useLazyLoadQuery<FeedListPaginationQuery>(feedPostsLazyLoadQuery, {});
+
+  return (
+    <Flex className="flex-col">
+      <PostComposer community={props.community} />
+      <FeedList query={query} queryVariables={props} />
+    </Flex>
+  );
+};
