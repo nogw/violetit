@@ -1,8 +1,8 @@
 import { CardTitled, Flex } from '@violetit/ui';
 import { formatDate } from '@/lib/formatDate';
 
-import { BiCake } from 'react-icons/bi';
 import { graphql, useFragment } from 'react-relay';
+import { BiCake } from 'react-icons/bi';
 
 import { CommunityInfo_community$key } from './__generated__/CommunityInfo_community.graphql';
 
@@ -26,13 +26,11 @@ export const CommunityInfo = (props: CommunityInfoProps) => {
 
   return (
     <CardTitled title="About Community">
-      <h1 className="font-medium">r\{`${community.name}`}</h1>
+      <h1 className="font-medium">r/{`${community.name}`}</h1>
 
       <Flex className="items-center">
         <BiCake className="text-lg mr-1" />
-        <p className="text-sm text-gray-600">
-          {formatDate(new Date(community.createdAt || ''))}
-        </p>
+        <p className="text-sm text-gray-600">{formatDate(new Date(community.createdAt || ''))}</p>
       </Flex>
 
       <Flex className="border-y py-2">

@@ -4,8 +4,8 @@ import { useLazyLoadQuery } from 'react-relay';
 import { useParams } from 'react-router-dom';
 import { graphql } from 'relay-runtime';
 
-import { CommunityInfo } from './CommunityInfo';
 import { CommunityHeader } from './CommunityHeader';
+import { CommunityInfo } from './CommunityInfo';
 import { Feed } from '../feed/Feed';
 
 import { CommunityPageMeQuery } from './__generated__/CommunityPageMeQuery.graphql';
@@ -23,7 +23,7 @@ export const CommunityPage = () => {
   const { id } = useParams();
 
   const data = useLazyLoadQuery<CommunityPageMeQuery>(CommunityPageMe, {
-    id: id as string,
+    id: id || '',
   });
 
   if (!data || !data.community) {
@@ -36,7 +36,7 @@ export const CommunityPage = () => {
     <Box>
       <CommunityHeader community={community} />
       <Flex className="gap-2 mx-2">
-        <Feed />
+        <Feed community={id} />
         <CommunityInfo community={community} />
       </Flex>
     </Box>
