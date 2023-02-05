@@ -68,7 +68,7 @@ export const FeedList = ({ query, queryVariables }: FeedListProps) => {
     <InfiniteScroll
       pageStart={0}
       loadMore={loadMore}
-      loader={<LoadingPostSkeleton />}
+      loader={<LoadingPostSkeleton key={'skeleton'} />}
       hasMore={data.posts.pageInfo.hasNextPage}
       useWindow
     >
