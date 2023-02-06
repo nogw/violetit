@@ -5,6 +5,9 @@ export const VoteCreate = graphql`
     VoteCreate(input: $input) {
       post {
         votesCount
+        meHasVoted {
+          type
+        }
       }
     }
   }
