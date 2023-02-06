@@ -24,7 +24,7 @@ export const PostDetail = (props: PostDetailProps) => {
         id
         title
         content
-        votesCount
+        ...VoteButtons_post
         ...PostHeader_post
       }
     `,
@@ -40,7 +40,7 @@ export const PostDetail = (props: PostDetailProps) => {
   return (
     <Wrapper.Component {...Wrapper.props}>
       <Card className="hover:border-gray-400">
-        <VoteButtons votes={post.votesCount} postId={post.id} />
+        <VoteButtons post={post} />
         <CardContent className="flex-col">
           <PostHeader post={post} />
           <h1 className="font-medium text-base my-2">{post.title}</h1>
