@@ -9,14 +9,9 @@ type CardTitledProps = React.HTMLAttributes<HTMLDivElement> & {
   children: React.ReactElement | React.ReactElement[];
 };
 
-export const CardTitled = ({
-  title,
-  className,
-  children,
-  ...props
-}: CardTitledProps) => {
+export const CardTitled = ({ title, className, children, ...props }: CardTitledProps) => {
   return (
-    <Card className={clsx('flex flex-col p-0 px-0', className)} {...props}>
+    <Card className={clsx('flex flex-col p-0 h-min max-w-xs', className)} {...props}>
       <Flex className="rounded-t bg-blue-500 p-2">
         <h1 className="font-semibold text-sm text-white">{title}</h1>
       </Flex>
