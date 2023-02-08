@@ -42,7 +42,7 @@
     "@typescript-eslint/no-var-requires": "error",
     "@typescript-eslint/no-unused-vars": [
       "error",
-      { "ignoreRestSiblings": true }
+      { "destructuredArrayIgnorePattern": "^_", "ignoreRestSiblings": true }
     ],
     "@typescript-eslint/no-empty-function": "error",
     "@typescript-eslint/explicit-module-boundary-types": "off",
@@ -58,7 +58,7 @@
     "relay/graphql-syntax": "error",
     "relay/compat-uses-vars": "warn",
     "relay/graphql-naming": "error",
-    "relay/generated-flow-types": "warn",
+    "relay/generated-flow-types": "off",
     "relay/no-future-added-value": "warn",
     "relay/unused-fields": "off"
   },
