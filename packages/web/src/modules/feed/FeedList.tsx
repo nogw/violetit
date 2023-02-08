@@ -38,7 +38,7 @@ type FeedListProps = {
 };
 
 export const FeedList = ({ query, queryVariables }: FeedListProps) => {
-  const [isPending, startTransition] = useTransition();
+  const [_, startTransition] = useTransition();
 
   const { data, refetch, hasNext, loadNext, isLoadingNext } = usePaginationFragment<
     FeedListPaginationQuery,
@@ -54,7 +54,7 @@ export const FeedList = ({ query, queryVariables }: FeedListProps) => {
 
       refetch(variables, { fetchPolicy: 'store-or-network' });
     });
-  }, [isPending, queryVariables, refetch]);
+  }, [queryVariables, refetch]);
 
   const loadMore = useCallback(() => {
     if (isLoadingNext || !hasNext) {

@@ -21,7 +21,7 @@ export const Feed = (props: FeedProps) => {
   const query = useLazyLoadQuery<FeedListPaginationQuery>(feedPostsLazyLoadQuery, {});
 
   return (
-    <Flex className="flex-col">
+    <Flex className="flex-col w-full">
       <PostComposer community={props.community} />
       <FeedList query={query} queryVariables={props} />
     </Flex>
