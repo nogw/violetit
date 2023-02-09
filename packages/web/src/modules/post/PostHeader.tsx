@@ -37,9 +37,7 @@ const PostHeader = (props: PostHeaderProps) => {
       <p className="text-gray-400">•</p>
       <Flex className="gap-1">
         <p>Posted by</p>
-        <Link to={`/u/${author?.username}`}>
-          <p className="mr-1 text-gray-500 font-normal">{`u/${author?.username}`}</p>
-        </Link>
+        <p className="mr-1 text-gray-500 font-normal">{`u/${author?.username}`}</p>
         <p>{timeAgo(new Date(post.createdAt || ''))}</p>
       </Flex>
     </Flex>
