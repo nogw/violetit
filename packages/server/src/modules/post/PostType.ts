@@ -1,14 +1,6 @@
-import {
-  GraphQLObjectType,
-  GraphQLString,
-  GraphQLNonNull,
-  GraphQLInt,
-} from 'graphql';
+import { GraphQLObjectType, GraphQLString, GraphQLNonNull, GraphQLInt } from 'graphql';
 
-import {
-  connectionDefinitions,
-  timestampResolver,
-} from '@entria/graphql-mongo-helpers';
+import { connectionDefinitions, timestampResolver } from '@entria/graphql-mongo-helpers';
 
 import { globalIdField } from 'graphql-relay';
 
@@ -25,11 +17,14 @@ import { CommunityType } from '../community/CommunityType';
 import CommunityLoader from '../community/CommunityLoader';
 
 import { VoteModel } from '../vote/VoteModel';
+import { VoteType } from '../vote/VoteType';
+import VoteLoader from '../vote/VoteLoader';
 
 export const PostType = new GraphQLObjectType<IPostDocument, GraphQLContext>({
   name: 'Post',
   fields: () => ({
     id: globalIdField('Post'),
+    ...timestampResolver,
     title: {
       type: new GraphQLNonNull(GraphQLString),
       resolve: post => post.title,
@@ -44,15 +39,31 @@ export const PostType = new GraphQLObjectType<IPostDocument, GraphQLContext>({
     },
     community: {
       type: CommunityType,
-      resolve: ({ community }, _, context) =>
-        CommunityLoader.load(context, community),
+      resolve: ({ community }, _, context) => CommunityLoader.load(context, community),
     },
     votesCount: {
       type: new GraphQLNonNull(GraphQLInt),
-      resolve: async post =>
-        (await VoteModel.countVotes({ post: post._id }))?.total,
+      resolve: async post => (await VoteModel.countVotes({ post: post._id }))?.total,
     },
-    ...timestampResolver,
+    meHasVoted: {
+      type: VoteType,
+      resolve: async (post, _, context) => {
+        if (!context.user?._id) {
+          return null;
+        }
+
+        const vote = await VoteModel.findOne({
+          post: post._id,
+          user: context.user._id,
+        });
+
+        if (!vote) {
+          return null;
+        }
+
+        return VoteLoader.load(context, vote._id);
+      },
+    },
   }),
   interfaces: () => [nodeInterface],
 });

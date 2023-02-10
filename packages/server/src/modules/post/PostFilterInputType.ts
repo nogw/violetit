@@ -33,7 +33,7 @@ export const PostFiltersInputType: GraphQLInputObjectType = new GraphQLInputObje
       type: new GraphQLList(PostFiltersInputType),
     },
     orderBy: {
-      type: new GraphQLNonNull(new GraphQLList(DateOrderingInputType)),
+      type: new GraphQLList(new GraphQLNonNull(DateOrderingInputType)),
       description: 'Order reviews by DateOrderingInputType.',
     },
     community: {
