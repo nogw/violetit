@@ -3,9 +3,12 @@ import { GraphQLID, GraphQLNonNull } from 'graphql';
 import { mutationWithClientMutationId } from 'graphql-relay';
 
 import { GraphQLContext } from '../../../graphql/types';
+
+import { PostModel } from '../../post/PostModel';
+import { PostType } from '../../post/PostType';
+
 import { VoteModel } from '../VoteModel';
 
-// todo: improve outputFields
 export const VoteDelete = mutationWithClientMutationId({
   name: 'VoteDelete',
   inputFields: {
@@ -28,5 +31,10 @@ export const VoteDelete = mutationWithClientMutationId({
       voteId: voteFound._id,
     };
   },
-  outputFields: {},
+  outputFields: {
+    post: {
+      type: PostType,
+      resolve: async ({ postId }) => await PostModel.findById(postId),
+    },
+  },
 });
