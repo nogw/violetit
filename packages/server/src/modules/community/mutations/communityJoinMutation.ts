@@ -1,60 +1,75 @@
-import { GraphQLNonNull, GraphQLString } from 'graphql';
-import { mutationWithClientMutationId } from 'graphql-relay';
+import { mutationWithClientMutationId, toGlobalId } from 'graphql-relay';
+import { GraphQLNonNull, GraphQLID } from 'graphql';
+import { getObjectId } from '@entria/graphql-mongo-helpers';
 
 import { GraphQLContext } from '../../../graphql/types';
 
+import { CommunityConnection } from '../CommunityType';
 import { CommunityModel } from '../CommunityModel';
-import { CommunityType } from '../CommunityType';
+import CommunityLoader from '../CommunityLoader';
 
 export const communityJoin = mutationWithClientMutationId({
   name: 'CommunityJoin',
   inputFields: {
-    community: { type: new GraphQLNonNull(GraphQLString) },
+    communityId: { type: new GraphQLNonNull(GraphQLID) },
   },
-  mutateAndGetPayload: async ({ community }, context: GraphQLContext) => {
+  mutateAndGetPayload: async ({ communityId }, context: GraphQLContext) => {
     if (!context.user) {
       throw new Error('You are not logged in!');
     }
 
-    const communityFound = await CommunityModel.findOne({ name: community });
+    const foundCommunity = await CommunityModel.findById(getObjectId(communityId));
 
-    if (!communityFound) {
+    if (!foundCommunity) {
       throw new Error("This community doesn't exist");
     }
 
-    const foundMemberIdInCommunity = community.member.includes(
-      context.user._id,
-    );
+    const foundMemberIdInCommunity = foundCommunity.members.some(community => community.equals(context.user?._id));
 
-    const foundCommunityIdInUser = context.user.communities.includes(
-      community._id,
-    );
+    // const foundCommunityIdInUser = context.user.communities.some(community => community.equals(foundCommunity._id));
 
-    if (foundMemberIdInCommunity || foundCommunityIdInUser) {
-      throw new Error('You are already a member of this community');
+    if (
+      foundMemberIdInCommunity
+      // || foundCommunityIdInUser
+    ) {
+      // // eslint-disable-next-line
+      // console.log(foundCommunity._id);
+      // // eslint-disable-next-line
+      // console.log(context.user._id);
+      // // eslint-disable-next-line
+      // console.log(context.user.communities);
+      throw new Error('You are already a member of this foundCommunity');
     }
 
     await Promise.all([
-      community.updateOne({
-        $addToSet: { members: [...community.members, context.user._id] },
+      foundCommunity.updateOne({
+        $addToSet: { members: [...foundCommunity.members, context.user._id] },
       }),
       context.user.updateOne({
-        $addToSet: {
-          communities: [...(context.user.communities || []), community._id],
-        },
+        $addToSet: { communities: [...(context.user.communities || []), foundCommunity._id] },
       }),
     ]);
 
     return {
       userId: context.user._id,
-      communityId: community._id,
+      communityId: foundCommunity._id,
     };
   },
   outputFields: () => ({
-    community: {
-      type: CommunityType,
-      resolve: async ({ communityId }) =>
-        await CommunityModel.findById(communityId),
+    communityEdge: {
+      type: CommunityConnection.edgeType,
+      resolve: async ({ id }, _, context) => {
+        const community = await CommunityLoader.load(context, id);
+
+        if (!community) {
+          return null;
+        }
+
+        return {
+          cursor: toGlobalId('Community', community._id),
+          node: community,
+        };
+      },
     },
   }),
 });

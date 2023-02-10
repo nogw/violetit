@@ -1,10 +1,11 @@
 import { GraphQLNonNull, GraphQLString } from 'graphql';
-import { mutationWithClientMutationId } from 'graphql-relay';
+import { mutationWithClientMutationId, toGlobalId } from 'graphql-relay';
 
 import { GraphQLContext } from '../../../graphql/types';
 
+import { CommunityConnection } from '../CommunityType';
 import { CommunityModel } from '../CommunityModel';
-import { CommunityType } from '../CommunityType';
+import CommunityLoader from '../CommunityLoader';
 
 export const communityCreate = mutationWithClientMutationId({
   name: 'CommunityCreate',
@@ -17,11 +18,11 @@ export const communityCreate = mutationWithClientMutationId({
       throw new Error('You are not logged in!');
     }
 
-    const communityFound = await CommunityModel.findOne({
+    const foundCommunity = await CommunityModel.findOne({
       name: name,
     });
 
-    if (communityFound) {
+    if (foundCommunity) {
       throw new Error('A community with this name has already been created');
     }
 
@@ -40,13 +41,24 @@ export const communityCreate = mutationWithClientMutationId({
     ]);
 
     return {
-      community,
+      id: community._id,
     };
   },
   outputFields: () => ({
-    community: {
-      type: CommunityType,
-      resolve: ({ community }) => community,
+    communityEdge: {
+      type: CommunityConnection.edgeType,
+      resolve: async ({ id }, _, context) => {
+        const community = await CommunityLoader.load(context, id);
+
+        if (!community) {
+          return null;
+        }
+
+        return {
+          cursor: toGlobalId('Community', community._id),
+          node: community,
+        };
+      },
     },
   }),
 });

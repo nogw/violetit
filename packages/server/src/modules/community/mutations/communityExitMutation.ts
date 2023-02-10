@@ -1,68 +1,75 @@
+import { mutationWithClientMutationId, toGlobalId } from 'graphql-relay';
 import { GraphQLNonNull, GraphQLString } from 'graphql';
-import { mutationWithClientMutationId } from 'graphql-relay';
+import { getObjectId } from '@entria/graphql-mongo-helpers';
 
 import { GraphQLContext } from '../../../graphql/types';
 
+import { CommunityConnection } from '../CommunityType';
 import { CommunityModel } from '../CommunityModel';
-import { CommunityType } from '../CommunityType';
+import CommunityLoader from '../CommunityLoader';
 
 export const communityExit = mutationWithClientMutationId({
   name: 'CommunityExit',
   inputFields: {
-    community: { type: new GraphQLNonNull(GraphQLString) },
+    communityId: { type: new GraphQLNonNull(GraphQLString) },
   },
-  mutateAndGetPayload: async ({ community }, context: GraphQLContext) => {
+  mutateAndGetPayload: async ({ communityId }, context: GraphQLContext) => {
     if (!context.user) {
       throw new Error('You are not logged in!');
     }
 
-    const communityFound = await CommunityModel.findOne({ name: community });
+    const foundCommunity = await CommunityModel.findById(getObjectId(communityId));
 
-    if (!communityFound) {
+    if (!foundCommunity) {
       throw new Error("This community doesn't exist");
     }
 
-    const foundMemberIdInCommunity = community.member.includes(
-      context.user._id,
-    );
+    const foundMemberIdInCommunity = foundCommunity.members.some(community => community.equals(context.user?._id));
 
-    const foundCommunityIdInUser = context.user.communities.includes(
-      community._id,
-    );
+    // const foundCommunityIdInUser = context.user.communities.some(community => community.equals(foundCommunity._id));
 
-    const foundMemberIdInCommunityMods = community.mods.includes(
-      context.user._id,
-    );
-
-    if (foundMemberIdInCommunity || foundCommunityIdInUser) {
-      throw new Error('You are not a member of this community');
+    if (
+      !foundMemberIdInCommunity
+      // || !foundCommunityIdInUser
+    ) {
+      throw new Error('You are not a member of this foundCommunity');
     }
 
-    if (communityFound.admin.equals(context.user._id)) {
-      throw new Error(
-        'You are the community admin, use communityExitAsAdmin to exit',
-      );
+    if (foundCommunity.admin.equals(context.user._id)) {
+      throw new Error('You are the community admin, use communityExitAsAdmin to exit');
     }
+
+    const foundMemberIdInCommunityMods = foundCommunity.mods.some(community => community.equals(context.user?._id));
 
     if (foundMemberIdInCommunityMods) {
-      await communityFound.updateOne({ $pull: { members: context.user._id } });
+      await foundCommunity.updateOne({ $pull: { mods: context.user._id } });
     }
 
     await Promise.all([
-      communityFound.updateOne({ $pull: { members: context.user._id } }),
-      context.user.updateOne({ $pull: { members: context.user._id } }),
+      foundCommunity.updateOne({ $pull: { members: context.user._id } }),
+      context.user.updateOne({ $pull: { communities: foundCommunity._id } }),
     ]);
 
     return {
       userId: context.user._id,
-      communityId: communityFound._id,
+      communityId: foundCommunity._id,
     };
   },
   outputFields: () => ({
-    community: {
-      type: CommunityType,
-      resolve: async ({ communityId }) =>
-        await CommunityModel.findById(communityId),
+    communityEdge: {
+      type: CommunityConnection.edgeType,
+      resolve: async ({ id }, _, context) => {
+        const community = await CommunityLoader.load(context, id);
+
+        if (!community) {
+          return null;
+        }
+
+        return {
+          cursor: toGlobalId('Community', community._id),
+          node: community,
+        };
+      },
     },
   }),
 });
