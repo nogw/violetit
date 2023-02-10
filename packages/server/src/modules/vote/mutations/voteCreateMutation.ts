@@ -1,11 +1,15 @@
 import { GraphQLEnumType, GraphQLID, GraphQLNonNull } from 'graphql';
-import { mutationWithClientMutationId } from 'graphql-relay';
+import { mutationWithClientMutationId, toGlobalId } from 'graphql-relay';
+import { getObjectId } from '@entria/graphql-mongo-helpers';
 
 import { GraphQLContext } from '../../../graphql/types';
-import { VoteModel } from '../VoteModel';
 
 import { PostModel } from '../../post/PostModel';
 import { PostType } from '../../post/PostType';
+
+import { VoteConnection } from '../VoteType';
+import { VoteModel } from '../VoteModel';
+import VoteLoader from '../VoteLoader';
 
 export const VoteCreate = mutationWithClientMutationId({
   name: 'VoteCreate',
@@ -26,7 +30,7 @@ export const VoteCreate = mutationWithClientMutationId({
       throw new Error('You are not logged in!');
     }
 
-    const postFound = await PostModel.findById(postId);
+    const postFound = await PostModel.findById(getObjectId(postId));
 
     if (!postFound) {
       throw new Error("This post doesn't exist");
@@ -38,6 +42,12 @@ export const VoteCreate = mutationWithClientMutationId({
     });
 
     if (hasVoted) {
+      if (hasVoted.type !== type) {
+        await VoteModel.findByIdAndUpdate(hasVoted._id, {
+          type,
+        });
+      }
+
       return {
         userId: context.user._id,
         voteId: hasVoted._id,
@@ -47,7 +57,7 @@ export const VoteCreate = mutationWithClientMutationId({
 
     const vote = await new VoteModel({
       ...{ post: postFound._id },
-      author: context.user._id,
+      user: context.user._id,
       type,
     }).save();
 
@@ -61,6 +71,21 @@ export const VoteCreate = mutationWithClientMutationId({
     post: {
       type: PostType,
       resolve: async ({ postId }) => await PostModel.findById(postId),
+    },
+    vote: {
+      type: VoteConnection.edgeType,
+      resolve: async ({ voteId }, _, context) => {
+        const vote = await VoteLoader.load(context, voteId);
+
+        if (!vote) {
+          return null;
+        }
+
+        return {
+          cursor: toGlobalId('Vote', vote._id),
+          node: vote,
+        };
+      },
     },
   },
 });
