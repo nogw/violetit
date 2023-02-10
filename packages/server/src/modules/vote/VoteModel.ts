@@ -11,9 +11,7 @@ export interface IVote extends Document {
 }
 
 interface IVoteModel extends Model<IVote> {
-  countVotes: (
-    target: { post: Types.ObjectId } | { comment: Types.ObjectId },
-  ) => Promise<{
+  countVotes: (target: { post: Types.ObjectId } | { comment: Types.ObjectId }) => Promise<{
     up: number;
     down: number;
     total: number;
@@ -49,21 +47,18 @@ const VoteSchema = new mongoose.Schema<IVote>(
   },
 );
 
-VoteSchema.static(
-  'countVotes',
-  async function countVotes(target: { post: Types.ObjectId }) {
-    const up: number = await this.countDocuments({
-      ...target,
-      type: 'UPVOTE',
-    });
+VoteSchema.static('countVotes', async function countVotes(target: { post: Types.ObjectId }) {
+  const up: number = await this.countDocuments({
+    ...target,
+    type: 'UPVOTE',
+  });
 
-    const down: number = await this.countDocuments({
-      ...target,
-      type: 'DOWNVOTE',
-    });
+  const down: number = await this.countDocuments({
+    ...target,
+    type: 'DOWNVOTE',
+  });
 
-    return { up, down, total: up - down };
-  },
-);
+  return { up, down, total: up - down };
+});
 
 export const VoteModel = mongoose.model<IVote, IVoteModel>('Vote', VoteSchema);

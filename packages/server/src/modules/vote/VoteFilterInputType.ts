@@ -1,7 +1,4 @@
-import {
-  FILTER_CONDITION_TYPE,
-  getObjectId,
-} from '@entria/graphql-mongo-helpers';
+import { FILTER_CONDITION_TYPE, getObjectId } from '@entria/graphql-mongo-helpers';
 
 import { GraphQLEnumType, GraphQLID, GraphQLInputObjectType } from 'graphql';
 
