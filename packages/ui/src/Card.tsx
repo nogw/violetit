@@ -7,7 +7,7 @@ type CardProps = React.HTMLAttributes<HTMLDivElement> & {
 export const Card = ({ children, className, ...props }: CardProps) => {
   return (
     <div
-      className={clsx('flex p-2 w-full', 'rounded border border-solid border-gray-300 bg-white', className)}
+      className={clsx('flex p-2 py-3 w-full', 'rounded border border-solid border-gray-300 bg-white', className)}
       {...props}
     >
       {children}

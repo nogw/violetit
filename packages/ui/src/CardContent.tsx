@@ -4,13 +4,9 @@ type CardContentProps = React.HTMLAttributes<HTMLDivElement> & {
   children: React.ReactElement | React.ReactElement[];
 };
 
-export const CardContent = ({
-  children,
-  className,
-  ...props
-}: CardContentProps) => {
+export const CardContent = ({ children, className, ...props }: CardContentProps) => {
   return (
-    <div className={clsx('flex flex-col p-2', className)} {...props}>
+    <div className={clsx('flex flex-col px-2', className)} {...props}>
       {children}
     </div>
   );

@@ -3,10 +3,10 @@ import { Flex, VoteButton } from '@violetit/ui';
 import { graphql, useFragment, useMutation } from 'react-relay';
 import { useState } from 'react';
 
-import { VoteCreate } from './VoteCreateMutation';
+import { VoteCreate } from './mutations/VoteCreateMutation';
 
-import { VoteCreateMutation, VoteType } from './__generated__/VoteCreateMutation.graphql';
-import { VoteButtons_post$key } from './__generated__/VoteButtons_post.graphql';
+import { VoteCreateMutation, VoteType } from './mutations/__generated__/VoteCreateMutation.graphql';
+import { VoteButtons_post$key } from './mutations/__generated__/VoteButtons_post.graphql';
 
 type VoteButtonsProps = {
   post: VoteButtons_post$key;
