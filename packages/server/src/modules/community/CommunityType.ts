@@ -1,16 +1,11 @@
-import {
-  GraphQLObjectType,
-  GraphQLString,
-  GraphQLList,
-  GraphQLID,
-  GraphQLNonNull,
-} from 'graphql';
+import { GraphQLObjectType, GraphQLString, GraphQLList, GraphQLID, GraphQLNonNull, GraphQLBoolean } from 'graphql';
 
 import {
   withFilter,
   connectionArgs,
   connectionDefinitions,
   objectIdResolver,
+  timestampResolver,
 } from '@entria/graphql-mongo-helpers';
 
 import { globalIdField } from 'graphql-relay';
@@ -24,14 +19,12 @@ import { load } from './CommunityLoader';
 import { UserConnection } from '../user/UserType';
 import UserLoader from '../user/UserLoader';
 
-export const CommunityType = new GraphQLObjectType<
-  ICommunityDocument,
-  GraphQLContext
->({
+export const CommunityType = new GraphQLObjectType<ICommunityDocument, GraphQLContext>({
   name: 'Community',
   fields: () => ({
     id: globalIdField('Community'),
     ...objectIdResolver,
+    ...timestampResolver,
     name: {
       type: new GraphQLNonNull(GraphQLString),
       resolve: community => community.name,
@@ -51,10 +44,21 @@ export const CommunityType = new GraphQLObjectType<
       type: new GraphQLNonNull(UserConnection.connectionType),
       args: { ...connectionArgs },
       resolve: async (community, args, context) => {
-        await UserLoader.loadAll(
-          context,
-          withFilter(args, { communities: community._id }),
-        );
+        return await UserLoader.loadAll(context, withFilter(args, { communities: community._id }));
+      },
+    },
+    joined: {
+      type: new GraphQLNonNull(GraphQLBoolean),
+      resolve: async (community, _, context) => {
+        if (!context.user?._id) {
+          return false;
+        }
+
+        const joined = community.members.some(member => {
+          return member.equals(context.user?._id);
+        });
+
+        return joined;
       },
     },
   }),

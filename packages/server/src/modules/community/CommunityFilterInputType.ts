@@ -3,8 +3,8 @@ import { FilterMapping } from '@entria/graphql-mongo-helpers/lib/types';
 
 import { GraphQLInputObjectType, GraphQLList, GraphQLNonNull } from 'graphql';
 
-import { GraphQLArgFilter } from '../../types';
 import { DateOrdering, DateOrderingInputType } from '../../graphql/filters';
+import { GraphQLArgFilter } from '../../types';
 
 export type CommunitiesArgFilters = GraphQLArgFilter<{
   orderBy?: DateOrdering[];
@@ -21,15 +21,15 @@ export const CommunityFiltersInputType: GraphQLInputObjectType = new GraphQLInpu
   name: 'CommunityFilters',
   description: 'Used to filter communities',
   fields: () => ({
-    orderBy: {
-      type: new GraphQLNonNull(new GraphQLList(DateOrderingInputType)),
-      description: 'Order reviews by DateOrderingInputType.',
-    },
     OR: {
       type: new GraphQLList(CommunityFiltersInputType),
     },
     AND: {
       type: new GraphQLList(CommunityFiltersInputType),
+    },
+    orderBy: {
+      type: new GraphQLList(new GraphQLNonNull(DateOrderingInputType)),
+      description: 'Order reviews by DateOrderingInputType.',
     },
   }),
 });
