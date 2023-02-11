@@ -2,21 +2,14 @@ export interface DataLoaders {
   UserLoader: ReturnType<typeof import('../user/UserLoader').getLoader>;
   PostLoader: ReturnType<typeof import('../post/PostLoader').getLoader>;
   VoteLoader: ReturnType<typeof import('../vote/VoteLoader').getLoader>;
-  CommunityLoader: ReturnType<
-    typeof import('../community/CommunityLoader').getLoader
-  >;
+  CommunityLoader: ReturnType<typeof import('../community/CommunityLoader').getLoader>;
 }
 
-type Loaders =
-  | { [Name in keyof DataLoaders]: () => DataLoaders[Name] }
-  | Record<string, () => unknown>;
+type Loaders = { [Name in keyof DataLoaders]: () => DataLoaders[Name] } | Record<string, () => unknown>;
 
 const loaders: Loaders = {};
 
-const registerLoader = <Name extends keyof DataLoaders>(
-  key: Name,
-  getLoader: () => DataLoaders[Name],
-) => {
+const registerLoader = <Name extends keyof DataLoaders>(key: Name, getLoader: () => DataLoaders[Name]) => {
   loaders[key] = getLoader;
 };
 
