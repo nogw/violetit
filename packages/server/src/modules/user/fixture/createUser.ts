@@ -1,16 +1,18 @@
 import { DeepPartial } from '@violetit/types';
 
-import { UserModel, IUser } from '../UserModel';
-
 import { getCounter } from '../../../../test/counters';
 
+import { IUser, UserModel } from '../UserModel';
+
 export const createUser = (args: DeepPartial<IUser> = {}) => {
+  const { username, email, password, ...rest } = args;
+
   const i = getCounter('user');
 
   return new UserModel({
-    name: `user#${i}`,
-    email: `user#${i}@test.com`,
-    password: `password#${i}`,
-    ...args,
+    email: email || `user${i}@violetit.com`,
+    username: username || `user#${i}`,
+    password: password || `password#${i}`,
+    ...rest,
   }).save();
 };
