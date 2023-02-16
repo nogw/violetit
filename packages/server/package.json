@@ -22,11 +22,13 @@
     "koa": "^2.14.1",
     "koa-bodyparser": "^4.3.0",
     "koa-graphql": "^0.12.0",
+    "mongodb-memory-server": "^8.11.4",
     "mongoose": "^6.8.2"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.2",
     "@types/dotenv-safe": "^8.1.2",
+    "@types/jest": "28.1.4",
     "@types/jsonwebtoken": "^9.0.0",
     "@types/koa": "^2.13.5",
     "@types/koa-bodyparser": "^4.3.10",
@@ -34,8 +36,11 @@
     "@types/koa__cors": "^3.3.0",
     "@types/koa__router": "^12.0.0",
     "@types/mongoose": "^5.11.97",
+    "babel-jest": "28.1.2",
     "dotenv-safe": "^8.2.0",
-    "mongodb-memory-server": "^8.11.0",
+    "jest": "28.1.2",
+    "jest-environment-node": "28.1.2",
+    "ts-jest": "28.0.5",
     "ts-node-dev": "^2.0.0"
   }
 }
