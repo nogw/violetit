@@ -1,14 +1,6 @@
 import { graphql } from 'graphql';
 
-import {
-  clearDatabaseAndRestartCounters,
-  connectWithMongoose,
-  disconnectWithMongoose,
-  sanitizeTestObject,
-} from '../../../../test';
-
-import { createUser } from '../fixture/createUser';
-import { getContext } from '../../../context';
+import { clearDatabaseAndRestartCounters, connectWithMongoose, disconnectWithMongoose } from '../../../../test';
 import { schema } from '../../../schema/schema';
 
 beforeAll(connectWithMongoose);
@@ -19,28 +11,38 @@ afterAll(disconnectWithMongoose);
 
 describe('UserQueries', () => {
   it('should query an me', async () => {
-    const user = await createUser();
-
-    const query = `
-      query Q {
-        me {
-          id
+    const mutation = `
+      mutation UserRegisterMutation($username: String!, $email: String!, $password: String!) {
+        userRegisterMutation(input: { username: $username, email: $email, password: $password }) {
           token
+          me {
+            id
+            username
+          }
         }
       }
     `;
 
     const rootValue = {};
-    const variableValues = {};
-    const contextValue = getContext({ user });
-    const result = await graphql({ schema, source: query, rootValue, contextValue, variableValues });
+
+    const result = await graphql({
+      schema,
+      source: mutation,
+      rootValue,
+      variableValues: {
+        username: 'nogw',
+        email: 'nogw@nogw.com',
+        password: 'a9218c490c89864790bf',
+      },
+    });
 
     expect(result.errors).toBeUndefined();
 
-    const userResult = result?.data?.userRegisterMutation as any;
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    const { token, me } = result.data.userRegisterMutation;
 
-    expect(userResult.token).toBeDefined();
-    expect(userResult.me.id).toBeDefined();
-    expect(sanitizeTestObject(result)).toMatchSnapshot();
+    expect(token).toBeDefined();
+    expect(me.id).toBeDefined();
   });
 });

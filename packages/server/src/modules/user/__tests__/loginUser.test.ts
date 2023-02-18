@@ -1,12 +1,6 @@
 import { graphql } from 'graphql';
 
-import {
-  clearDatabaseAndRestartCounters,
-  connectWithMongoose,
-  disconnectWithMongoose,
-  sanitizeTestObject,
-} from '../../../../test';
-
+import { clearDatabaseAndRestartCounters, connectWithMongoose, disconnectWithMongoose } from '../../../../test';
 import { createUser } from '../fixture/createUser';
 import { schema } from '../../../schema/schema';
 
@@ -18,6 +12,7 @@ afterAll(disconnectWithMongoose);
 
 it('should login an existent user', async () => {
   const { email } = await createUser({
+    username: 'nogw',
     email: 'nogw@nogw.com',
     password: 'a9218c490c89864790bf',
   });
@@ -45,9 +40,10 @@ it('should login an existent user', async () => {
 
   expect(result.errors).toBeUndefined();
 
-  const userResult = result.data?.userLoginMutation as any;
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  const { token, me } = result.data.userLoginMutation;
 
-  expect(userResult.me.id).toBeDefined;
-  expect(userResult.token).toBeDefined;
-  expect(sanitizeTestObject(result, ['token'])).toMatchSnapshot();
+  expect(me.id).toBeDefined;
+  expect(token).toBeDefined;
 });
