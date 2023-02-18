@@ -14,7 +14,7 @@ export const communityCreate = mutationWithClientMutationId({
     title: { type: new GraphQLNonNull(GraphQLString) },
   },
   mutateAndGetPayload: async ({ name, ...rest }, context: GraphQLContext) => {
-    if (!context.user) {
+    if (!context?.user) {
       throw new Error('You are not logged in!');
     }
 
