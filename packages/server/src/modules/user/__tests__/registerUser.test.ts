@@ -1,6 +1,12 @@
 import { graphql } from 'graphql';
 
-import { clearDatabaseAndRestartCounters, connectWithMongoose, disconnectWithMongoose } from '../../../../test';
+import {
+  clearDatabaseAndRestartCounters,
+  connectWithMongoose,
+  disconnectWithMongoose,
+  sanitizeTestObject,
+} from '../../../../test';
+
 import { createUser } from '../fixture/createUser';
 import { getContext } from '../../../context';
 import { schema } from '../../../schema/schema';
@@ -19,17 +25,22 @@ describe('UserQueries', () => {
       query Q {
         me {
           id
-          name
-          email
+          token
         }
       }
     `;
 
     const rootValue = {};
     const variableValues = {};
-    const contextValue = await getContext({ user });
+    const contextValue = getContext({ user });
     const result = await graphql({ schema, source: query, rootValue, contextValue, variableValues });
 
     expect(result.errors).toBeUndefined();
+
+    const userResult = result?.data?.userRegisterMutation as any;
+
+    expect(userResult.token).toBeDefined();
+    expect(userResult.me.id).toBeDefined();
+    expect(sanitizeTestObject(result)).toMatchSnapshot();
   });
 });

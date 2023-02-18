@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should login an existent user 1`] = `
+Object {
+  "data": Object {
+    "userLoginMutation": Object {
+      "me": Object {
+        "id": "VXNlcjo2M2YwOTlhODJjZTU3NjBhYzU5ZTlhNGU=",
+      },
+      "token": "FROZEN-TOKEN",
+    },
+  },
+}
+`;
