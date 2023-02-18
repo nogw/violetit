@@ -1,7 +1,7 @@
 import { graphql } from 'graphql';
 
 import { clearDatabaseAndRestartCounters, connectWithMongoose, disconnectWithMongoose } from '../../../../test';
-import { createUser } from '../../user/fixture/createUser';
+import { createUser } from '../../user/fixtures/createUser';
 import { schema } from '../../../schema/schema';
 import { getContext } from '../../../context';
 import { fromGlobalId } from 'graphql-relay';
@@ -60,6 +60,8 @@ describe('CommunityCreateMutation', () => {
     expect(communityEdge.node.title).toBe(variableValues.title);
     expect(communityEdge.node.members.edges).toHaveLength(1);
 
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     const membersId = communityEdge.node.members.edges.map(edge => fromGlobalId(edge.node.id).id);
 
     expect(membersId).toContain(user._id.toString());

@@ -14,7 +14,7 @@ export const communityExit = mutationWithClientMutationId({
     communityId: { type: new GraphQLNonNull(GraphQLString) },
   },
   mutateAndGetPayload: async ({ communityId }, context: GraphQLContext) => {
-    if (!context.user) {
+    if (!context?.user) {
       throw new Error('You are not logged in!');
     }
 
@@ -26,12 +26,9 @@ export const communityExit = mutationWithClientMutationId({
 
     const foundMemberIdInCommunity = foundCommunity.members.some(community => community.equals(context.user?._id));
 
-    // const foundCommunityIdInUser = context.user.communities.some(community => community.equals(foundCommunity._id));
+    const foundCommunityIdInUser = context.user.communities.some(community => community.equals(foundCommunity._id));
 
-    if (
-      !foundMemberIdInCommunity
-      // || !foundCommunityIdInUser
-    ) {
+    if (!foundMemberIdInCommunity || foundCommunityIdInUser) {
       throw new Error('You are not a member of this foundCommunity');
     }
 
@@ -51,8 +48,7 @@ export const communityExit = mutationWithClientMutationId({
     ]);
 
     return {
-      userId: context.user._id,
-      communityId: foundCommunity._id,
+      id: foundCommunity._id,
     };
   },
   outputFields: () => ({

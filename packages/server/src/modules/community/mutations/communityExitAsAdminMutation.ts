@@ -14,7 +14,7 @@ export const communityExitAsAdmin = mutationWithClientMutationId({
     communityId: { type: new GraphQLNonNull(GraphQLString) },
   },
   mutateAndGetPayload: async ({ communityId }, context: GraphQLContext) => {
-    if (!context.user) {
+    if (!context?.user) {
       throw new Error('You are not logged in!');
     }
 
@@ -24,12 +24,12 @@ export const communityExitAsAdmin = mutationWithClientMutationId({
       throw new Error("This community doesn't exist");
     }
 
-    const foundMemberIdInCommunity = foundCommunity.members.includes(context.user._id);
+    const foundMemberIdInCommunity = foundCommunity.members.some(community => community.equals(context.user?._id));
 
-    const foundCommunityIdInUser = context.user.communities.includes(foundCommunity._id);
+    const foundCommunityIdInUser = context.user.communities.some(community => community.equals(foundCommunity._id));
 
-    if (foundMemberIdInCommunity || foundCommunityIdInUser) {
-      throw new Error('You are not a member of this foundCommunity');
+    if (!foundMemberIdInCommunity || foundCommunityIdInUser) {
+      throw new Error('You are not a member of this community');
     }
 
     if (foundCommunity.mods.length > 0) {
@@ -49,8 +49,7 @@ export const communityExitAsAdmin = mutationWithClientMutationId({
     });
 
     return {
-      userId: context.user._id,
-      communityId: foundCommunity._id,
+      id: foundCommunity._id,
     };
   },
   outputFields: () => ({

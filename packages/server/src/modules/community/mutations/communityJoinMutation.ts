@@ -1,5 +1,5 @@
 import { mutationWithClientMutationId, toGlobalId } from 'graphql-relay';
-import { GraphQLNonNull, GraphQLID } from 'graphql';
+import { GraphQLNonNull, GraphQLString } from 'graphql';
 import { getObjectId } from '@entria/graphql-mongo-helpers';
 
 import { GraphQLContext } from '../../../graphql/types';
@@ -11,10 +11,10 @@ import CommunityLoader from '../CommunityLoader';
 export const communityJoin = mutationWithClientMutationId({
   name: 'CommunityJoin',
   inputFields: {
-    communityId: { type: new GraphQLNonNull(GraphQLID) },
+    communityId: { type: new GraphQLNonNull(GraphQLString) },
   },
   mutateAndGetPayload: async ({ communityId }, context: GraphQLContext) => {
-    if (!context.user) {
+    if (!context?.user) {
       throw new Error('You are not logged in!');
     }
 
@@ -26,18 +26,9 @@ export const communityJoin = mutationWithClientMutationId({
 
     const foundMemberIdInCommunity = foundCommunity.members.some(community => community.equals(context.user?._id));
 
-    // const foundCommunityIdInUser = context.user.communities.some(community => community.equals(foundCommunity._id));
+    const foundCommunityIdInUser = context.user.communities.some(community => community.equals(foundCommunity._id));
 
-    if (
-      foundMemberIdInCommunity
-      // || foundCommunityIdInUser
-    ) {
-      // // eslint-disable-next-line
-      // console.log(foundCommunity._id);
-      // // eslint-disable-next-line
-      // console.log(context.user._id);
-      // // eslint-disable-next-line
-      // console.log(context.user.communities);
+    if (foundMemberIdInCommunity || foundCommunityIdInUser) {
       throw new Error('You are already a member of this foundCommunity');
     }
 
@@ -51,8 +42,7 @@ export const communityJoin = mutationWithClientMutationId({
     ]);
 
     return {
-      userId: context.user._id,
-      communityId: foundCommunity._id,
+      id: foundCommunity._id,
     };
   },
   outputFields: () => ({
