@@ -1,10 +1,6 @@
 import { GraphQLObjectType, GraphQLString, GraphQLNonNull } from 'graphql';
 
-import {
-  connectionDefinitions,
-  connectionArgs,
-  withFilter,
-} from '@entria/graphql-mongo-helpers';
+import { connectionDefinitions, connectionArgs, withFilter } from '@entria/graphql-mongo-helpers';
 
 import { globalIdField } from 'graphql-relay';
 
@@ -33,10 +29,7 @@ export const UserType = new GraphQLObjectType<IUserDocument, GraphQLContext>({
       type: new GraphQLNonNull(CommunityConnection.connectionType),
       args: { ...connectionArgs },
       resolve: async (user, args, context) => {
-        return CommunityLoader.loadAll(
-          context,
-          withFilter(args, { members: user._id }),
-        );
+        return CommunityLoader.loadAll(context, withFilter(args, { members: user._id }));
       },
     },
   }),
