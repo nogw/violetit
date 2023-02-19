@@ -1,7 +1,7 @@
 import { graphql } from 'graphql';
 
 import { clearDatabaseAndRestartCounters, connectWithMongoose, disconnectWithMongoose } from '../../../../test';
-import { createUser } from '../fixture/createUser';
+import { createUser } from '../fixtures/createUser';
 import { schema } from '../../../schema/schema';
 
 beforeAll(connectWithMongoose);
@@ -10,7 +10,7 @@ beforeEach(clearDatabaseAndRestartCounters);
 
 afterAll(disconnectWithMongoose);
 
-describe('UserQueries', () => {
+describe('UserRegisterMutation', () => {
   it('should registrate an user', async () => {
     const mutation = `
       mutation UserRegisterMutation($input: UserRegisterInput!) {
@@ -79,9 +79,7 @@ describe('UserQueries', () => {
 
     expect(result.data?.userRegisterMutation).toBeNull();
     expect(result.errors).toBeDefined();
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    expect(result.errors[0].message).toBe('This email is already used');
+    expect(result.errors && result.errors[0].message).toBe('This email is already used');
   });
 
   it('should not registrate user if username belongs to another user', async () => {
@@ -114,8 +112,6 @@ describe('UserQueries', () => {
 
     expect(result.data?.userRegisterMutation).toBeNull();
     expect(result.errors).toBeDefined();
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    expect(result.errors[0].message).toBe('This username is already used');
+    expect(result.errors && result.errors[0].message).toBe('This username is already used');
   });
 });
