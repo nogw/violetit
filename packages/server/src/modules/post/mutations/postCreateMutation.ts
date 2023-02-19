@@ -1,4 +1,4 @@
-import { GraphQLID, GraphQLNonNull, GraphQLString } from 'graphql';
+import { GraphQLNonNull, GraphQLString } from 'graphql';
 import { mutationWithClientMutationId, toGlobalId } from 'graphql-relay';
 
 import { GraphQLContext } from '../../../graphql/types';
@@ -14,17 +14,17 @@ export const postCreateMutation = mutationWithClientMutationId({
   inputFields: {
     title: { type: new GraphQLNonNull(GraphQLString) },
     content: { type: new GraphQLNonNull(GraphQLString) },
-    community: { type: new GraphQLNonNull(GraphQLID) },
+    community: { type: new GraphQLNonNull(GraphQLString) },
   },
   mutateAndGetPayload: async ({ title, community, ...rest }, context: GraphQLContext) => {
-    if (!context.user) {
+    if (!context?.user) {
       throw new Error('You are not logged in!');
     }
 
     const communityFound = await CommunityModel.findById(getObjectId(community));
 
     if (!communityFound) {
-      throw new Error('Community not found');
+      throw new Error('Community not found!');
     }
 
     const post = await new PostModel({
