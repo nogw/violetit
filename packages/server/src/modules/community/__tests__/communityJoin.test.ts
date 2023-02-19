@@ -1,7 +1,7 @@
 import { graphql } from 'graphql';
 
 import { clearDatabaseAndRestartCounters, connectWithMongoose, disconnectWithMongoose } from '../../../../test';
-import { createCommunity } from '../fixtures/createCommunity';
+import { createCommunityWithAdmin } from '../fixtures/createCommunityWithAdmin';
 import { createUser } from '../../user/fixtures/createUser';
 import { schema } from '../../../schema/schema';
 import { getContext } from '../../../context';
@@ -15,7 +15,7 @@ afterAll(disconnectWithMongoose);
 
 describe('CommunityJoinMutation', () => {
   it('should create a new community', async () => {
-    const community = (await createCommunity({ name: 'NogwCommunity' })).community;
+    const community = (await createCommunityWithAdmin({ name: 'NogwCommunity' })).community;
     const user = await createUser();
 
     const mutation = `

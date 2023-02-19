@@ -54,11 +54,7 @@ export const CommunityType = new GraphQLObjectType<ICommunityDocument, GraphQLCo
           return false;
         }
 
-        const joined = community.members.some(member => {
-          return member.equals(context.user?._id);
-        });
-
-        return joined;
+        return community.members.includes(context.user?._id);
       },
     },
   }),

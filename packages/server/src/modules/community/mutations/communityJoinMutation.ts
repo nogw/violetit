@@ -24,9 +24,9 @@ export const communityJoin = mutationWithClientMutationId({
       throw new Error("This community doesn't exist");
     }
 
-    const foundMemberIdInCommunity = foundCommunity.members.some(community => community.equals(context.user?._id));
+    const foundMemberIdInCommunity = foundCommunity.members.includes(context.user?._id);
 
-    const foundCommunityIdInUser = context.user.communities.some(community => community.equals(foundCommunity._id));
+    const foundCommunityIdInUser = context.user.communities.includes(foundCommunity._id);
 
     if (foundMemberIdInCommunity || foundCommunityIdInUser) {
       throw new Error('You are already a member of this foundCommunity');

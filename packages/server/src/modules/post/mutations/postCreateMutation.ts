@@ -9,7 +9,7 @@ import { PostModel } from '../PostModel';
 import PostLoader from '../PostLoader';
 import { getObjectId } from '@entria/graphql-mongo-helpers';
 
-export const postCreateMutation = mutationWithClientMutationId({
+export const postCreate = mutationWithClientMutationId({
   name: 'PostCreate',
   inputFields: {
     title: { type: new GraphQLNonNull(GraphQLString) },
@@ -42,9 +42,8 @@ export const postCreateMutation = mutationWithClientMutationId({
     postEdge: {
       type: PostConnection.edgeType,
       resolve: async ({ id }, _, context) => {
-        // temp-anno: load new edge from loader
         const post = await PostLoader.load(context, id);
-        // temp-anno: returns null if no node was loaded
+
         if (!post) {
           return null;
         }

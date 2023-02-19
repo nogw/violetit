@@ -4,7 +4,7 @@ import { clearDatabaseAndRestartCounters, connectWithMongoose, disconnectWithMon
 import { getContext } from '../../../context';
 import { schema } from '../../../schema/schema';
 
-import { createCommunity } from '../../community/fixtures/createCommunity';
+import { createCommunityWithAdmin } from '../../community/fixtures/createCommunityWithAdmin';
 
 beforeAll(connectWithMongoose);
 
@@ -14,11 +14,11 @@ afterAll(disconnectWithMongoose);
 
 describe('postCreateMutation', () => {
   it('should create a post', async () => {
-    const { user, community } = await createCommunity();
+    const { user, community } = await createCommunityWithAdmin();
 
     const mutation = `
       mutation PostCreateMutation($title: String!, $content: String!, $community: String!) {
-        postCreateMutation(input: { title: $title, content: $content, community: $community }) {
+        postCreate(input: { title: $title, content: $content, community: $community }) {
           postEdge {
             node {
               id
@@ -50,7 +50,7 @@ describe('postCreateMutation', () => {
 
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    const { postEdge } = result.data.postCreateMutation;
+    const { postEdge } = result.data.postCreate;
 
     expect(postEdge.node.id).toBeDefined();
     expect(postEdge.node.title).toBe(variableValues.title);
@@ -59,11 +59,11 @@ describe('postCreateMutation', () => {
   });
 
   it("should not create a post if doesn't have authorization header", async () => {
-    const community = (await createCommunity()).community;
+    const community = (await createCommunityWithAdmin()).community;
 
     const mutation = `
       mutation PostCreateMutation($title: String!, $content: String!, $community: String!) {
-        postCreateMutation(input: { title: $title, content: $content, community: $community }) {
+        postCreate(input: { title: $title, content: $content, community: $community }) {
           postEdge {
             node {
               id
@@ -85,17 +85,17 @@ describe('postCreateMutation', () => {
       variableValues,
     });
 
-    expect(result.data?.postCreateMutation).toBeNull();
+    expect(result.data?.postCreate).toBeNull();
     expect(result.errors).toBeDefined();
     expect(result.errors && result.errors[0].message).toBe('You are not logged in!');
   });
 
   it('should not create a post if the community does not exists', async () => {
-    const user = (await createCommunity()).user;
+    const user = (await createCommunityWithAdmin()).user;
 
     const mutation = `
       mutation PostCreateMutation($title: String!, $content: String!, $community: String!) {
-        postCreateMutation(input: { title: $title, content: $content, community: $community }) {
+        postCreate(input: { title: $title, content: $content, community: $community }) {
           postEdge {
             node {
               id
@@ -118,7 +118,7 @@ describe('postCreateMutation', () => {
       variableValues,
     });
 
-    expect(result.data?.postCreateMutation).toBeNull();
+    expect(result.data?.postCreate).toBeNull();
     expect(result.errors).toBeDefined();
     expect(result.errors && result.errors[0].message).toBe('Community not found!');
   });

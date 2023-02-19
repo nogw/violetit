@@ -11,7 +11,7 @@ import { VoteConnection } from '../VoteType';
 import { VoteModel } from '../VoteModel';
 import VoteLoader from '../VoteLoader';
 
-export const VoteCreate = mutationWithClientMutationId({
+export const voteCreate = mutationWithClientMutationId({
   name: 'VoteCreate',
   inputFields: {
     postId: { type: new GraphQLNonNull(GraphQLString) },

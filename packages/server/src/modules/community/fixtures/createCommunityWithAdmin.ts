@@ -1,16 +1,18 @@
 import { DeepPartial } from '@violetit/types';
 
 import { getCounter } from '../../../../test';
-import { createUser } from '../../user/fixtures/createUser';
+import { upsertModel } from '../../../../test/upsertModels';
 
 import { ICommunity, CommunityModel } from '../CommunityModel';
+import { IUserDocument, UserModel } from '../../user/UserModel';
+import { createUser } from '../../user/fixtures/createUser';
 
-export const createCommunity = async (args: DeepPartial<ICommunity> = {}) => {
+export const createCommunityWithAdmin = async (args: DeepPartial<ICommunity> = {}) => {
   const { name, ...rest } = args;
 
   const i = getCounter('community');
 
-  const user = await createUser();
+  const user = await upsertModel<IUserDocument, typeof createUser>(UserModel, createUser);
 
   const community = await new CommunityModel({
     name: name || `community_name#${i}`,

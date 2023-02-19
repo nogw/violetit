@@ -6,7 +6,7 @@ import { UserType } from '../UserType';
 
 import { generateJwtToken } from '../../../auth';
 
-export const userLoginMutation = mutationWithClientMutationId({
+export const userLogin = mutationWithClientMutationId({
   name: 'UserLogin',
   inputFields: {
     email: { type: new GraphQLNonNull(GraphQLString) },

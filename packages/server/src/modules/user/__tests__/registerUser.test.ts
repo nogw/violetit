@@ -14,7 +14,7 @@ describe('UserRegisterMutation', () => {
   it('should registrate an user', async () => {
     const mutation = `
       mutation UserRegisterMutation($input: UserRegisterInput!) {
-        userRegisterMutation(input: $input) {
+        userRegister(input: $input) {
           token
           me {
             id
@@ -43,7 +43,7 @@ describe('UserRegisterMutation', () => {
 
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    const { token, me } = result.data.userRegisterMutation;
+    const { token, me } = result.data.userRegister;
 
     expect(token).toBeDefined();
     expect(me.id).toBeDefined();
@@ -56,7 +56,7 @@ describe('UserRegisterMutation', () => {
 
     const mutation = `
       mutation UserRegisterMutation($input: UserRegisterInput!) {
-        userRegisterMutation(input: $input) {
+        userRegister(input: $input) {
             token
           }
         }
@@ -77,7 +77,7 @@ describe('UserRegisterMutation', () => {
       },
     });
 
-    expect(result.data?.userRegisterMutation).toBeNull();
+    expect(result.data?.userRegister).toBeNull();
     expect(result.errors).toBeDefined();
     expect(result.errors && result.errors[0].message).toBe('This email is already used');
   });
@@ -89,7 +89,7 @@ describe('UserRegisterMutation', () => {
 
     const mutation = `
         mutation UserRegisterMutation($input: UserRegisterInput!) {
-          userRegisterMutation(input: $input) {
+          userRegister(input: $input) {
             token
           }
         }
@@ -110,7 +110,7 @@ describe('UserRegisterMutation', () => {
       },
     });
 
-    expect(result.data?.userRegisterMutation).toBeNull();
+    expect(result.data?.userRegister).toBeNull();
     expect(result.errors).toBeDefined();
     expect(result.errors && result.errors[0].message).toBe('This username is already used');
   });

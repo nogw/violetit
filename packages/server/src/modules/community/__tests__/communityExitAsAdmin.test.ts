@@ -1,7 +1,7 @@
 import { graphql } from 'graphql';
 
 import { clearDatabaseAndRestartCounters, connectWithMongoose, disconnectWithMongoose } from '../../../../test';
-import { createCommunity } from '../fixtures/createCommunity';
+import { createCommunityWithAdmin } from '../fixtures/createCommunityWithAdmin';
 import { schema } from '../../../schema/schema';
 import { getContext } from '../../../context';
 
@@ -13,7 +13,7 @@ afterAll(disconnectWithMongoose);
 
 describe('CommunityExitAsAdminMutation', () => {
   it('should exit a community as admin', async () => {
-    const { user, community } = await createCommunity({ name: 'NogwCommunity' });
+    const { user, community } = await createCommunityWithAdmin({ name: 'NogwCommunity' });
 
     const mutation = `
       mutation CommunityExitAsAdmin($communityId: String!) {
@@ -54,7 +54,7 @@ describe('CommunityExitAsAdminMutation', () => {
   });
 
   it('should not exit if user is community admin', async () => {
-    const { user, community } = await createCommunity({ name: 'NogwCommunity' });
+    const { user, community } = await createCommunityWithAdmin({ name: 'NogwCommunity' });
 
     const mutation = `
       mutation CommunityExitMutation($communityId: String!) {

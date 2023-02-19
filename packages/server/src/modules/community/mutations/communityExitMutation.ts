@@ -24,9 +24,9 @@ export const communityExit = mutationWithClientMutationId({
       throw new Error("This community doesn't exist");
     }
 
-    const foundMemberIdInCommunity = foundCommunity.members.some(community => community.equals(context.user?._id));
+    const foundMemberIdInCommunity = foundCommunity.members.includes(context.user?._id);
 
-    const foundCommunityIdInUser = context.user.communities.some(community => community.equals(foundCommunity._id));
+    const foundCommunityIdInUser = context.user.communities.includes(foundCommunity._id);
 
     if (!foundMemberIdInCommunity || foundCommunityIdInUser) {
       throw new Error('You are not a member of this foundCommunity');
@@ -36,7 +36,7 @@ export const communityExit = mutationWithClientMutationId({
       throw new Error('You are the community admin, use communityExitAsAdmin to exit');
     }
 
-    const foundMemberIdInCommunityMods = foundCommunity.mods.some(community => community.equals(context.user?._id));
+    const foundMemberIdInCommunityMods = foundCommunity.mods.includes(context.user?._id);
 
     if (foundMemberIdInCommunityMods) {
       await foundCommunity.updateOne({ $pull: { mods: context.user._id } });

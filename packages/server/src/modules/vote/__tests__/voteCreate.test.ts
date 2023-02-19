@@ -19,7 +19,7 @@ describe('VoteCreateMutation', () => {
 
     const mutation = `
       mutation VoteCreateMutation($postId: String!, $type: VoteType!) {
-        VoteCreate(input: { postId: $postId, type: $type }) {
+        voteCreate(input: { postId: $postId, type: $type }) {
           post {
             id
             votesCount
@@ -49,7 +49,7 @@ describe('VoteCreateMutation', () => {
 
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    const { post: postLiked, vote } = result.data.VoteCreate;
+    const { post: postLiked, vote } = result.data.voteCreate;
 
     expect(vote.node.type).toBe('UPVOTE');
     expect(postLiked.votesCount).toBe(1);
@@ -60,7 +60,7 @@ describe('VoteCreateMutation', () => {
 
     const mutation = `
       mutation VoteCreateMutation($postId: String!, $type: VoteType!) {
-        VoteCreate(input: { postId: $postId, type: $type }) {
+        voteCreate(input: { postId: $postId, type: $type }) {
           post {
             id
           }
@@ -79,7 +79,7 @@ describe('VoteCreateMutation', () => {
       variableValues,
     });
 
-    expect(result.data?.VoteCreate).toBeNull();
+    expect(result.data?.voteCreate).toBeNull();
     expect(result.errors).toBeDefined();
     expect(result.errors && result.errors[0].message).toBe('You are not logged in!');
   });

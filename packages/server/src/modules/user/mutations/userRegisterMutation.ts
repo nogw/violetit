@@ -7,7 +7,7 @@ import { UserType } from '../UserType';
 import { generateJwtToken } from '../../../auth';
 import { findUserByEmail, findUserByUsername } from '../UserService';
 
-export const userRegisterMutation = mutationWithClientMutationId({
+export const userRegister = mutationWithClientMutationId({
   name: 'UserRegister',
   inputFields: {
     username: { type: new GraphQLNonNull(GraphQLString) },

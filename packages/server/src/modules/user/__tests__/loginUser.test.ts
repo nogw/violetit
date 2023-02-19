@@ -20,7 +20,7 @@ describe('UserLoginMutation', () => {
 
     const mutation = `
       mutation UserLoginMutation($email: String!, $password: String!) {
-        userLoginMutation(input: { email: $email, password: $password }) {
+        userLogin(input: { email: $email, password: $password }) {
           token
           me {
             id
@@ -43,7 +43,7 @@ describe('UserLoginMutation', () => {
 
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    const { token, me } = result.data.userLoginMutation;
+    const { token, me } = result.data.userLogin;
 
     expect(me.id).toBeDefined;
     expect(token).toBeDefined;
@@ -54,7 +54,7 @@ describe('UserLoginMutation', () => {
 
     const mutation = `
       mutation UserLoginMutation($email: String!, $password: String!) {
-        userLoginMutation(input: { email: $email, password: $password }) {
+        userLogin(input: { email: $email, password: $password }) {
           token
           me {
             id
@@ -73,7 +73,7 @@ describe('UserLoginMutation', () => {
       },
     });
 
-    expect(result.data?.userLoginMutation).toBeNull();
+    expect(result.data?.userLogin).toBeNull();
     expect(result.errors).toBeDefined();
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
@@ -87,7 +87,7 @@ describe('UserLoginMutation', () => {
 
     const mutation = `
       mutation UserLoginMutation($email: String!, $password: String!) {
-        userLoginMutation(input: { email: $email, password: $password }) {
+        userLogin(input: { email: $email, password: $password }) {
           token
           me {
             id
@@ -106,7 +106,7 @@ describe('UserLoginMutation', () => {
       },
     });
 
-    expect(result.data?.userLoginMutation).toBeNull();
+    expect(result.data?.userLogin).toBeNull();
     expect(result.errors).toBeDefined();
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore

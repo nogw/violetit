@@ -1,7 +1,7 @@
 import { graphql } from 'graphql';
 
 import { clearDatabaseAndRestartCounters, connectWithMongoose, disconnectWithMongoose } from '../../../../test';
-import { createCommunity } from '../fixtures/createCommunity';
+import { createCommunityWithAdmin } from '../fixtures/createCommunityWithAdmin';
 import { addUserToCommunity } from '../fixtures/addUserToCommunity';
 import { createUser } from '../../user/fixtures/createUser';
 import { schema } from '../../../schema/schema';
@@ -16,7 +16,7 @@ afterAll(disconnectWithMongoose);
 
 describe('CommunityExitMutation', () => {
   it('should exit a community', async () => {
-    const community = (await createCommunity({ name: 'NogwCommunity' })).community;
+    const community = (await createCommunityWithAdmin({ name: 'NogwCommunity' })).community;
     const user = await createUser();
 
     await addUserToCommunity(user, community);
