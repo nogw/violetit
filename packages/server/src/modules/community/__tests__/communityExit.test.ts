@@ -2,7 +2,7 @@ import { graphql } from 'graphql';
 
 import { clearDatabaseAndRestartCounters, connectWithMongoose, disconnectWithMongoose } from '../../../../test';
 import { createCommunity } from '../fixtures/createCommunity';
-import { addUserToCommunity } from '../fixture/addUserToCommunity';
+import { addUserToCommunity } from '../fixtures/addUserToCommunity';
 import { createUser } from '../../user/fixtures/createUser';
 import { schema } from '../../../schema/schema';
 import { getContext } from '../../../context';
