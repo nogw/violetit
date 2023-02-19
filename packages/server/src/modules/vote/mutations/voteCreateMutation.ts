@@ -1,4 +1,4 @@
-import { GraphQLEnumType, GraphQLID, GraphQLNonNull } from 'graphql';
+import { GraphQLEnumType, GraphQLString, GraphQLNonNull } from 'graphql';
 import { mutationWithClientMutationId, toGlobalId } from 'graphql-relay';
 import { getObjectId } from '@entria/graphql-mongo-helpers';
 
@@ -14,7 +14,7 @@ import VoteLoader from '../VoteLoader';
 export const VoteCreate = mutationWithClientMutationId({
   name: 'VoteCreate',
   inputFields: {
-    postId: { type: new GraphQLNonNull(GraphQLID) },
+    postId: { type: new GraphQLNonNull(GraphQLString) },
     type: {
       type: new GraphQLEnumType({
         name: 'VoteType',
@@ -26,7 +26,7 @@ export const VoteCreate = mutationWithClientMutationId({
     },
   },
   mutateAndGetPayload: async ({ postId, type }, context: GraphQLContext) => {
-    if (!context.user) {
+    if (!context?.user) {
       throw new Error('You are not logged in!');
     }
 
