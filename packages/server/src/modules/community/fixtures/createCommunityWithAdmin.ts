@@ -1,7 +1,7 @@
 import { DeepPartial } from '@violetit/types';
 
 import { getCounter } from '../../../../test';
-import { upsertModel } from '../../../../test/upsertModels';
+import { upsertModel } from '../../../../test/upsertModel';
 
 import { ICommunity, CommunityModel } from '../CommunityModel';
 import { IUserDocument, UserModel } from '../../user/UserModel';

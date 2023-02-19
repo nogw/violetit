@@ -18,5 +18,7 @@ const mongooseOptions: ConnectOptions = {
 
 export const connectWithMongoose = async (): Promise<typeof mongoose> => {
   jest.setTimeout(20000);
+  mongoose.set('strictQuery', true);
+
   return mongoose.connect(global.__MONGO_URI__, mongooseOptions);
 };

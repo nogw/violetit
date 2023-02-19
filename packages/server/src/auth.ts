@@ -5,9 +5,7 @@ import { Maybe } from '@violetit/types';
 import { UserModel, IUserDocument } from './modules/user/UserModel';
 import { config } from './config';
 
-export const getUser = async (
-  token: Maybe<string>,
-): Promise<Maybe<IUserDocument>> => {
+export const getUser = async (token: Maybe<string>): Promise<Maybe<IUserDocument>> => {
   if (!token) return null;
 
   const subToken = token.substring(4);
