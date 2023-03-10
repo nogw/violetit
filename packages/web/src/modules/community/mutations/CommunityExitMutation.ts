@@ -5,7 +5,7 @@ export const CommunityExit = graphql`
     communityExit(input: $input) {
       communityEdge {
         node {
-          id @deleteRecord
+          id
         }
       }
     }

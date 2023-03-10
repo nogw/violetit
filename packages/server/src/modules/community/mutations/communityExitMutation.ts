@@ -28,7 +28,7 @@ export const communityExit = mutationWithClientMutationId({
 
     const foundCommunityIdInUser = context.user.communities.includes(foundCommunity._id);
 
-    if (!foundMemberIdInCommunity || foundCommunityIdInUser) {
+    if (!foundMemberIdInCommunity || !foundCommunityIdInUser) {
       throw new Error('You are not a member of this foundCommunity');
     }
 

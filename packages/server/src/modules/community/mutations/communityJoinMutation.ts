@@ -29,7 +29,7 @@ export const communityJoin = mutationWithClientMutationId({
     const foundCommunityIdInUser = context.user.communities.includes(foundCommunity._id);
 
     if (foundMemberIdInCommunity || foundCommunityIdInUser) {
-      throw new Error('You are already a member of this foundCommunity');
+      throw new Error('You are already a member of this community');
     }
 
     await Promise.all([
