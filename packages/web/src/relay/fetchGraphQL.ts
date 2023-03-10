@@ -1,21 +1,25 @@
-import { Variables } from 'relay-runtime';
+import { RequestParameters, Variables } from 'relay-runtime';
 
-import { config } from '@/config';
+import * as config from '@/config';
+import storage from '@/utils/storage';
 
-export const fetchGraphQL = async (query: string, variables: Variables) => {
-  const response = await fetch(config.VITE_GRAPHQL_URL as string, {
+export const fetchGraphQL = async (params: RequestParameters, variables: Variables) => {
+  const token = storage.getAuthToken();
+
+  const response = await fetch(config.GRAPHQL_URL, {
     method: 'POST',
     headers: {
       'Access-Control-Allow-Origin': '*',
       'Content-Type': 'application/json',
+      Authorization: token || '',
     },
     body: JSON.stringify({
-      query,
+      query: params.text,
       variables,
     }),
   });
 
-  const data = await response.json();
+  const json = await response.json();
 
-  return data;
+  return json;
 };
