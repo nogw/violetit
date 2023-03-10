@@ -1,12 +1,12 @@
 export { Box } from './Box';
 export { Flex } from './Flex';
-export { Input } from './Input';
-export { Button } from './Button';
 export { TextArea } from './TextArea';
 export { ErrorText } from './ErrorText';
+export { Input } from './Input';
 export { SelectInput } from './SelectInput';
-
+export { Button } from './Button';
 export { VoteButton } from './VoteButton';
+
 export { Loading } from './Loading';
 export { LoadingPostSkeleton } from './LoadingPostSkeleton';
 
