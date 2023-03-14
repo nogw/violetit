@@ -6,7 +6,7 @@ import { Flex } from './Flex';
 
 type CardTitledProps = React.HTMLAttributes<HTMLDivElement> & {
   title?: string;
-  children: React.ReactElement | React.ReactElement[];
+  children: React.ReactNode | React.ReactNode[];
 };
 
 export const CardTitled = ({ title, className, children, ...props }: CardTitledProps) => {

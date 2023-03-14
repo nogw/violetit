@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 
 type BoxProps = React.HTMLAttributes<HTMLDivElement> & {
-  children?: React.ReactElement | React.ReactElement[];
+  children?: React.ReactNode | React.ReactNode[];
 };
 
 export const Box = ({ children, className, ...props }: BoxProps) => {

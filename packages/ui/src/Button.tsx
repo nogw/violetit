@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 
 type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
-  children: React.ReactElement | string;
+  children: React.ReactNode;
 };
 
 export const Button = ({ children, className, ...props }: ButtonProps) => {

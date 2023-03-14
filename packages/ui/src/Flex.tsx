@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 
 type FlexProps = React.HTMLAttributes<HTMLDivElement> & {
-  children: React.ReactElement | React.ReactElement[];
+  children: React.ReactNode | React.ReactNode[];
 };
 
 export const Flex = ({ children, className, ...props }: FlexProps) => {

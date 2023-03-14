@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 
 type CardActionsProps = React.HTMLAttributes<HTMLDivElement> & {
-  children: React.ReactElement | React.ReactElement[];
+  children: React.ReactNode | React.ReactNode[];
 };
 
 export const CardActions = ({ children, className, ...props }: CardActionsProps) => {
