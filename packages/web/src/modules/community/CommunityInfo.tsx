@@ -1,5 +1,5 @@
-import { CardTitled, Flex } from '@violetit/ui';
-import { formatDate } from '@/lib/formatDate';
+import { CardTitled, Flex, Heading, Text } from '@violetit/ui';
+import { formatDate } from '@/utils/format';
 
 import { graphql, useFragment } from 'react-relay';
 import { BiCake } from 'react-icons/bi';
@@ -25,18 +25,20 @@ export const CommunityInfo = (props: CommunityInfoProps) => {
   );
 
   return (
-    <CardTitled title="About Community">
-      <h1 className="font-medium">r/{`${community.name}`}</h1>
-
+    <CardTitled className="hidden md:block" title="About Community">
+      <Heading variant="h5">r/{`${community.name}`}</Heading>
       <Flex className="items-center">
-        <BiCake className="text-lg mr-1" />
-        <p className="text-sm text-gray-600">{formatDate(new Date(community.createdAt || ''))}</p>
+        <BiCake className="mr-1 text-lg" />
+        <Text color="secondary" variant="cap">
+          {formatDate(new Date(community.createdAt || ''))}
+        </Text>
       </Flex>
-
       <Flex className="border-y py-2">
         <Flex className="flex-col">
-          <h3 className="font-medium">{community.members.count}</h3>
-          <p className="text-sm text-gray-500">Members</p>
+          <Text variant="p2">{community.members.count}</Text>
+          <Text color="secondary" variant="cap">
+            Members
+          </Text>
         </Flex>
       </Flex>
     </CardTitled>
