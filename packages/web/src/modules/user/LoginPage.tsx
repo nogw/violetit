@@ -3,10 +3,10 @@ import { useState } from 'react';
 import * as yup from 'yup';
 
 import { ErrorText, Button } from '@violetit/ui';
-import { InputField } from '@/shared-components/InputField';
+import { InputField } from '@/common/InputField';
 import { useAuth } from '../auth/useAuth';
 import { useNavigate } from 'react-router-dom';
-import { UserLoginMutation } from './__generated__/UserLoginMutation.graphql';
+import { UserLoginMutation } from './mutations/__generated__/UserLoginMutation.graphql';
 import { UserLogin } from './mutations/UserLoginMutation';
 import { useMutation } from 'react-relay';
 
@@ -26,13 +26,10 @@ const LoginPage = () => {
 
   const [userLogin, isPending] = useMutation<UserLoginMutation>(UserLogin);
 
-  const onSubmit = (
-    values: loginValues,
-    actions: FormikHelpers<loginValues>,
-  ) => {
+  const onSubmit = (values: loginValues, actions: FormikHelpers<loginValues>) => {
     userLogin({
       variables: values,
-      onCompleted: ({ userLoginMutation }, error) => {
+      onCompleted: ({ userLogin }, error) => {
         if (error && error.length > 0) {
           const inputs: Array<keyof typeof values> = ['email', 'password'];
 
@@ -47,8 +44,8 @@ const LoginPage = () => {
           return;
         }
 
-        signin(userLoginMutation?.token, () => {
-          navigate('/feed', { replace: true });
+        signin(userLogin?.token, () => {
+          navigate('/', { replace: true });
         });
       },
     });
@@ -74,12 +71,8 @@ const LoginPage = () => {
       <Form>
         <div className="flex flex-col gap-2">
           <InputField name="email" placeholder="Email" />
-          <InputField name="password" type="password" placeholder="Password" />
-          <Button
-            className="flex-auto"
-            type="submit"
-            disabled={!isValid || isPending}
-          >
+          <InputField name="password" placeholder="Password" type="password" />
+          <Button disabled={!isValid || isPending} type="submit">
             {isSubmitting ? 'Wait...' : 'Log in'}
           </Button>
         </div>

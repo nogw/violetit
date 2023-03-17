@@ -5,10 +5,10 @@ import { useMutation } from 'react-relay';
 import * as yup from 'yup';
 
 import { ErrorText, Button } from '@violetit/ui';
-import { InputField } from '@/shared-components/InputField';
+import { InputField } from '@/common/InputField';
 import { useAuth } from '../auth/useAuth';
 
-import { UserRegisterMutation } from './__generated__/UserRegisterMutation.graphql';
+import { UserRegisterMutation } from './mutations/__generated__/UserRegisterMutation.graphql';
 import { UserRegister } from './mutations/UserRegisterMutation';
 
 type signUpValues = {
@@ -27,22 +27,14 @@ const LoginPage = () => {
     message: '',
   });
 
-  const [userRegister, isPending] =
-    useMutation<UserRegisterMutation>(UserRegister);
+  const [userRegister, isPending] = useMutation<UserRegisterMutation>(UserRegister);
 
-  const onSubmit = (
-    values: signUpValues,
-    actions: FormikHelpers<signUpValues>,
-  ) => {
+  const onSubmit = (values: signUpValues, actions: FormikHelpers<signUpValues>) => {
     userRegister({
       variables: values,
-      onCompleted: ({ userRegisterMutation }, error) => {
+      onCompleted: ({ userRegister }, error) => {
         if (error && error.length > 0) {
-          const inputs: Array<keyof typeof values> = [
-            'email',
-            'password',
-            'username',
-          ];
+          const inputs: Array<keyof typeof values> = ['email', 'password', 'username'];
 
           inputs.forEach(input => {
             actions.setFieldValue(input, '', false);
@@ -55,7 +47,7 @@ const LoginPage = () => {
           return;
         }
 
-        signin(userRegisterMutation?.token, () => {
+        signin(userRegister?.token, () => {
           navigate('/feed', { replace: true });
         });
       },
@@ -91,17 +83,9 @@ const LoginPage = () => {
         <div className="flex flex-col gap-2">
           <InputField name="username" placeholder="Username" />
           <InputField name="email" placeholder="Email" />
-          <InputField name="password" type="password" placeholder="Password" />
-          <InputField
-            name="passwordConfirm"
-            type="password"
-            placeholder="Password Confirm"
-          />
-          <Button
-            className="flex-auto"
-            type="submit"
-            disabled={!isValid || isPending}
-          >
+          <InputField name="password" placeholder="Password" type="password" />
+          <InputField name="passwordConfirm" placeholder="Password Confirm" type="password" />
+          <Button disabled={!isValid || isPending} type="submit" variant="primary">
             {isSubmitting ? 'Wait...' : 'Create Account'}
           </Button>
         </div>

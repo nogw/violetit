@@ -1,14 +1,11 @@
-import { Link } from '@/shared-components/Link';
-
 import { Outlet, Navigate, useLocation } from 'react-router-dom';
 
 import { useAuth } from '../auth/useAuth';
+import { Link } from '@/common/Link';
 
 const SignUpOrLoginLink = ({ pathname }: { pathname: string }) => {
   const isSignUpScreen = pathname === '/auth/signup';
-  const redirectText = isSignUpScreen
-    ? 'Already a Violettor?'
-    : 'New to Violetit?';
+  const redirectText = isSignUpScreen ? 'Already a Violettor?' : 'New to Violetit?';
 
   const link = {
     to: isSignUpScreen ? '/auth' : '/auth/signup',
@@ -27,11 +24,11 @@ const LoginLayout = () => {
   const { token } = useAuth();
 
   if (token) {
-    return <Navigate to="/feed" replace />;
+    return <Navigate replace to="/" />;
   }
 
   return (
-    <main className="h-screen flex justify-center items-center">
+    <main className="flex h-screen items-center justify-center">
       <div className="w-full max-w-xs">
         <div className="">
           <Outlet />
