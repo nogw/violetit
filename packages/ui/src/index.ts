@@ -7,6 +7,9 @@ export { SelectInput } from './SelectInput';
 export { Button } from './Button';
 export { VoteButton } from './VoteButton';
 
+export { Heading } from './Heading';
+export { Text } from './Text';
+
 export { Loading } from './Loading';
 export { LoadingPostSkeleton } from './LoadingPostSkeleton';
 
