@@ -1,5 +1,4 @@
 import { Environment, Network, RecordSource, Store } from 'relay-runtime';
-
 import { cacheHandler } from './RelayNetwork';
 
 export const RelayEnvironment = new Environment({

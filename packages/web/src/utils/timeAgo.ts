@@ -1,7 +1,7 @@
-import { formatDistance } from 'date-fns';
+import { formatDistanceStrict } from 'date-fns';
 
 export const timeAgo = (date: Date): string => {
-  return formatDistance(date, new Date(), {
+  return formatDistanceStrict(date, new Date(), {
     addSuffix: true,
   });
 };

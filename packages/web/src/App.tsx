@@ -1,9 +1,8 @@
 import React from 'react';
 
 import { Loading } from '@violetit/ui';
-
-import { Providers } from './Providers';
-import { Routes } from './Routes';
+import { Providers } from '@/Providers';
+import { Routes } from '@/Routes';
 
 import './styles/index.css';
 

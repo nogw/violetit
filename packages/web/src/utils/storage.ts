@@ -1,9 +1,20 @@
+import { Maybe } from '@violetit/types';
+
 const JWT_TOKEN_KEY = '@violetit_react_token';
 
-const storage = {
-  setAuthToken: (token: string) => localStorage.setItem(JWT_TOKEN_KEY, token),
-  getAuthToken: () => localStorage.getItem(JWT_TOKEN_KEY),
-  delAuthToken: () => localStorage.removeItem(JWT_TOKEN_KEY),
+export const getAuthToken = () => {
+  return localStorage.getItem(JWT_TOKEN_KEY);
 };
 
-export default storage;
+export const updateAuthToken = (token?: Maybe<string>) => {
+  if (!token || token === '' || token === null) {
+    localStorage.removeItem(JWT_TOKEN_KEY);
+  } else {
+    localStorage.setItem(JWT_TOKEN_KEY, token);
+  }
+};
+
+export default {
+  getAuthToken,
+  updateAuthToken,
+};
