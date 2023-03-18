@@ -47,20 +47,8 @@ export const CommunityComposer = () => {
   return (
     <Box>
       <Flex className="flex-col gap-2">
-        <TextField
-          className="sm:w-64"
-          label="Name"
-          placeholder="r/name"
-          value={name}
-          onChange={e => setName(e.target.value)}
-        />
-        <TextField
-          className="sm:w-64"
-          label="Title"
-          placeholder="Community Title"
-          value={title}
-          onChange={e => setTitle(e.target.value)}
-        />
+        <TextField label="Name" placeholder="r/name" value={name} onChange={e => setName(e.target.value)} />
+        <TextField label="Title" placeholder="Community Title" value={title} onChange={e => setTitle(e.target.value)} />
         <Box className="mt-2 ml-auto">
           <Button aria-label="Create community" disabled={isDisabled} variant="secondary" onClick={onSubmit}>
             Create
