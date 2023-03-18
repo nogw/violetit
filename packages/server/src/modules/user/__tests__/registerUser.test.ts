@@ -17,6 +17,9 @@ describe('UserRegisterMutation', () => {
       mutation UserRegisterMutation($input: UserRegisterInput!) {
         userRegister(input: $input) {
           token
+          error {
+            message
+          }
           me {
             id
             username
@@ -46,8 +49,9 @@ describe('UserRegisterMutation', () => {
 
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    const { token, me } = result.data.userRegister;
+    const { token, me, error } = result.data.userRegister;
 
+    expect(error).toBeNull();
     expect(token).toBeDefined();
     expect(me.id).toBeDefined();
   });
@@ -60,10 +64,13 @@ describe('UserRegisterMutation', () => {
     const mutation = `
       mutation UserRegisterMutation($input: UserRegisterInput!) {
         userRegister(input: $input) {
-            token
+          token
+          error {
+            message
           }
         }
-      `;
+      }
+    `;
 
     const rootValue = {};
     const contextValue = getContext();
@@ -82,9 +89,9 @@ describe('UserRegisterMutation', () => {
       },
     });
 
-    expect(result.data?.userRegister).toBeNull();
-    expect(result.errors).toBeDefined();
-    expect(result.errors && result.errors[0].message).toBe('This email is already used');
+    expect(result.errors).toBeUndefined();
+    expect(result.data.userRegister.token).toBeNull();
+    expect(result.data.userRegister.error.message).toBe('This email is already used');
   });
 
   it('should not registrate user if username belongs to another user', async () => {
@@ -96,6 +103,9 @@ describe('UserRegisterMutation', () => {
         mutation UserRegisterMutation($input: UserRegisterInput!) {
           userRegister(input: $input) {
             token
+            error {
+              message
+            }
           }
         }
       `;
@@ -117,8 +127,8 @@ describe('UserRegisterMutation', () => {
       },
     });
 
-    expect(result.data?.userRegister).toBeNull();
-    expect(result.errors).toBeDefined();
-    expect(result.errors && result.errors[0].message).toBe('This username is already used');
+    expect(result.errors).toBeUndefined();
+    expect(result.data.userRegister.token).toBeNull();
+    expect(result.data.userRegister.error.message).toBe('This username is already used');
   });
 });

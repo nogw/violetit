@@ -72,6 +72,9 @@ describe('CommunityExitMutation', () => {
     const mutation = `
       mutation CommunityExitMutation($communityId: String!) {
         communityExit(input: { communityId: $communityId }) {
+          error {
+            message
+          }
           communityEdge {
             node {
               id
@@ -92,9 +95,9 @@ describe('CommunityExitMutation', () => {
       variableValues,
     });
 
-    expect(result.data?.communityExit).toBeNull();
-    expect(result.errors).toBeDefined();
-    expect(result.errors && result.errors[0].message).toBe('You are not a member of this community');
+    expect(result.errors).toBeUndefined();
+    expect(result.data.communityExit.communityEdge).toBeNull();
+    expect(result.data.communityExit.error.message).toBe('You are not a member of this community');
   });
 
   it('should not exit if user is community admin', async () => {
@@ -103,6 +106,9 @@ describe('CommunityExitMutation', () => {
     const mutation = `
       mutation CommunityExitMutation($communityId: String!) {
         communityExit(input: { communityId: $communityId }) {
+          error {
+            message
+          }
           communityEdge {
             node {
               id
@@ -123,9 +129,9 @@ describe('CommunityExitMutation', () => {
       variableValues,
     });
 
-    expect(result.data?.communityExit).toBeNull();
-    expect(result.errors).toBeDefined();
-    expect(result.errors && result.errors[0].message).toBe(
+    expect(result.errors).toBeUndefined();
+    expect(result.data.communityExit.communityEdge).toBeNull();
+    expect(result.data.communityExit.error.message).toBe(
       'You are the community admin, use communityExitAsAdmin to exit',
     );
   });

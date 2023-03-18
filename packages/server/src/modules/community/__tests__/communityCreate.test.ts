@@ -19,6 +19,9 @@ describe('CommunityCreateMutation', () => {
     const mutation = `
       mutation CommunityCreateMutation($name: String!, $title: String!) {
         communityCreate(input: { name: $name, title: $title }) {
+          error {
+            message
+          }
           communityEdge {
             node {
               id,
@@ -53,8 +56,9 @@ describe('CommunityCreateMutation', () => {
 
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    const { communityEdge } = result.data.communityCreate;
+    const { communityEdge, error } = result.data.communityCreate;
 
+    expect(error).toBeNull();
     expect(communityEdge.node.id).toBeDefined();
     expect(communityEdge.node.name).toBe(variableValues.name);
     expect(communityEdge.node.title).toBe(variableValues.title);
@@ -63,7 +67,6 @@ describe('CommunityCreateMutation', () => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     const membersId = communityEdge.node.members.edges.map(edge => fromGlobalId(edge.node.id).id);
-
     expect(membersId).toContain(user._id.toString());
   });
 
@@ -71,6 +74,9 @@ describe('CommunityCreateMutation', () => {
     const mutation = `
       mutation CommunityCreateMutation($name: String!, $title: String!) {
         communityCreate(input: { name: $name, title: $title }) {
+          error {
+            message
+          }
           communityEdge {
             node {
               id,
@@ -91,9 +97,9 @@ describe('CommunityCreateMutation', () => {
       variableValues,
     });
 
-    expect(result.data?.communityCreate).toBeNull();
-    expect(result.errors).toBeDefined();
-    expect(result.errors && result.errors[0].message).toBe('You are not logged in!');
+    expect(result.errors).toBeUndefined();
+    expect(result.data.communityCreate.communityEdge).toBeNull();
+    expect(result.data.communityCreate.error.message).toBe('You are not logged in!');
   });
 
   it('should not registrate user if name belongs to another community', async () => {
@@ -102,6 +108,9 @@ describe('CommunityCreateMutation', () => {
     const mutation = `
       mutation CommunityCreateMutation($name: String!, $title: String!) {
         communityCreate(input: { name: $name, title: $title }) {
+          error {
+            message
+          }
           communityEdge {
             node {
               id,
@@ -130,8 +139,8 @@ describe('CommunityCreateMutation', () => {
       variableValues,
     });
 
-    expect(result.data?.communityCreate).toBeNull();
-    expect(result.errors).toBeDefined();
-    expect(result.errors && result.errors[0].message).toBe('A community with this name has already been created');
+    expect(result.errors).toBeUndefined();
+    expect(result.data.communityCreate.communityEdge).toBeNull();
+    expect(result.data.communityCreate.error.message).toBe('A community with this name has already been created');
   });
 });

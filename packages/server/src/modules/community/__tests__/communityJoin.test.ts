@@ -21,6 +21,9 @@ describe('CommunityJoinMutation', () => {
     const mutation = `
       mutation CommunityJoinMutation($communityId: String!) {
         communityJoin(input: { communityId: $communityId }) {
+          error {
+            message
+          }
           communityEdge {
             node {
               id,
@@ -52,12 +55,11 @@ describe('CommunityJoinMutation', () => {
 
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    const { communityEdge } = result.data.communityJoin;
-    expect(communityEdge.node.members.edges).toHaveLength(2);
-
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+    const { communityEdge, error } = result.data.communityJoin;
     const membersId = communityEdge.node.members.edges.map(edge => fromGlobalId(edge.node.id).id);
+
+    expect(error).toBeNull();
+    expect(communityEdge.node.members.edges).toHaveLength(2);
     expect(membersId).toContain(user._id.toString());
   });
 });

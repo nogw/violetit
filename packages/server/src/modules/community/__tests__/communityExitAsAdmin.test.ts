@@ -19,6 +19,9 @@ describe('CommunityExitAsAdminMutation', () => {
     const mutation = `
       mutation CommunityExitAsAdmin($communityId: String!) {
         communityExitAsAdmin(input: { communityId: $communityId }) {
+          error {
+            message
+          }
           communityEdge {
             node {
               id,
@@ -50,7 +53,8 @@ describe('CommunityExitAsAdminMutation', () => {
 
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    const { communityEdge } = result.data.communityExitAsAdmin;
+    const { communityEdge, error } = result.data.communityExitAsAdmin;
+    expect(error).toBeNull();
     expect(communityEdge).toBeNull();
   });
 
@@ -62,6 +66,9 @@ describe('CommunityExitAsAdminMutation', () => {
     const mutation = `
       mutation CommunityExitAsAdmin($communityId: String!) {
         communityExitAsAdmin(input: { communityId: $communityId }) {
+          error {
+            message
+          }
           communityEdge {
             node {
               id
@@ -82,8 +89,8 @@ describe('CommunityExitAsAdminMutation', () => {
       variableValues,
     });
 
-    expect(result.data?.communityExitAsAdmin).toBeNull();
-    expect(result.errors).toBeDefined();
-    expect(result.errors && result.errors[0].message).toBe('You are not a member of this community');
+    expect(result.errors).toBeUndefined();
+    expect(result.data.communityExitAsAdmin.communityEdge).toBeNull();
+    expect(result.data.communityExitAsAdmin.error.message).toBe('You are not a member of this community');
   });
 });

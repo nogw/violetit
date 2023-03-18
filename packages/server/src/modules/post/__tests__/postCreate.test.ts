@@ -19,6 +19,9 @@ describe('postCreateMutation', () => {
     const mutation = `
       mutation PostCreateMutation($title: String!, $content: String!, $community: String!) {
         postCreate(input: { title: $title, content: $content, community: $community }) {
+          error {
+            message
+          }
           postEdge {
             node {
               id
@@ -52,8 +55,9 @@ describe('postCreateMutation', () => {
 
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    const { postEdge } = result.data.postCreate;
+    const { postEdge, error } = result.data.postCreate;
 
+    expect(error).toBeNull();
     expect(postEdge.node.id).toBeDefined();
     expect(postEdge.node.title).toBe(variableValues.title);
     expect(postEdge.node.content).toBe(variableValues.content);
@@ -66,6 +70,9 @@ describe('postCreateMutation', () => {
     const mutation = `
       mutation PostCreateMutation($title: String!, $content: String!, $community: String!) {
         postCreate(input: { title: $title, content: $content, community: $community }) {
+          error {
+            message
+          }
           postEdge {
             node {
               id
@@ -90,9 +97,9 @@ describe('postCreateMutation', () => {
       variableValues,
     });
 
-    expect(result.data?.postCreate).toBeNull();
-    expect(result.errors).toBeDefined();
-    expect(result.errors && result.errors[0].message).toBe('You are not logged in!');
+    expect(result.errors).toBeUndefined();
+    expect(result.data.postCreate.postEdge).toBeNull();
+    expect(result.data.postCreate.error.message).toBe('You are not logged in!');
   });
 
   it('should not create a post if the community does not exists', async () => {
@@ -101,6 +108,9 @@ describe('postCreateMutation', () => {
     const mutation = `
       mutation PostCreateMutation($title: String!, $content: String!, $community: String!) {
         postCreate(input: { title: $title, content: $content, community: $community }) {
+          error {
+            message
+          }
           postEdge {
             node {
               id
@@ -125,8 +135,8 @@ describe('postCreateMutation', () => {
       variableValues,
     });
 
-    expect(result.data?.postCreate).toBeNull();
-    expect(result.errors).toBeDefined();
-    expect(result.errors && result.errors[0].message).toBe('Community not found!');
+    expect(result.errors).toBeUndefined();
+    expect(result.data.postCreate.postEdge).toBeNull();
+    expect(result.data.postCreate.error.message).toBe('Community not found!');
   });
 });

@@ -23,6 +23,9 @@ describe('UserLoginMutation', () => {
       mutation UserLoginMutation($email: String!, $password: String!) {
         userLogin(input: { email: $email, password: $password }) {
           token
+          error {
+            message
+          }
           me {
             id
             username
@@ -47,10 +50,11 @@ describe('UserLoginMutation', () => {
 
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    const { token, me } = result.data.userLogin;
+    const { token, me, error } = result.data.userLogin;
 
-    expect(me.id).toBeDefined;
-    expect(token).toBeDefined;
+    expect(error).toBeNull();
+    expect(me.id).toBeDefined();
+    expect(token).toBeDefined();
   });
 
   it("should display error if username isn't exists", async () => {
@@ -60,6 +64,9 @@ describe('UserLoginMutation', () => {
       mutation UserLoginMutation($email: String!, $password: String!) {
         userLogin(input: { email: $email, password: $password }) {
           token
+          error {
+            message
+          }
           me {
             id
             username
@@ -80,11 +87,9 @@ describe('UserLoginMutation', () => {
       },
     });
 
-    expect(result.data?.userLogin).toBeNull();
-    expect(result.errors).toBeDefined();
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    expect(result.errors[0].message).toBe('Invalid credentials');
+    expect(result.errors).toBeUndefined();
+    expect(result.data.userLogin.me).toBeNull();
+    expect(result.data.userLogin.error.message).toBe('This user was not registered');
   });
 
   it('should display error if password is incorrect', async () => {
@@ -96,9 +101,11 @@ describe('UserLoginMutation', () => {
       mutation UserLoginMutation($email: String!, $password: String!) {
         userLogin(input: { email: $email, password: $password }) {
           token
+          error {
+            message
+          }
           me {
             id
-            username
           }
         }
       }
@@ -116,10 +123,8 @@ describe('UserLoginMutation', () => {
       },
     });
 
-    expect(result.data?.userLogin).toBeNull();
-    expect(result.errors).toBeDefined();
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    expect(result.errors[0].message).toBe('Invalid credentials');
+    expect(result.errors).toBeUndefined();
+    expect(result.data.userLogin.me).toBeNull();
+    expect(result.data.userLogin.error.message).toBe('This password is incorrect');
   });
 });
