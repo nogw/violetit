@@ -1,19 +1,28 @@
 import { printSchema } from 'graphql';
-
-import fs from 'fs/promises';
+import { promises as fs } from 'fs';
 import path from 'path';
 
 import { schema } from '../src/schema/schema';
 
-const schemaFilename = 'schema.graphql';
+const schemaFile = 'schema.graphql';
 const pwd = process.cwd();
 
-// todo: improve
-(async () => {
-  const config = {
-    path: path.join(pwd, './graphql', schemaFilename),
-    schema,
-  };
+const writeSchemaToFile = async (schemaPath: string, schemaContent: string) => {
+  const dirPath = path.dirname(schemaPath);
+  try {
+    await fs.access(dirPath);
+  } catch (e) {
+    await fs.mkdir(dirPath, { recursive: true });
+  }
+  await fs.writeFile(schemaPath, schemaContent);
+};
 
-  await fs.writeFile(config.path, printSchema(config.schema));
+(async () => {
+  try {
+    const schemaContent = printSchema(schema);
+    const schemaPath = path.join(pwd, 'graphql', schemaFile);
+    await writeSchemaToFile(schemaPath, schemaContent);
+  } catch (error) {
+    throw new Error('Failed to generate schema file');
+  }
 })();
