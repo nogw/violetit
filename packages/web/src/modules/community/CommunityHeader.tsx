@@ -9,6 +9,7 @@ import { CommunityJoin } from './mutations/CommunityJoinMutation';
 import { CommunityHeader_community$key } from './__generated__/CommunityHeader_community.graphql';
 import { CommunityJoinMutation } from './mutations/__generated__/CommunityJoinMutation.graphql';
 import { CommunityExitMutation } from './mutations/__generated__/CommunityExitMutation.graphql';
+import { Link } from '@/common/Link';
 
 type CommunityHeaderProps = {
   community: CommunityHeader_community$key;
@@ -65,7 +66,9 @@ export const CommunityHeader = (props: CommunityHeaderProps) => {
       <Box className="h-3/6 bg-blue-500" />
       <Flex className="h-3/6 justify-center bg-white py-2">
         <Flex className="mr-4 flex-col">
-          <Heading variant="h4">{community.title}</Heading>
+          <Link to={`/r/${community.id}`}>
+            <Heading variant="h4">{community.title}</Heading>
+          </Link>
           <Text color="secondary">r/{community.name}</Text>
         </Flex>
         <Box>

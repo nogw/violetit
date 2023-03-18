@@ -22,7 +22,7 @@ export const Feed = (props: FeedProps) => {
 
   return (
     <Flex className="w-full flex-col">
-      <PostComposer community={props.community} />
+      <PostComposer />
       <FeedList query={query} queryVariables={props} />
     </Flex>
   );
