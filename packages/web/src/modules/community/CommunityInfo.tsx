@@ -29,14 +29,14 @@ export const CommunityInfo = (props: CommunityInfoProps) => {
       <Heading variant="h5">r/{`${community.name}`}</Heading>
       <Flex className="items-center">
         <BiCake className="mr-1 text-lg" />
-        <Text color="secondary" variant="cap">
+        <Text color="secondary" variant="p4">
           {formatDate(new Date(community.createdAt || ''))}
         </Text>
       </Flex>
       <Flex className="border-y py-2">
         <Flex className="flex-col">
           <Text variant="p2">{community.members.count}</Text>
-          <Text color="secondary" variant="cap">
+          <Text color="secondary" variant="p4">
             Members
           </Text>
         </Flex>

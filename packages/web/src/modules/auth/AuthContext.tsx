@@ -1,7 +1,6 @@
 import React, { useState, useMemo, useCallback } from 'react';
 
 import { Maybe } from '@violetit/types';
-
 import storage from '@/utils/storage';
 
 export interface AuthContextValue {
@@ -16,14 +15,14 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [userToken, setUserToken] = useState<AuthContextValue['token']>(() => storage.getAuthToken());
 
   const signin = useCallback<AuthContextValue['signin']>((token, cb) => {
-    token ? storage.setAuthToken(token) : storage.delAuthToken();
+    storage.updateAuthToken(token);
     setUserToken(token);
     cb();
   }, []);
 
   const signout = useCallback<AuthContextValue['signout']>(cb => {
+    storage.updateAuthToken();
     setUserToken(null);
-    storage.delAuthToken();
     cb();
   }, []);
 

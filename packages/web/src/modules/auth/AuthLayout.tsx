@@ -5,11 +5,11 @@ import { Navbar } from '@/common/Navbar';
 import { useAuth } from './useAuth';
 
 export const AuthLayout = () => {
-  const location = useLocation();
+  const { pathname } = useLocation();
   const { token } = useAuth();
 
   if (!token) {
-    return <Navigate to="/" state={{ from: location }} />;
+    return <Navigate state={{ from: pathname }} to="/auth" />;
   }
 
   return (

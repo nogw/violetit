@@ -1,4 +1,5 @@
 import { Button, Box, Flex, TextField } from '@violetit/ui';
+import { useSnackbar } from 'notistack';
 
 import { useState } from 'react';
 import { useMutation } from 'react-relay';
@@ -13,20 +14,28 @@ export const CommunityComposer = () => {
   const [name, setName] = useState<string>('');
   const [title, setTitle] = useState<string>('');
 
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+
   const [communityCreate, isPending] = useMutation<CommunityCreateMutation>(CommunityCreate);
 
   const onSubmit = () => {
+    closeSnackbar();
+
     communityCreate({
       variables: {
         name,
         title,
       },
       onCompleted: ({ communityCreate }) => {
-        if (!communityCreate) {
+        if (communityCreate?.error && communityCreate.error.message) {
+          enqueueSnackbar(communityCreate.error.message, { variant: 'error' });
+        }
+
+        if (!communityCreate?.communityEdge) {
           return;
         }
 
-        navigate(`/r/${communityCreate.communityEdge?.node?.id}`, {
+        navigate(`/r/${communityCreate.communityEdge.node?.id}`, {
           replace: true,
         });
       },
