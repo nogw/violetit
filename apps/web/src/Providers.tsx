@@ -1,5 +1,5 @@
-import { BrowserRouter } from 'react-router-dom';
 import { RelayEnvironmentProvider } from 'react-relay';
+import { BrowserRouter } from 'react-router-dom';
 import { SnackbarProvider } from 'notistack';
 
 import { RelayEnvironment } from './relay/RelayEnvironment';

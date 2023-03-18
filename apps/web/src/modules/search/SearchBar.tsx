@@ -4,8 +4,8 @@ import { Suspense, useCallback, useEffect, useRef, useState } from 'react';
 import { graphql, useLazyLoadQuery } from 'react-relay';
 import { useLocation } from 'react-router-dom';
 
-import { SearchList } from './SearchList';
 import { SearchQuery } from './__generated__/SearchQuery.graphql';
+import { SearchList } from './SearchList';
 
 export const SearchBar = () => {
   const [showResults, setShowResults] = useState(false);

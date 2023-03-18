@@ -1,18 +1,15 @@
+import { Button, Flex } from '@violetit/ui';
+
 import { Form, useFormik, FormikProvider, FormikHelpers } from 'formik';
 import { useNavigate } from 'react-router-dom';
 import { useMutation } from 'react-relay';
+import { useSnackbar } from 'notistack';
 import * as yup from 'yup';
 
-import { Button, Flex } from '@violetit/ui';
-import { InputField } from '@/common/InputField';
-import { useAuth } from '../auth/useAuth';
-
-import {
-  UserRegisterMutation,
-  UserRegisterMutation$data,
-} from './mutations/__generated__/UserRegisterMutation.graphql';
+import { UserRegisterMutation } from './mutations/__generated__/UserRegisterMutation.graphql';
 import { UserRegister } from './mutations/UserRegisterMutation';
-import { useSnackbar } from 'notistack';
+import { InputField } from 'src/common/InputField';
+import { useAuth } from 'src/modules/auth/useAuth';
 
 type signUpValues = {
   username: string;
@@ -34,7 +31,7 @@ const LoginPage = () => {
 
     userRegister({
       variables: values,
-      onCompleted: ({ userRegister }: UserRegisterMutation$data) => {
+      onCompleted: ({ userRegister }) => {
         if (userRegister?.error && userRegister.error.message) {
           const inputs: Array<keyof typeof values> = ['email', 'password', 'username'];
 

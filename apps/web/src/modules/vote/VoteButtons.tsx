@@ -1,12 +1,12 @@
-import { graphql, useFragment, useMutation } from 'react-relay';
-import { useState } from 'react';
-
 import { Flex, Text, VoteButton } from '@violetit/ui';
+
+import { graphql, useFragment, useMutation } from 'react-relay';
+import { useSnackbar } from 'notistack';
+import { useState } from 'react';
 
 import { VoteCreateMutation, VoteType } from './mutations/__generated__/VoteCreateMutation.graphql';
 import { VoteButtons_post$key } from './mutations/__generated__/VoteButtons_post.graphql';
 import { VoteCreate } from './mutations/VoteCreateMutation';
-import { useSnackbar } from 'notistack';
 
 type VoteButtonsProps = {
   post: VoteButtons_post$key;

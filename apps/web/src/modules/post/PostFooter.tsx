@@ -1,9 +1,10 @@
+import { Button, Flex, Text } from '@violetit/ui';
+
 import { useFragment } from 'react-relay';
 import { useSnackbar } from 'notistack';
 import { BiShareAlt } from 'react-icons/bi';
 import { graphql } from 'relay-runtime';
 
-import { Button, Flex, Text } from '@violetit/ui';
 import { PostFooter_post$key } from './__generated__/PostFooter_post.graphql';
 
 type PostFooterProps = {

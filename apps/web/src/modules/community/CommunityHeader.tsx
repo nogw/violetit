@@ -3,13 +3,13 @@ import { Flex, Box, Button, Heading, Text } from '@violetit/ui';
 import { graphql, useFragment, useMutation } from 'react-relay';
 import { useState } from 'react';
 
-import { CommunityExit } from './mutations/CommunityExitMutation';
-import { CommunityJoin } from './mutations/CommunityJoinMutation';
-
 import { CommunityHeader_community$key } from './__generated__/CommunityHeader_community.graphql';
 import { CommunityJoinMutation } from './mutations/__generated__/CommunityJoinMutation.graphql';
 import { CommunityExitMutation } from './mutations/__generated__/CommunityExitMutation.graphql';
-import { Link } from '@/common/Link';
+
+import { CommunityExit } from './mutations/CommunityExitMutation';
+import { CommunityJoin } from './mutations/CommunityJoinMutation';
+import { Link } from 'src/common/Link';
 
 type CommunityHeaderProps = {
   community: CommunityHeader_community$key;

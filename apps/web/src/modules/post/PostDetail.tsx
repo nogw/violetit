@@ -1,13 +1,13 @@
 import { Card, CardContent, Flex, Heading, Text } from '@violetit/ui';
-import { Link } from '@/common/Link';
 
 import { graphql, useFragment } from 'react-relay';
 import { Fragment } from 'react';
 
 import { PostDetail_post$key } from './__generated__/PostDetail_post.graphql';
-import { VoteButtons } from '../vote/VoteButtons';
 import { PostHeader } from './PostHeader';
 import { PostFooter } from './PostFooter';
+import { VoteButtons } from 'src/modules/vote/VoteButtons';
+import { Link } from 'src/common/Link';
 
 type WrapperProps = {
   to?: string;

@@ -1,15 +1,14 @@
-import { useLazyLoadQuery, useMutation } from 'react-relay';
-import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
-
 import { Card, Flex, TextField, TextArea, Button, SelectInput, ErrorText, Box } from '@violetit/ui';
 
-import { PostCreate } from './mutations/PostCreateMutation';
-import { PostCreateMutation } from './mutations/__generated__/PostCreateMutation.graphql';
-
-import { PostComposerMe } from './queries/PostComposerMeQuery';
-import { PostComposerMeQuery } from './queries/__generated__/PostComposerMeQuery.graphql';
+import { useLazyLoadQuery, useMutation } from 'react-relay';
+import { useNavigate } from 'react-router-dom';
 import { useSnackbar } from 'notistack';
+import { useState } from 'react';
+
+import { PostCreateMutation } from './mutations/__generated__/PostCreateMutation.graphql';
+import { PostCreate } from './mutations/PostCreateMutation';
+import { PostComposerMeQuery } from './queries/__generated__/PostComposerMeQuery.graphql';
+import { PostComposerMe } from './queries/PostComposerMeQuery';
 
 export const PostComposerDetail = () => {
   const navigate = useNavigate();

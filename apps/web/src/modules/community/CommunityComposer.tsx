@@ -5,8 +5,8 @@ import { useState } from 'react';
 import { useMutation } from 'react-relay';
 import { useNavigate } from 'react-router-dom';
 
-import { CommunityCreate } from './mutations/CommunityCreateMutation';
 import { CommunityCreateMutation } from './mutations/__generated__/CommunityCreateMutation.graphql';
+import { CommunityCreate } from './mutations/CommunityCreateMutation';
 
 export const CommunityComposer = () => {
   const navigate = useNavigate();

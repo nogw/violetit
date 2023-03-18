@@ -1,10 +1,10 @@
 import { CardTitled, Flex, Heading, Text } from '@violetit/ui';
-import { formatDate } from '@/utils/format';
 
 import { graphql, useFragment } from 'react-relay';
 import { BiCake } from 'react-icons/bi';
 
 import { CommunityInfo_community$key } from './__generated__/CommunityInfo_community.graphql';
+import { formatDate } from 'src/utils/format';
 
 type CommunityInfoProps = {
   community: CommunityInfo_community$key;

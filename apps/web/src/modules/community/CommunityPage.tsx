@@ -1,7 +1,7 @@
 import { useParams } from 'react-router-dom';
 
 import { CommunityLayout } from './CommunityLayout';
-import { Feed } from '../feed/Feed';
+import { Feed } from 'src/modules/feed/Feed';
 
 type CommunityPageParams = {
   community: string;

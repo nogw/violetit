@@ -1,17 +1,13 @@
-import {
-  Button,
-  Flex,
-  //  Input
-} from '@violetit/ui';
+import { Button, Flex } from '@violetit/ui';
 
 import { RiMagicFill } from 'react-icons/ri';
 import { MdExitToApp } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
 
-import { Link } from './Link';
-import { useAuth } from '../modules/auth/useAuth';
-import { SearchBar } from '../modules/search/SearchBar';
 import { CommunityComposerPopup } from '../modules/community/CommunityComposerPopup';
+import { SearchBar } from '../modules/search/SearchBar';
+import { useAuth } from '../modules/auth/useAuth';
+import { Link } from './Link';
 
 type NavbarProps = {
   title: string;

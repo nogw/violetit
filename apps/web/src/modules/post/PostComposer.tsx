@@ -1,5 +1,5 @@
 import { Card, TextField } from '@violetit/ui';
-import { Link } from '@/common/Link';
+import { Link } from 'src/common/Link';
 
 export const PostComposer = () => {
   return (

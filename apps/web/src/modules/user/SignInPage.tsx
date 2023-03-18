@@ -1,14 +1,15 @@
-import { Form, useFormik, FormikProvider, FormikHelpers } from 'formik';
-import * as yup from 'yup';
-
 import { Button, Flex } from '@violetit/ui';
-import { InputField } from '@/common/InputField';
-import { useAuth } from '../auth/useAuth';
+
+import { Form, useFormik, FormikProvider, FormikHelpers } from 'formik';
 import { useNavigate } from 'react-router-dom';
-import { UserLoginMutation } from './mutations/__generated__/UserLoginMutation.graphql';
-import { UserLogin } from './mutations/UserLoginMutation';
 import { useMutation } from 'react-relay';
 import { useSnackbar } from 'notistack';
+import * as yup from 'yup';
+
+import { UserLoginMutation } from './mutations/__generated__/UserLoginMutation.graphql';
+import { UserLogin } from './mutations/UserLoginMutation';
+import { InputField } from 'src/common/InputField';
+import { useAuth } from 'src/modules/auth/useAuth';
 
 type signInValues = {
   email: string;

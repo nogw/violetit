@@ -1,7 +1,7 @@
 import { CacheConfig, FetchFunction, QueryResponseCache, RequestParameters, Variables } from 'relay-runtime';
 
-import { GRAPHQL_URL } from '@/config';
-import storage from '@/utils/storage';
+import { GRAPHQL_URL } from 'src/config';
+import storage from 'src/utils/storage';
 
 enum operationKind {
   MUTATION = 'mutation',

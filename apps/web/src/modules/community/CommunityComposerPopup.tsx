@@ -1,9 +1,10 @@
+import { Box, Button, Card, Flex, Heading } from '@violetit/ui';
+
 import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { useLocation } from 'react-router-dom';
 import { MdClose } from 'react-icons/md';
 
-import { Box, Button, Card, Flex, Heading } from '@violetit/ui';
 import { CommunityComposer } from './CommunityComposer';
 
 export const CommunityComposerPopup = () => {

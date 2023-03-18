@@ -5,7 +5,7 @@ import { useEffect, useTransition } from 'react';
 
 import { SearchListPaginationQuery } from './__generated__/SearchListPaginationQuery.graphql';
 import { SearchList_query$key } from './__generated__/SearchList_query.graphql';
-import { Link } from '@/common/Link';
+import { Link } from 'src/common/Link';
 
 const SearchListFragment = graphql`
   fragment SearchList_query on Query

@@ -1,7 +1,7 @@
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import { Fragment } from 'react';
 
-import { Navbar } from '@/common/Navbar';
+import { Navbar } from 'src/common/Navbar';
 import { useAuth } from './useAuth';
 
 export const AuthLayout = () => {
