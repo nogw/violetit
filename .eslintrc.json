@@ -15,14 +15,7 @@
       "jsx": true
     }
   },
-  "plugins": [
-    "@typescript-eslint",
-    "import",
-    "prettier",
-    "react",
-    "react-hooks",
-    "relay"
-  ],
+  "plugins": ["@typescript-eslint", "import", "prettier", "react", "react-hooks", "relay"],
   "extends": [
     "prettier",
     "eslint:recommended",

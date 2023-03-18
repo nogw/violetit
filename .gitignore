@@ -1,3 +1,5 @@
+.DS_Store
+.idea/
 .vscode/
 tmp/
 *.log
@@ -9,7 +11,10 @@ npm-debug.log*
 
 yarn-*.log
 *.tsbuildinfo
-package-lock.json
 
+**/__generated__/
+
+# Env files
 .env*
 !.env.example
+package-lock.json
