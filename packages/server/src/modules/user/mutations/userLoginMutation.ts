@@ -19,11 +19,11 @@ export const userLogin = mutationWithClientMutationId({
     const user = await UserModel.findOne({ email });
 
     if (!user) {
-      throw fieldError('email', 'This user was not registered');
+      return fieldError('email', 'This user was not registered');
     }
 
     if (!(await user.authenticate(password))) {
-      throw fieldError('password', 'This password is incorrect');
+      return fieldError('password', 'This password is incorrect');
     }
 
     const token = generateJwtToken(user._id);

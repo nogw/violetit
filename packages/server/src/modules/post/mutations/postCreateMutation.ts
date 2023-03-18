@@ -21,13 +21,13 @@ export const postCreate = mutationWithClientMutationId({
   },
   mutateAndGetPayload: async ({ title, community, ...rest }, context: GraphQLContext) => {
     if (!context?.user) {
-      throw fieldError('credentials', 'You are not logged in!');
+      return fieldError('credentials', 'You are not logged in!');
     }
 
     const communityFound = await CommunityModel.findById(getObjectId(community));
 
     if (!communityFound) {
-      throw fieldError('community', 'Community not found!');
+      return fieldError('community', 'Community not found!');
     }
 
     const post = await new PostModel({
@@ -39,7 +39,7 @@ export const postCreate = mutationWithClientMutationId({
 
     return {
       id: post._id,
-      sucess: 'Post created with sucess',
+      success: 'Post created with success',
     };
   },
   outputFields: () => ({

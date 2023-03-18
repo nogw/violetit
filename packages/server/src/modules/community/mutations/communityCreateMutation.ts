@@ -17,7 +17,7 @@ export const communityCreate = mutationWithClientMutationId({
   },
   mutateAndGetPayload: async ({ name, ...rest }, context: GraphQLContext) => {
     if (!context?.user) {
-      throw fieldError('credentials', 'You are not logged in!');
+      return fieldError('credentials', 'You are not logged in!');
     }
 
     const foundCommunity = await CommunityModel.findOne({
@@ -25,7 +25,7 @@ export const communityCreate = mutationWithClientMutationId({
     });
 
     if (foundCommunity) {
-      throw fieldError('community', 'A community with this name has already been created');
+      return fieldError('community', 'A community with this name has already been created');
     }
 
     const community = new CommunityModel({

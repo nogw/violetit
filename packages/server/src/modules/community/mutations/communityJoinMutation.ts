@@ -18,20 +18,20 @@ export const communityJoin = mutationWithClientMutationId({
   },
   mutateAndGetPayload: async ({ communityId }, context: GraphQLContext) => {
     if (!context?.user) {
-      throw fieldError('credentials', 'You are not logged in!');
+      return fieldError('credentials', 'You are not logged in!');
     }
 
     const foundCommunity = await CommunityModel.findById(getObjectId(communityId));
 
     if (!foundCommunity) {
-      throw fieldError('community', "This community doesn't exist");
+      return fieldError('community', "This community doesn't exist");
     }
 
     const foundMemberIdInCommunity = foundCommunity.members.includes(context.user?._id);
     const foundCommunityIdInUser = context.user.communities.includes(foundCommunity._id);
 
     if (foundMemberIdInCommunity || foundCommunityIdInUser) {
-      throw fieldError('community', 'You are already a member of this community');
+      return fieldError('community', 'You are already a member of this community');
     }
 
     await Promise.all([

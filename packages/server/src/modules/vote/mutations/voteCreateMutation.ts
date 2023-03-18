@@ -29,13 +29,13 @@ export const voteCreate = mutationWithClientMutationId({
   },
   mutateAndGetPayload: async ({ postId, type }, context: GraphQLContext) => {
     if (!context?.user) {
-      throw fieldError('credentials', 'You are not logged in!');
+      return fieldError('credentials', 'You are not logged in!');
     }
 
     const postFound = await PostModel.findById(getObjectId(postId));
 
     if (!postFound) {
-      throw fieldError('post', "This post doesn't exist");
+      return fieldError('post', "This post doesn't exist");
     }
 
     const hasVoted = await VoteModel.findOne({
@@ -67,7 +67,7 @@ export const voteCreate = mutationWithClientMutationId({
       userId: context.user._id,
       voteId: vote._id,
       postId: postFound._id,
-      sucess: 'Post voted with sucess',
+      success: 'Post voted with success',
     };
   },
   outputFields: {

@@ -22,13 +22,13 @@ export const userRegister = mutationWithClientMutationId({
     const existingUser = await findUserByEmail(email);
 
     if (existingUser) {
-      throw fieldError('email', 'This email is already used');
+      return fieldError('email', 'This email is already used');
     }
 
     const usernameTaken = await findUserByUsername(username);
 
     if (usernameTaken) {
-      throw fieldError('password', 'This username is already used');
+      return fieldError('password', 'This username is already used');
     }
 
     const user = new UserModel({
