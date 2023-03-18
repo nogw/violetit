@@ -1,15 +1,18 @@
-import { useState } from 'react';
 import { Form, useFormik, FormikProvider, FormikHelpers } from 'formik';
 import { useNavigate } from 'react-router-dom';
 import { useMutation } from 'react-relay';
 import * as yup from 'yup';
 
-import { ErrorText, Button } from '@violetit/ui';
+import { Button, Flex } from '@violetit/ui';
 import { InputField } from '@/common/InputField';
 import { useAuth } from '../auth/useAuth';
 
-import { UserRegisterMutation } from './mutations/__generated__/UserRegisterMutation.graphql';
+import {
+  UserRegisterMutation,
+  UserRegisterMutation$data,
+} from './mutations/__generated__/UserRegisterMutation.graphql';
 import { UserRegister } from './mutations/UserRegisterMutation';
+import { useSnackbar } from 'notistack';
 
 type signUpValues = {
   username: string;
@@ -22,18 +25,17 @@ const LoginPage = () => {
   const { signin } = useAuth();
   const navigate = useNavigate();
 
-  const [error, setError] = useState({
-    status: false,
-    message: '',
-  });
-
   const [userRegister, isPending] = useMutation<UserRegisterMutation>(UserRegister);
 
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+
   const onSubmit = (values: signUpValues, actions: FormikHelpers<signUpValues>) => {
+    closeSnackbar();
+
     userRegister({
       variables: values,
-      onCompleted: ({ userRegister }, error) => {
-        if (error && error.length > 0) {
+      onCompleted: ({ userRegister }: UserRegisterMutation$data) => {
+        if (userRegister?.error && userRegister.error.message) {
           const inputs: Array<keyof typeof values> = ['email', 'password', 'username'];
 
           inputs.forEach(input => {
@@ -43,9 +45,11 @@ const LoginPage = () => {
 
           actions.setSubmitting(false);
 
-          setError({ status: true, message: error[0].message });
+          enqueueSnackbar(userRegister.error.message, { variant: 'error' });
           return;
         }
+
+        enqueueSnackbar(userRegister?.success, { variant: 'success' });
 
         signin(userRegister?.token, () => {
           navigate('/feed', { replace: true });
@@ -80,7 +84,7 @@ const LoginPage = () => {
   return (
     <FormikProvider value={formik}>
       <Form>
-        <div className="flex flex-col gap-2">
+        <Flex className="flex-col gap-2">
           <InputField name="username" placeholder="Username" />
           <InputField name="email" placeholder="Email" />
           <InputField name="password" placeholder="Password" type="password" />
@@ -88,8 +92,7 @@ const LoginPage = () => {
           <Button disabled={!isValid || isPending} type="submit" variant="primary">
             {isSubmitting ? 'Wait...' : 'Create Account'}
           </Button>
-        </div>
-        {error.status && <ErrorText>{error.message}</ErrorText>}
+        </Flex>
       </Form>
     </FormikProvider>
   );

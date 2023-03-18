@@ -1,16 +1,17 @@
-import { Card, CardContent } from '@violetit/ui';
-import { Link } from '@/shared-components/Link';
+import { Card, CardContent, Flex, Heading, Text } from '@violetit/ui';
+import { Link } from '@/common/Link';
 
 import { graphql, useFragment } from 'react-relay';
 import { Fragment } from 'react';
 
 import { PostDetail_post$key } from './__generated__/PostDetail_post.graphql';
 import { VoteButtons } from '../vote/VoteButtons';
-import PostHeader from './PostHeader';
+import { PostHeader } from './PostHeader';
+import { PostFooter } from './PostFooter';
 
 type WrapperProps = {
-  children: React.ReactElement;
   to?: string;
+  children: React.ReactElement;
 };
 
 type PostDetailProps = {
@@ -20,7 +21,11 @@ type PostDetailProps = {
 
 const Wrapper = ({ to, children }: WrapperProps) => {
   if (to) {
-    return <Link to={to}>{children}</Link>;
+    return (
+      <Link className="hover:none" to={to}>
+        {children}
+      </Link>
+    );
   }
 
   return <Fragment>{children}</Fragment>;
@@ -40,22 +45,27 @@ export const PostDetail = (props: PostDetailProps) => {
         }
         ...VoteButtons_post
         ...PostHeader_post
+        ...PostFooter_post
       }
     `,
     props.post,
   );
 
-  const wrapperProps = isDetail ? {} : { to: `/post/${post.id}` };
-  const wrapperContentClsx = isDetail ? 'text-sm' : 'line-clamp-3 text-sm';
+  const wrapperProps = isDetail ? {} : { to: `/r/${post.community?.id}/${post.id}` };
 
   return (
     <Wrapper {...wrapperProps}>
-      <Card className="hover:border-gray-400">
+      <Card className="p-0 hover:border-gray-400">
         <VoteButtons post={post} />
-        <CardContent className="flex-col">
+        <CardContent className="pt-2">
           <PostHeader post={post} />
-          <h1 className="font-medium text-base my-2">{post.title}</h1>
-          <p className={wrapperContentClsx}>{post.content}</p>
+          <Flex className="my-1 flex-col gap-1">
+            <Heading variant="h5">{post.title}</Heading>
+            <Text clamp={!isDetail} variant="p4">
+              {post.content}
+            </Text>
+          </Flex>
+          <PostFooter post={post} />
         </CardContent>
       </Card>
     </Wrapper>

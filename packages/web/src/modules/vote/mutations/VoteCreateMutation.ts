@@ -2,7 +2,11 @@ import { graphql } from 'react-relay';
 
 export const VoteCreate = graphql`
   mutation VoteCreateMutation($input: VoteCreateInput!) {
-    VoteCreate(input: $input) {
+    voteCreate(input: $input) {
+      error {
+        field
+        message
+      }
       post {
         votesCount
         meHasVoted {

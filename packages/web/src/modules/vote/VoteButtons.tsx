@@ -1,12 +1,12 @@
-import { Flex, VoteButton } from '@violetit/ui';
-
 import { graphql, useFragment, useMutation } from 'react-relay';
 import { useState } from 'react';
 
-import { VoteCreate } from './mutations/VoteCreateMutation';
+import { Flex, Text, VoteButton } from '@violetit/ui';
 
 import { VoteCreateMutation, VoteType } from './mutations/__generated__/VoteCreateMutation.graphql';
 import { VoteButtons_post$key } from './mutations/__generated__/VoteButtons_post.graphql';
+import { VoteCreate } from './mutations/VoteCreateMutation';
+import { useSnackbar } from 'notistack';
 
 type VoteButtonsProps = {
   post: VoteButtons_post$key;
@@ -29,10 +29,13 @@ export const VoteButtons = (props: VoteButtonsProps) => {
   const [votesCount, setVotesCount] = useState<number>(post.votesCount);
   const [meHasVoted, setMeHasVoted] = useState(post.meHasVoted?.type);
 
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+
   const [commit] = useMutation<VoteCreateMutation>(VoteCreate);
 
   const handleVote = (e: React.MouseEvent, type: VoteType) => {
     e.preventDefault();
+    closeSnackbar();
 
     commit({
       variables: {
@@ -41,23 +44,27 @@ export const VoteButtons = (props: VoteButtonsProps) => {
           type,
         },
       },
-      onCompleted: ({ VoteCreate }, error) => {
-        if (VoteCreate?.post) {
-          setVotesCount(VoteCreate.post?.votesCount || votesCount);
-          setMeHasVoted(VoteCreate.post?.meHasVoted?.type || meHasVoted);
+      onCompleted: ({ voteCreate }) => {
+        if (voteCreate?.error && voteCreate.error.message) {
+          enqueueSnackbar(voteCreate.error.message, { variant: 'error' });
         }
-        // eslint-disable-next-line
-        else console.log(error);
+
+        if (voteCreate?.post && voteCreate.post.votesCount !== undefined) {
+          setMeHasVoted(voteCreate.post.meHasVoted?.type || meHasVoted);
+          setVotesCount(voteCreate.post.votesCount);
+        }
       },
     });
   };
 
   return (
-    <Flex className="shrink-0 w-10">
-      <Flex className="flex-col grow items-center">
-        <VoteButton aria-label="upvote" voted={meHasVoted} direction="up" onClick={e => handleVote(e, 'UPVOTE')} />
-        <p className="text-xs font-semibold my-1">{votesCount ? votesCount : 'Vote'}</p>
-        <VoteButton aria-label="down" voted={meHasVoted} direction="down" onClick={e => handleVote(e, 'DOWNVOTE')} />
+    <Flex className="w-10 shrink-0 rounded-l-sm bg-gray-100 py-2">
+      <Flex className="grow flex-col items-center">
+        <VoteButton aria-label="upvote" direction="up" voted={meHasVoted} onClick={e => handleVote(e, 'UPVOTE')} />
+        <Text variant="p4" weight="semibold">
+          {votesCount ? votesCount : 'Vote'}
+        </Text>
+        <VoteButton aria-label="down" direction="down" voted={meHasVoted} onClick={e => handleVote(e, 'DOWNVOTE')} />
       </Flex>
     </Flex>
   );

@@ -1,36 +1,35 @@
 import { Form, useFormik, FormikProvider, FormikHelpers } from 'formik';
-import { useState } from 'react';
 import * as yup from 'yup';
 
-import { ErrorText, Button } from '@violetit/ui';
+import { Button, Flex } from '@violetit/ui';
 import { InputField } from '@/common/InputField';
 import { useAuth } from '../auth/useAuth';
 import { useNavigate } from 'react-router-dom';
 import { UserLoginMutation } from './mutations/__generated__/UserLoginMutation.graphql';
 import { UserLogin } from './mutations/UserLoginMutation';
 import { useMutation } from 'react-relay';
+import { useSnackbar } from 'notistack';
 
-type loginValues = {
+type signInValues = {
   email: string;
   password: string;
 };
 
-const LoginPage = () => {
+const SignInPage = () => {
   const { signin } = useAuth();
   const navigate = useNavigate();
 
-  const [error, setError] = useState({
-    status: false,
-    message: '',
-  });
-
   const [userLogin, isPending] = useMutation<UserLoginMutation>(UserLogin);
 
-  const onSubmit = (values: loginValues, actions: FormikHelpers<loginValues>) => {
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+
+  const onSubmit = (values: signInValues, actions: FormikHelpers<signInValues>) => {
+    closeSnackbar();
+
     userLogin({
       variables: values,
-      onCompleted: ({ userLogin }, error) => {
-        if (error && error.length > 0) {
+      onCompleted: ({ userLogin }) => {
+        if (userLogin?.error && userLogin.error.message) {
           const inputs: Array<keyof typeof values> = ['email', 'password'];
 
           inputs.forEach(input => {
@@ -40,9 +39,11 @@ const LoginPage = () => {
 
           actions.setSubmitting(false);
 
-          setError({ status: true, message: error[0].message });
+          enqueueSnackbar(userLogin.error.message, { variant: 'error' });
           return;
         }
+
+        enqueueSnackbar(userLogin?.success, { variant: 'success' });
 
         signin(userLogin?.token, () => {
           navigate('/', { replace: true });
@@ -51,7 +52,7 @@ const LoginPage = () => {
     });
   };
 
-  const formik = useFormik<loginValues>({
+  const formik = useFormik<signInValues>({
     initialValues: {
       email: '',
       password: '',
@@ -69,17 +70,16 @@ const LoginPage = () => {
   return (
     <FormikProvider value={formik}>
       <Form>
-        <div className="flex flex-col gap-2">
+        <Flex className="flex-col gap-2">
           <InputField name="email" placeholder="Email" />
           <InputField name="password" placeholder="Password" type="password" />
           <Button disabled={!isValid || isPending} type="submit">
             {isSubmitting ? 'Wait...' : 'Log in'}
           </Button>
-        </div>
-        {error.status && <ErrorText>{error.message}</ErrorText>}
+        </Flex>
       </Form>
     </FormikProvider>
   );
 };
 
-export default LoginPage;
+export default SignInPage;

@@ -1,7 +1,7 @@
 import { LoadingPostSkeleton } from '@violetit/ui';
 
-import { graphql, usePaginationFragment } from 'react-relay';
 import { useCallback, useEffect, useTransition } from 'react';
+import { graphql, usePaginationFragment } from 'react-relay';
 import InfiniteScroll from 'react-infinite-scroller';
 
 import { FeedListPaginationQuery } from './__generated__/FeedListPaginationQuery.graphql';
@@ -38,7 +38,7 @@ type FeedListProps = {
 };
 
 export const FeedList = ({ query, queryVariables }: FeedListProps) => {
-  const [_, startTransition] = useTransition();
+  const [, startTransition] = useTransition();
 
   const { data, refetch, hasNext, loadNext, isLoadingNext } = usePaginationFragment<
     FeedListPaginationQuery,
@@ -47,11 +47,7 @@ export const FeedList = ({ query, queryVariables }: FeedListProps) => {
 
   useEffect(() => {
     startTransition(() => {
-      const variables = {
-        first: 10,
-        filters: queryVariables,
-      };
-
+      const variables = { first: 10, filters: queryVariables };
       refetch(variables, { fetchPolicy: 'store-or-network' });
     });
   }, [queryVariables, refetch]);
@@ -70,6 +66,7 @@ export const FeedList = ({ query, queryVariables }: FeedListProps) => {
       loadMore={loadMore}
       loader={<LoadingPostSkeleton key={'skeleton'} />}
       hasMore={data.posts.pageInfo.hasNextPage}
+      className="flex flex-col gap-2"
       useWindow
     >
       {data.posts.edges.map(post => {
