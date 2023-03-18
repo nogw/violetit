@@ -1,12 +1,18 @@
+import clsx from 'clsx';
 import { Link as RRDLink, LinkProps as RRDLinkProps } from 'react-router-dom';
 
 type LinkProps = RRDLinkProps & {
   children: React.ReactNode;
+  underline?: boolean;
 };
 
-export const Link = ({ children, ...props }: LinkProps) => {
+export const Link = ({ children, underline = true, ...props }: LinkProps) => {
+  const styles = {
+    underline: 'hover:underline',
+  };
+
   return (
-    <RRDLink className="font-bold text-blue-500 hover:underline" {...props}>
+    <RRDLink className={clsx('font-bold text-blue-500', { [styles.underline]: underline })} {...props}>
       {children}
     </RRDLink>
   );

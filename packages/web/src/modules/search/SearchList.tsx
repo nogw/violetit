@@ -1,18 +1,16 @@
-import { Card, Flex } from '@/../../ui/src';
-import {
-  // useCallback,
-  useEffect,
-  useTransition,
-} from 'react';
-// import InfiniteScroll from 'react-infinite-scroller';
+import { Card, Flex, Text } from '@violetit/ui';
+
 import { graphql, usePaginationFragment } from 'react-relay';
+import { useEffect, useTransition } from 'react';
+
 import { SearchListPaginationQuery } from './__generated__/SearchListPaginationQuery.graphql';
 import { SearchList_query$key } from './__generated__/SearchList_query.graphql';
+import { Link } from '@/common/Link';
 
 const SearchListFragment = graphql`
   fragment SearchList_query on Query
   @argumentDefinitions(
-    first: { type: Int, defaultValue: 20 }
+    first: { type: Int, defaultValue: 5 }
     after: { type: String }
     filters: { type: CommunityFilters, defaultValue: { search: "" } }
   )
@@ -57,21 +55,27 @@ export const SearchList = ({ search, query }: SearchListProps) => {
 
   useEffect(() => {
     startTransition(() => {
-      const variables = { first: 10, filters: { search } };
+      const variables = { first: 5, filters: { search } };
       refetch(variables, { fetchPolicy: 'store-or-network' });
     });
   }, [search, refetch]);
 
   return (
-    <Flex className="mt-2 w-auto flex-col">
+    <Card className="mt-2 w-auto flex-col p-0">
       {data.communities.edges.map(post => {
         return (
-          <Card key={post?.node?.id} className="flex cursor-pointer flex-col">
-            <h1>r/{post?.node?.name}</h1>
-            <h2>Community • {post?.node?.members.count} members</h2>
-          </Card>
+          <Link to={`r/${post?.node?.id}`} underline={false}>
+            <Flex key={post?.node?.id} className="m-1 flex-col rounded p-1 hover:bg-gray-100">
+              <Text variant="p4" weight="semibold">
+                r/{post?.node?.name}
+              </Text>
+              <Text variant="p4" color="secondary">
+                {post?.node?.members.count} members
+              </Text>
+            </Flex>
+          </Link>
         );
       })}
-    </Flex>
+    </Card>
   );
 };
