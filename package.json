@@ -5,6 +5,7 @@
   "license": "MIT",
   "workspaces": {
     "packages": [
+      "apps/*",
       "packages/*"
     ]
   },
@@ -12,6 +13,7 @@
     "test": "jest",
     "test:watch": "jest --maxWorkers=25%",
     "test:ci": "jest --runInBand",
+    "copy-envs": "yarn workspace @violetit/server copy-env && yarn workspace @violetit/web copy-env",
     "dev:all": "concurrently \"yarn dev:server\" \"yarn dev:web\"",
     "dev:server": "yarn workspace @violetit/server start:dev",
     "dev:web": "yarn workspace @violetit/web start:dev"

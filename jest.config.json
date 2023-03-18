@@ -1,4 +1,4 @@
 {
-  "projects": ["<rootDir>/packages/**/jest.config.js"],
+  "projects": ["<rootDir>/packages/**/jest.config.js", "<rootDir>/apps/**/jest.config.js"],
   "moduleFileExtensions": ["js", "ts", "tsx"]
 }

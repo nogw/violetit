@@ -62,7 +62,7 @@
     "import/resolver": {
       "node": true,
       "typescript": {
-        "project": ["packages/*/tsconfig.json"]
+        "project": ["packages/*/tsconfig.json", "apps/*/tsconfig.json"]
       }
     }
   }
