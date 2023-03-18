@@ -1,8 +1,10 @@
 import { GraphQLEnumType, GraphQLString, GraphQLNonNull } from 'graphql';
 import { mutationWithClientMutationId, toGlobalId } from 'graphql-relay';
-import { getObjectId } from '@entria/graphql-mongo-helpers';
+import { successField, getObjectId } from '@entria/graphql-mongo-helpers';
 
 import { GraphQLContext } from '../../../graphql/types';
+import { errorField } from '../../error-field/ErrorField';
+import { fieldError } from '../../../utils/fieldError';
 
 import { PostModel } from '../../post/PostModel';
 import { PostType } from '../../post/PostType';
@@ -27,13 +29,13 @@ export const voteCreate = mutationWithClientMutationId({
   },
   mutateAndGetPayload: async ({ postId, type }, context: GraphQLContext) => {
     if (!context?.user) {
-      throw new Error('You are not logged in!');
+      throw fieldError('credentials', 'You are not logged in!');
     }
 
     const postFound = await PostModel.findById(getObjectId(postId));
 
     if (!postFound) {
-      throw new Error("This post doesn't exist");
+      throw fieldError('post', "This post doesn't exist");
     }
 
     const hasVoted = await VoteModel.findOne({
@@ -65,6 +67,7 @@ export const voteCreate = mutationWithClientMutationId({
       userId: context.user._id,
       voteId: vote._id,
       postId: postFound._id,
+      sucess: 'Post voted with sucess',
     };
   },
   outputFields: {
@@ -87,5 +90,7 @@ export const voteCreate = mutationWithClientMutationId({
         };
       },
     },
+    ...successField,
+    ...errorField,
   },
 });

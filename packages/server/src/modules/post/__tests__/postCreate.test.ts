@@ -39,10 +39,12 @@ describe('postCreateMutation', () => {
       community: community._id.toString(),
     };
 
+    const contextValue = getContext({ user });
+
     const result = await graphql({
       schema,
       source: mutation,
-      contextValue: getContext({ user }),
+      contextValue,
       variableValues,
     });
 
@@ -79,9 +81,12 @@ describe('postCreateMutation', () => {
       community: community._id.toString(),
     };
 
+    const contextValue = getContext();
+
     const result = await graphql({
       schema,
       source: mutation,
+      contextValue,
       variableValues,
     });
 
@@ -111,10 +116,12 @@ describe('postCreateMutation', () => {
       community: '123',
     };
 
+    const contextValue = getContext({ user });
+
     const result = await graphql({
       schema,
       source: mutation,
-      contextValue: getContext({ user }),
+      contextValue,
       variableValues,
     });
 

@@ -1,8 +1,10 @@
 import { GraphQLNonNull, GraphQLString } from 'graphql';
 import { mutationWithClientMutationId, toGlobalId } from 'graphql-relay';
+import { successField } from '@entria/graphql-mongo-helpers';
 
+import { errorField } from '../../error-field/ErrorField';
+import { fieldError } from '../../../utils/fieldError';
 import { GraphQLContext } from '../../../graphql/types';
-
 import { CommunityConnection } from '../CommunityType';
 import { CommunityModel } from '../CommunityModel';
 import CommunityLoader from '../CommunityLoader';
@@ -15,7 +17,7 @@ export const communityCreate = mutationWithClientMutationId({
   },
   mutateAndGetPayload: async ({ name, ...rest }, context: GraphQLContext) => {
     if (!context?.user) {
-      throw new Error('You are not logged in!');
+      throw fieldError('credentials', 'You are not logged in!');
     }
 
     const foundCommunity = await CommunityModel.findOne({
@@ -23,7 +25,7 @@ export const communityCreate = mutationWithClientMutationId({
     });
 
     if (foundCommunity) {
-      throw new Error('A community with this name has already been created');
+      throw fieldError('community', 'A community with this name has already been created');
     }
 
     const community = new CommunityModel({
@@ -60,5 +62,7 @@ export const communityCreate = mutationWithClientMutationId({
         };
       },
     },
+    ...errorField,
+    ...successField,
   }),
 });

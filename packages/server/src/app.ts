@@ -7,6 +7,7 @@ import cors from '@koa/cors';
 import { getContext } from './context';
 import { getUser } from './auth';
 import { schema } from './schema/schema';
+import { GraphQLError } from 'graphql';
 
 const app = new Koa();
 const router = new Router();
@@ -19,17 +20,17 @@ const graphQLSettingsPerReq = async (req: Request): Promise<OptionsData> => {
     schema,
     pretty: true,
     context: getContext({ user }),
-    customFormatErrorFn: ({ message, locations, stack }) => {
+    customFormatErrorFn: (error: GraphQLError) => {
       /* eslint-disable no-console */
-      console.log(message);
-      console.log(locations);
-      console.log(stack);
+      console.log(error.message);
+      console.log(error.locations);
+      console.log(error.stack);
       /* eslint-enable no-console */
 
       return {
-        message,
-        locations,
-        stack,
+        message: error.message,
+        locations: error.locations,
+        stack: error.stack,
       };
     },
   };

@@ -1,6 +1,9 @@
 import { mutationWithClientMutationId, toGlobalId } from 'graphql-relay';
 import { GraphQLNonNull, GraphQLString } from 'graphql';
-import { getObjectId } from '@entria/graphql-mongo-helpers';
+import { successField, getObjectId } from '@entria/graphql-mongo-helpers';
+
+import { errorField } from '../../error-field/ErrorField';
+import { fieldError } from '../../../utils/fieldError';
 
 import { GraphQLContext } from '../../../graphql/types';
 
@@ -15,25 +18,24 @@ export const communityExit = mutationWithClientMutationId({
   },
   mutateAndGetPayload: async ({ communityId }, context: GraphQLContext) => {
     if (!context?.user) {
-      throw new Error('You are not logged in!');
+      throw fieldError('credentials', 'You are not logged in!');
     }
 
     const foundCommunity = await CommunityModel.findById(getObjectId(communityId));
 
     if (!foundCommunity) {
-      throw new Error("This community doesn't exist");
+      throw fieldError('community', "This community doesn't exist");
     }
 
     const foundMemberIdInCommunity = foundCommunity.members.includes(context.user?._id);
-
     const foundCommunityIdInUser = context.user.communities.includes(foundCommunity._id);
 
     if (!foundMemberIdInCommunity || !foundCommunityIdInUser) {
-      throw new Error('You are not a member of this foundCommunity');
+      throw fieldError('community', 'You are not a member of this community');
     }
 
     if (foundCommunity.admin.equals(context.user._id)) {
-      throw new Error('You are the community admin, use communityExitAsAdmin to exit');
+      throw fieldError('community', 'You are the community admin, use communityExitAsAdmin to exit');
     }
 
     const foundMemberIdInCommunityMods = foundCommunity.mods.includes(context.user?._id);
@@ -67,5 +69,7 @@ export const communityExit = mutationWithClientMutationId({
         };
       },
     },
+    ...errorField,
+    ...successField,
   }),
 });

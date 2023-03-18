@@ -38,10 +38,12 @@ describe('VoteCreateMutation', () => {
       type: 'UPVOTE',
     };
 
+    const contextValue = getContext({ user: user });
+
     const result = await graphql({
       schema,
       source: mutation,
-      contextValue: getContext({ user: user }),
+      contextValue,
       variableValues,
     });
 
@@ -73,9 +75,12 @@ describe('VoteCreateMutation', () => {
       type: 'UPVOTE',
     };
 
+    const contextValue = getContext();
+
     const result = await graphql({
       schema,
       source: mutation,
+      contextValue,
       variableValues,
     });
 

@@ -1,10 +1,13 @@
 import { GraphQLString, GraphQLNonNull } from 'graphql';
 import { mutationWithClientMutationId } from 'graphql-relay';
+import { successField } from '@entria/graphql-mongo-helpers';
+
+import { generateJwtToken } from '../../../auth';
+import { fieldError } from '../../../utils/fieldError';
+import { errorField } from '../../error-field/ErrorField';
 
 import { UserModel } from '../UserModel';
 import { UserType } from '../UserType';
-
-import { generateJwtToken } from '../../../auth';
 
 export const userLogin = mutationWithClientMutationId({
   name: 'UserLogin',
@@ -16,11 +19,11 @@ export const userLogin = mutationWithClientMutationId({
     const user = await UserModel.findOne({ email });
 
     if (!user) {
-      throw new Error('This user was not registered');
+      throw fieldError('email', 'This user was not registered');
     }
 
     if (!(await user.authenticate(password))) {
-      throw new Error('This password is incorrect');
+      throw fieldError('password', 'This password is incorrect');
     }
 
     const token = generateJwtToken(user._id);
@@ -28,6 +31,7 @@ export const userLogin = mutationWithClientMutationId({
     return {
       token,
       user,
+      success: 'Logged with success',
     };
   },
 
@@ -40,5 +44,7 @@ export const userLogin = mutationWithClientMutationId({
       type: UserType,
       resolve: ({ user }) => user,
     },
+    ...successField,
+    ...errorField,
   },
 });

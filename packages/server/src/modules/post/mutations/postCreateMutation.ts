@@ -1,5 +1,9 @@
 import { GraphQLNonNull, GraphQLString } from 'graphql';
 import { mutationWithClientMutationId, toGlobalId } from 'graphql-relay';
+import { successField, getObjectId } from '@entria/graphql-mongo-helpers';
+
+import { errorField } from '../../error-field/ErrorField';
+import { fieldError } from '../../../utils/fieldError';
 
 import { GraphQLContext } from '../../../graphql/types';
 import { CommunityModel } from '../../community/CommunityModel';
@@ -7,7 +11,6 @@ import { CommunityModel } from '../../community/CommunityModel';
 import { PostConnection } from '../PostType';
 import { PostModel } from '../PostModel';
 import PostLoader from '../PostLoader';
-import { getObjectId } from '@entria/graphql-mongo-helpers';
 
 export const postCreate = mutationWithClientMutationId({
   name: 'PostCreate',
@@ -18,13 +21,13 @@ export const postCreate = mutationWithClientMutationId({
   },
   mutateAndGetPayload: async ({ title, community, ...rest }, context: GraphQLContext) => {
     if (!context?.user) {
-      throw new Error('You are not logged in!');
+      throw fieldError('credentials', 'You are not logged in!');
     }
 
     const communityFound = await CommunityModel.findById(getObjectId(community));
 
     if (!communityFound) {
-      throw new Error('Community not found!');
+      throw fieldError('community', 'Community not found!');
     }
 
     const post = await new PostModel({
@@ -36,6 +39,7 @@ export const postCreate = mutationWithClientMutationId({
 
     return {
       id: post._id,
+      sucess: 'Post created with sucess',
     };
   },
   outputFields: () => ({
@@ -54,5 +58,7 @@ export const postCreate = mutationWithClientMutationId({
         };
       },
     },
+    ...errorField,
+    ...successField,
   }),
 });

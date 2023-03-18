@@ -4,6 +4,7 @@ import { clearDatabaseAndRestartCounters, connectWithMongoose, disconnectWithMon
 import { createCommunityWithAdmin } from '../fixtures/createCommunityWithAdmin';
 import { schema } from '../../../schema/schema';
 import { getContext } from '../../../context';
+import { createUser } from '../../user/fixtures/createUser';
 
 beforeAll(connectWithMongoose);
 
@@ -53,12 +54,14 @@ describe('CommunityExitAsAdminMutation', () => {
     expect(communityEdge).toBeNull();
   });
 
-  it('should not exit if user is community admin', async () => {
-    const { user, community } = await createCommunityWithAdmin({ name: 'NogwCommunity' });
+  it('should not exit if user is not a community admin', async () => {
+    const { community } = await createCommunityWithAdmin({ name: 'NogwCommunity' });
+
+    const user = await createUser();
 
     const mutation = `
-      mutation CommunityExitMutation($communityId: String!) {
-        communityExit(input: { communityId: $communityId }) {
+      mutation CommunityExitAsAdmin($communityId: String!) {
+        communityExitAsAdmin(input: { communityId: $communityId }) {
           communityEdge {
             node {
               id
@@ -79,10 +82,8 @@ describe('CommunityExitAsAdminMutation', () => {
       variableValues,
     });
 
-    expect(result.data?.communityExit).toBeNull();
+    expect(result.data?.communityExitAsAdmin).toBeNull();
     expect(result.errors).toBeDefined();
-    expect(result.errors && result.errors[0].message).toBe(
-      'You are the community admin, use communityExitAsAdmin to exit',
-    );
+    expect(result.errors && result.errors[0].message).toBe('You are not a member of this community');
   });
 });

@@ -3,6 +3,7 @@ import { graphql } from 'graphql';
 import { clearDatabaseAndRestartCounters, connectWithMongoose, disconnectWithMongoose } from '../../../../test';
 import { createUser } from '../fixtures/createUser';
 import { schema } from '../../../schema/schema';
+import { getContext } from '../../../context';
 
 beforeAll(connectWithMongoose);
 
@@ -30,9 +31,12 @@ describe('UserLoginMutation', () => {
       }
     `;
 
+    const contextValue = getContext();
+
     const result = await graphql({
       schema,
       source: mutation,
+      contextValue,
       variableValues: {
         email,
         password: 'a9218c490c89864790bf',
@@ -64,9 +68,12 @@ describe('UserLoginMutation', () => {
       }
     `;
 
+    const contextValue = getContext();
+
     const result = await graphql({
       schema,
       source: mutation,
+      contextValue,
       variableValues: {
         email: 'nogw@nogw',
         password: 'a9218c490c89864790bf',
@@ -77,7 +84,7 @@ describe('UserLoginMutation', () => {
     expect(result.errors).toBeDefined();
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    expect(result.errors[0].message).toBe('This user was not registered');
+    expect(result.errors[0].message).toBe('Invalid credentials');
   });
 
   it('should display error if password is incorrect', async () => {
@@ -97,9 +104,12 @@ describe('UserLoginMutation', () => {
       }
     `;
 
+    const contextValue = getContext();
+
     const result = await graphql({
       schema,
       source: mutation,
+      contextValue,
       variableValues: {
         email: email,
         password: 'a9218c490c89864790bf',
@@ -110,6 +120,6 @@ describe('UserLoginMutation', () => {
     expect(result.errors).toBeDefined();
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    expect(result.errors[0].message).toBe('This password is incorrect');
+    expect(result.errors[0].message).toBe('Invalid credentials');
   });
 });

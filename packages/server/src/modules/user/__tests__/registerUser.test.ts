@@ -3,6 +3,7 @@ import { graphql } from 'graphql';
 import { clearDatabaseAndRestartCounters, connectWithMongoose, disconnectWithMongoose } from '../../../../test';
 import { createUser } from '../fixtures/createUser';
 import { schema } from '../../../schema/schema';
+import { getContext } from '../../../context';
 
 beforeAll(connectWithMongoose);
 
@@ -25,11 +26,13 @@ describe('UserRegisterMutation', () => {
     `;
 
     const rootValue = {};
+    const contextValue = getContext();
 
     const result = await graphql({
       schema,
       source: mutation,
       rootValue,
+      contextValue,
       variableValues: {
         input: {
           username: 'nogw',
@@ -63,11 +66,13 @@ describe('UserRegisterMutation', () => {
       `;
 
     const rootValue = {};
+    const contextValue = getContext();
 
     const result = await graphql({
       schema,
       source: mutation,
       rootValue,
+      contextValue,
       variableValues: {
         input: {
           username: 'nogw',
@@ -96,11 +101,13 @@ describe('UserRegisterMutation', () => {
       `;
 
     const rootValue = {};
+    const contextValue = getContext();
 
     const result = await graphql({
       schema,
       source: mutation,
       rootValue,
+      contextValue,
       variableValues: {
         input: {
           username,

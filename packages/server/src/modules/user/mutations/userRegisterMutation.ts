@@ -1,10 +1,14 @@
 import { GraphQLString, GraphQLNonNull } from 'graphql';
 import { mutationWithClientMutationId } from 'graphql-relay';
+import { successField } from '@entria/graphql-mongo-helpers';
+
+import { generateJwtToken } from '../../../auth';
+import { errorField } from '../../error-field/ErrorField';
+import { fieldError } from '../../../utils/fieldError';
 
 import { UserModel } from '../UserModel';
 import { UserType } from '../UserType';
 
-import { generateJwtToken } from '../../../auth';
 import { findUserByEmail, findUserByUsername } from '../UserService';
 
 export const userRegister = mutationWithClientMutationId({
@@ -18,13 +22,13 @@ export const userRegister = mutationWithClientMutationId({
     const existingUser = await findUserByEmail(email);
 
     if (existingUser) {
-      throw new Error('This email is already used');
+      throw fieldError('email', 'This email is already used');
     }
 
     const usernameTaken = await findUserByUsername(username);
 
     if (usernameTaken) {
-      throw new Error('This username is already used');
+      throw fieldError('password', 'This username is already used');
     }
 
     const user = new UserModel({
@@ -52,5 +56,7 @@ export const userRegister = mutationWithClientMutationId({
       type: UserType,
       resolve: async ({ id }) => await UserModel.findById(id),
     },
+    ...successField,
+    ...errorField,
   },
 });

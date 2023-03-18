@@ -38,7 +38,7 @@ export const PostFiltersInputType: GraphQLInputObjectType = new GraphQLInputObje
     },
     community: {
       type: GraphQLID,
-      description: 'Filter by category.',
+      description: 'Filter by community.',
     },
   }),
 });
