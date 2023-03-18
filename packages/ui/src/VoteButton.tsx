@@ -9,14 +9,24 @@ type VoteButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
 
 export const VoteButton = React.forwardRef<HTMLButtonElement, VoteButtonProps>(
   ({ direction, voted, ...props }, ref) => {
-    const iconClsx = 'text-neutral-400 px-0 h-6 w-6 duration-150 rounded-sm hover:bg-gray-100';
+    const styles = {
+      base: 'text-neutral-400 px-0 h-6 w-6 duration-150 rounded-sm hover:bg-gray-100',
+      upvote: 'hover:text-orange-400',
+      downvote: 'hover:text-sky-400',
+      upvoted_active: 'text-orange-400',
+      downvote_active: 'text-sky-400',
+    };
 
     return (
       <button {...props} ref={ref}>
         {direction === 'up' ? (
-          <TbArrowBigTop className={clsx(iconClsx, 'hover:text-orange-400', voted === 'UPVOTE' && 'text-orange-400')} />
+          <TbArrowBigTop
+            className={clsx(styles.base, styles.upvote, { [styles.upvoted_active]: voted === 'UPVOTE' })}
+          />
         ) : (
-          <TbArrowBigDown className={clsx(iconClsx, 'hover:text-sky-400', voted === 'DOWNVOTE' && 'text-sky-400')} />
+          <TbArrowBigDown
+            className={clsx(styles.base, styles.downvote, { [styles.downvote_active]: voted === 'DOWNVOTE' })}
+          />
         )}
       </button>
     );

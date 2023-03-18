@@ -14,7 +14,7 @@ export const SelectInput = React.forwardRef<HTMLSelectElement, SelectInputProps>
         className={clsx(
           'rounded-lg border border-gray-300',
           'text-sm text-gray-900',
-          'w-full cursor-pointer bg-white p-2 outline-none',
+          'w-full cursor-pointer bg-white p-2 outline-none sm:w-64',
           className,
         )}
         {...props}

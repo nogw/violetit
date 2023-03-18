@@ -3,9 +3,11 @@ import clsx from 'clsx';
 type HeadingProps = React.HTMLAttributes<HTMLHeadingElement> & {
   variant?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
   weight?: 'semibold' | 'bold' | 'extrabold';
+  color?: 'primary' | 'secondary';
+  children: React.ReactNode;
 };
 
-export const Heading = ({ variant = 'h3', weight = 'semibold' }: HeadingProps) => {
+export const Heading = ({ variant = 'h3', weight = 'semibold', color = 'primary', children }: HeadingProps) => {
   const styles = {
     variant: {
       h1: 'text-4xl md:text-5xl',
@@ -20,7 +22,11 @@ export const Heading = ({ variant = 'h3', weight = 'semibold' }: HeadingProps) =
       bold: 'font-bold',
       extrabold: 'font-extrabold',
     },
+    color: {
+      primary: 'text-black',
+      secondary: 'text-gray-500',
+    },
   };
 
-  return <h1 className={clsx(styles.variant[variant], styles.weight[weight])} />;
+  return <h1 className={clsx(styles.variant[variant], styles.weight[weight], styles.color[color])}>{children}</h1>;
 };
