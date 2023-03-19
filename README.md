@@ -51,7 +51,6 @@
 - [x] Linter (Eslint)
 - [x] Prettier
 - [x] react-router-dom
-- [ ] Storybook
 - [ ] Jest + Testing Library
 
 ## How to run
