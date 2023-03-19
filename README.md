@@ -81,6 +81,8 @@ JWT_KEY=
 MONGO_URI=
 ```
 
+`VITE_GRAPHQL_URL` can be set as `http://localhost:4000/graphql` if you run in localhost
+
 ```sh
 ### apps/web/.env
 VITE_GRAPHQL_URL=
