@@ -1,0 +1,50 @@
+name: Tests
+on:
+  pull_request:
+    branches-ignore:
+      - 'dependabot/*'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Node v14
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14.x
+
+      - name: Use cached node_modules
+        uses: actions/cache@v1
+        with:
+          path: node_modules
+          key: nodeModules-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            nodeModules-
+      - name: Installing dependencies...
+        run: yarn install --frozen-lockfile
+        env:
+          CI: true
+
+      - name: Generating GraphQL Schema...
+        run: yarn workspace @violetit/server schema:generate
+
+      - name: Generating Relay types...
+        run: yarn workspace @violetit/web relay
+
+      - name: Running ESLint...
+        run: yarn eslint --fix .
+        env:
+          CI: true
+
+      - name: Running Prettier...
+        run: yarn prettier --write **/src/**/*
+        env:
+          CI: true
+
+      - name: Running tests...
+        run: yarn test:ci
+        env:
+          CI: true
