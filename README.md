@@ -72,6 +72,8 @@ yarn copy-envs
 
 ### Fill environment files
 
+`MONGO_URI` can be set as `mongodb://127.0.0.1:27017/violetit` if you run in localhost
+
 ```sh
 ### apps/server/.env
 PORT=4000
