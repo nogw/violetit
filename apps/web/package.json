@@ -36,7 +36,6 @@
     "@types/relay-test-utils": "^14.1.0",
     "@vitejs/plugin-react": "^3.0.0",
     "autoprefixer": "^10.4.13",
-    "babel-plugin-relay": "^15.0.0",
     "dotenv": "^16.0.3",
     "formik": "^2.2.9",
     "postcss": "^8.4.20",
