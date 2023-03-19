@@ -24,7 +24,6 @@ describe('VoteCreateMutation', () => {
             message
           }
           post {
-            id
             votesCount
           }
           vote {
@@ -51,6 +50,58 @@ describe('VoteCreateMutation', () => {
     });
 
     expect(result.errors).toBeUndefined();
+
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    const { post: postLiked, vote, error } = result.data.voteCreate;
+
+    expect(error).toBeNull();
+    expect(vote.node.type).toBe('UPVOTE');
+    expect(postLiked.votesCount).toBe(1);
+  });
+
+  it('should not vote for the same post more than once', async () => {
+    const user = await createUser();
+    const post = await createPost();
+
+    const mutation = `
+      mutation VoteCreateMutation($postId: String!, $type: VoteType!) {
+        voteCreate(input: { postId: $postId, type: $type }) {
+          error {
+            message
+          }
+          post {
+            votesCount
+          }
+          vote {
+            node {
+              type
+            }
+          }
+        }
+      }
+    `;
+
+    const variableValues = {
+      postId: post._id.toString(),
+      type: 'UPVOTE',
+    };
+
+    const contextValue = getContext({ user: user });
+
+    await graphql({
+      schema,
+      source: mutation,
+      contextValue,
+      variableValues,
+    });
+
+    const result = await graphql({
+      schema,
+      source: mutation,
+      contextValue,
+      variableValues,
+    });
 
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
@@ -91,8 +142,6 @@ describe('VoteCreateMutation', () => {
       variableValues,
     });
 
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
     expect(result.errors).toBeUndefined();
     expect(result.data.voteCreate.post).toBeNull();
     expect(result.data.voteCreate.error.message).toBe('You are not logged in!');

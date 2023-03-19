@@ -1,4 +1,8 @@
-export const getCounter = (key: string): number => {
+declare global {
+  var __COUNTERS__: Record<string, number>;
+}
+
+export const getCounter = (key: string) => {
   if (key in global.__COUNTERS__) {
     global.__COUNTERS__[key]++;
 
@@ -10,6 +14,6 @@ export const getCounter = (key: string): number => {
   return global.__COUNTERS__[key];
 };
 
-export const restartCounters = (): void => {
+export const restartCounters = () => {
   global.__COUNTERS__ = Object.keys(global.__COUNTERS__).reduce((prev, curr) => ({ ...prev, [curr]: 0 }), {});
 };
