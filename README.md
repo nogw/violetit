@@ -1,5 +1,7 @@
 # Violetit
 
+> ****NOTE:**** Some scripts of this project have been written based on Unix commands (e.g, cp, rm), so if you are running this project on a Windows-based system, you may face difficulties with the `yarn copy-envs` command. In this case, you can manually copy the `.env.example` files and rename them to `.env`
+
 ## Project Archicteture
 
 ```
