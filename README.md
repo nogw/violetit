@@ -25,8 +25,8 @@
 - [x] Editorconfig
 - [x] Lint staged
 - [x] Pre-commit
+- [x] CI/CD (Github Actions)
 - [ ] Dockerfile
-- [ ] CI/CD (Github Actions)
 
 #### > Server
 
@@ -50,7 +50,7 @@
 - [x] Tailwind
 - [x] Linter (Eslint)
 - [x] Prettier
-- [x] react-router-dom
+- [x] Routing (react-router-dom)
 - [ ] Jest + Testing Library
 
 ## How to run
