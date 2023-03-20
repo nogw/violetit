@@ -12,7 +12,7 @@ beforeEach(clearDatabaseAndRestartCounters);
 afterAll(disconnectWithMongoose);
 
 describe('UserLoginMutation', () => {
-  it('should login with a existent user', async () => {
+  it('should login with a registered user', async () => {
     const { email } = await createUser({
       username: 'nogw',
       email: 'nogw@nogw.com',
