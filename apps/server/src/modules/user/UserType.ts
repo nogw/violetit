@@ -16,7 +16,7 @@ import CommunityLoader from '../community/CommunityLoader';
 export const UserType = new GraphQLObjectType<IUserDocument, GraphQLContext>({
   name: 'User',
   fields: () => ({
-    id: globalIdField(),
+    id: globalIdField('User'),
     username: {
       type: new GraphQLNonNull(GraphQLString),
       resolve: user => user.username,
