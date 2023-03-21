@@ -2,6 +2,18 @@
 
 > **_NOTE:_** Some scripts of this project have been written based on Unix commands (e.g, cp, rm), so if you are running this project on a Windows-based system, you may face difficulties with the `yarn copy-envs` command. In this case, you can manually copy the `.env.example` files and rename them to `.env`
 
+# Table of contents
+
+- [Project Archicteture](#project-archicteture)
+- [How to run](#how-to-run)
+  - [Environment](#developer-environment)
+  - [Dependencies](#install-the-dependencies)
+  - [Run server](#running-server)
+  - [Run web](#running-web)
+  - [Run project](#run-both-web-and-server-packages)
+- [References](#references)
+- [Author Info](#author-info)
+
 ## Project Archicteture
 
 ```
@@ -40,6 +52,7 @@
 - [x] Linter (Eslint)
 - [x] Prettier
 - [x] Entria helpers
+- [x] Webpack + Babel
 
 #### > Web
 
@@ -135,3 +148,9 @@ yarn dev:all
 - [Fakeddit](https://github.com/noghartt/fakeddit)
 - [RBFA GraphQL API](https://github.com/daniloab/rbaf-graphql-api)
 - [Relay Real World](https://github.com/sibelius/relay-realworld)
+
+## Author Info
+
+- Follow me on [Twitter](https://twitter.com/nogchou)
+
+[Back To The Top](#violetit)
