@@ -109,7 +109,7 @@ yarn
 
 ### Running server
 
-Generate the `schema.graphql`:
+To begin, generate the `schema.graphql` file:
 
 ```sh
 yarn workspace @violetit/server schema:generate
@@ -123,7 +123,7 @@ yarn workspace @violetit/server start:dev
 
 ### Running web
 
-Generate the types from `relay-compiler`
+To begin, generate the artifacts using the Relay Compiler:
 
 ```sh
 yarn workspace @violetit/web relay
@@ -136,6 +136,8 @@ yarn workspace @violetit/web start:dev
 ```
 
 ### Run both `web` and `server` packages
+
+If you have completed the necessary setup for the required packages, you can run them concurrently with a single command:
 
 ```bash
 yarn dev:all
