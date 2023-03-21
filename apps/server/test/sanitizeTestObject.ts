@@ -4,71 +4,73 @@ import mongoose from 'mongoose';
 const { ObjectId } = mongoose.Types;
 
 type Value = string | boolean | null | undefined | IValueObject | IValueArray | object;
+
 interface IValueObject {
   [x: string]: Value;
 }
 
 type IValueArray = Array<Value>;
 
-export const sanitizeValue = (
-  value: Value,
-  field: string | null,
-  keys: string[],
-  ignore: string[] = [],
-  jsonKeys: string[] = [],
-): Value => {
+interface SanitizeOptions {
+  field?: string;
+  keys: string[];
+  ignore?: string[];
+  jsonKeys?: string[];
+}
+
+const sanitizeValue = (value: Value, options: SanitizeOptions): Value => {
+  const { field = null, keys, ignore = [], jsonKeys = [] } = options;
+
   if (typeof value === 'boolean') {
     return value;
   }
 
-  if (!value && value !== 0) {
+  if (!value || (typeof value == 'number' && value !== 0)) {
     return 'EMPTY';
   }
 
-  if (keys.indexOf(field) !== -1) {
-    return `FROZEN-${field.toUpperCase()}`;
+  if (keys.includes(field as string)) {
+    return `FROZEN-${(field as string).toUpperCase()}`;
   }
 
-  if (jsonKeys.indexOf(field) !== -1) {
-    const jsonData = JSON.parse(value);
+  if (jsonKeys.includes(field as string)) {
+    const jsonData = JSON.parse(value as string);
 
     return sanitizeTestObject(jsonData, keys, ignore, jsonKeys);
   }
 
-  // if it's an array, sanitize the field
   if (Array.isArray(value)) {
-    return value.map(item => sanitizeValue(item, null, keys, ignore));
+    return value.map(item =>
+      sanitizeValue(item, {
+        keys,
+        ignore,
+        jsonKeys,
+      }),
+    );
   }
 
-  // Check if it's not an array and can be transformed into a string
   if (!Array.isArray(value) && typeof value.toString === 'function') {
-    // Remove any non-alphanumeric character from value
     const cleanValue = value.toString().replace(/[^a-z0-9]/gi, '');
 
-    // Check if it's a valid `ObjectId`, if so, replace it with a static value
-    if (ObjectId.isValid(cleanValue) && value.toString().indexOf(cleanValue) !== -1) {
+    if (ObjectId.isValid(cleanValue) && value.toString().includes(cleanValue)) {
       return value.toString().replace(cleanValue, 'ObjectId');
     }
 
     if (value.constructor === Date) {
-      // TODO - should we always freeze Date ?
       return value;
-      // return `FROZEN-${field.toUpperCase()}`;
     }
 
-    // If it's an object, we call sanitizeTestObject function again to handle nested fields
     if (typeof value === 'object') {
       return sanitizeTestObject(value, keys, ignore, jsonKeys);
     }
 
-    // Check if it's a valid globalId, if so, replace it with a static value
     const result = fromGlobalId(cleanValue);
+
     if (result.type && result.id && ObjectId.isValid(result.id)) {
       return 'GlobalID';
     }
   }
 
-  // If it's an object, we call sanitizeTestObject function again to handle nested fields
   if (typeof value === 'object') {
     return sanitizeTestObject(value, keys, ignore, jsonKeys);
   }
@@ -76,7 +78,7 @@ export const sanitizeValue = (
   return value;
 };
 
-export const defaultFrozenKeys = ['id', 'createdAt', 'updatedAt', 'password'];
+const defaultFrozenKeys = ['id', 'createdAt', 'updatedAt', 'password'];
 
 /**
  * Sanitize a test object removing the mentions of a `ObjectId`
@@ -85,28 +87,41 @@ export const defaultFrozenKeys = ['id', 'createdAt', 'updatedAt', 'password'];
  * @param ignore {[string]} Array of keys to ignore
  * @returns {object} The sanitized object
  */
+interface IPayload {
+  [key: string]: Value;
+}
+
 export const sanitizeTestObject = (
   payload: Value,
   keys = defaultFrozenKeys,
   ignore: string[] = [],
   jsonKeys: string[] = [],
-) =>
-  // TODO - treat array as arrays
-  payload &&
-  Object.keys(payload).reduce((sanitizedObj, field) => {
-    const value = payload[field];
+): any => {
+  const sanitizedPayload = payload as IPayload;
 
-    if (ignore.indexOf(field) !== -1) {
+  if (Array.isArray(sanitizedPayload)) {
+    return sanitizedPayload.map(item => sanitizeTestObject(item, keys, ignore, jsonKeys));
+  }
+
+  if (typeof sanitizedPayload === 'object' && sanitizedPayload !== null) {
+    return Object.keys(sanitizedPayload).reduce((sanitizedObj, field) => {
+      const value = sanitizedPayload[field];
+
+      if (ignore.indexOf(field) !== -1) {
+        return {
+          ...sanitizedObj,
+          [field]: value,
+        };
+      }
+
+      const sanitizedValue = sanitizeValue(value, { field, keys, ignore, jsonKeys });
+
       return {
         ...sanitizedObj,
-        [field]: value,
+        [field]: sanitizedValue,
       };
-    }
+    }, {});
+  }
 
-    const sanitizedValue = sanitizeValue(value, field, keys, ignore, jsonKeys);
-
-    return {
-      ...sanitizedObj,
-      [field]: sanitizedValue,
-    };
-  }, {});
+  return sanitizedPayload;
+};

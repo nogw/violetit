@@ -1,0 +1,37 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`UserLoginMutation should display error if password is incorrect 1`] = `
+Object {
+  "userLogin": Object {
+    "error": Object {
+      "message": "This password is incorrect",
+    },
+    "me": "EMPTY",
+    "token": "EMPTY",
+  },
+}
+`;
+
+exports[`UserLoginMutation should display error if username isn't exists 1`] = `
+Object {
+  "userLogin": Object {
+    "error": Object {
+      "message": "This user was not registered",
+    },
+    "me": "EMPTY",
+    "token": "EMPTY",
+  },
+}
+`;
+
+exports[`UserLoginMutation should login with a registered user 1`] = `
+Object {
+  "userLogin": Object {
+    "error": "EMPTY",
+    "me": Object {
+      "username": "user#0",
+    },
+    "token": "FROZEN-TOKEN",
+  },
+}
+`;

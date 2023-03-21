@@ -1,0 +1,44 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CommunityExitMutation should exit a community 1`] = `
+Object {
+  "communityExit": Object {
+    "communityEdge": Object {
+      "node": Object {
+        "id": "FROZEN-ID",
+        "members": Object {
+          "edges": Array [
+            Object {
+              "node": Object {
+                "id": "FROZEN-ID",
+              },
+            },
+          ],
+        },
+      },
+    },
+  },
+}
+`;
+
+exports[`CommunityExitMutation should not exit if user is community admin 1`] = `
+Object {
+  "communityExit": Object {
+    "communityEdge": "EMPTY",
+    "error": Object {
+      "message": "You are the community admin, use communityExitAsAdmin to exit",
+    },
+  },
+}
+`;
+
+exports[`CommunityExitMutation should not exit if user is not a community member 1`] = `
+Object {
+  "communityExit": Object {
+    "communityEdge": "EMPTY",
+    "error": Object {
+      "message": "You are not a member of this community",
+    },
+  },
+}
+`;

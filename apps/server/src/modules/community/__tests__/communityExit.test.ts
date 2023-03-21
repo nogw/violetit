@@ -1,6 +1,11 @@
 import { graphql } from 'graphql';
 
-import { clearDatabaseAndRestartCounters, connectWithMongoose, disconnectWithMongoose } from '../../../../test';
+import {
+  clearDatabaseAndRestartCounters,
+  connectWithMongoose,
+  disconnectWithMongoose,
+  sanitizeTestObject,
+} from '../../../../test';
 import { createCommunityWithAdmin } from '../fixtures/createCommunityWithAdmin';
 import { addUserToCommunity } from '../fixtures/addUserToCommunity';
 import { createUser } from '../../user/fixtures/createUser';
@@ -40,6 +45,8 @@ describe('CommunityExitMutation', () => {
       }
     `;
 
+    const contextValue = getContext({ user });
+
     const variableValues = {
       communityId: community._id.toString(),
     };
@@ -47,21 +54,20 @@ describe('CommunityExitMutation', () => {
     const result = await graphql({
       schema,
       source: mutation,
-      contextValue: getContext({ user }),
+      contextValue,
       variableValues,
     });
 
     expect(result.errors).toBeUndefined();
-
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     const { communityEdge } = result.data.communityExit;
     expect(communityEdge.node.members.edges).toHaveLength(1);
-
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     const membersId = communityEdge.node.members.edges.map(edge => fromGlobalId(edge.node.id).id);
     expect(membersId).not.toContain(user._id.toString());
+    expect(sanitizeTestObject(result.data, ['id'])).toMatchSnapshot();
   });
 
   it('should not exit if user is not a community member', async () => {
@@ -84,6 +90,8 @@ describe('CommunityExitMutation', () => {
       }
     `;
 
+    const contextValue = getContext({ user });
+
     const variableValues = {
       communityId: community._id.toString(),
     };
@@ -91,13 +99,14 @@ describe('CommunityExitMutation', () => {
     const result = await graphql({
       schema,
       source: mutation,
-      contextValue: getContext({ user }),
+      contextValue,
       variableValues,
     });
 
     expect(result.errors).toBeUndefined();
     expect(result.data.communityExit.communityEdge).toBeNull();
     expect(result.data.communityExit.error.message).toBe('You are not a member of this community');
+    expect(sanitizeTestObject(result.data)).toMatchSnapshot();
   });
 
   it('should not exit if user is community admin', async () => {
@@ -118,6 +127,8 @@ describe('CommunityExitMutation', () => {
       }
     `;
 
+    const contextValue = getContext({ user });
+
     const variableValues = {
       communityId: community._id.toString(),
     };
@@ -125,7 +136,7 @@ describe('CommunityExitMutation', () => {
     const result = await graphql({
       schema,
       source: mutation,
-      contextValue: getContext({ user }),
+      contextValue,
       variableValues,
     });
 
@@ -134,5 +145,6 @@ describe('CommunityExitMutation', () => {
     expect(result.data.communityExit.error.message).toBe(
       'You are the community admin, use communityExitAsAdmin to exit',
     );
+    expect(sanitizeTestObject(result.data)).toMatchSnapshot();
   });
 });

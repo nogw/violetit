@@ -1,6 +1,11 @@
 import { graphql } from 'graphql';
 
-import { clearDatabaseAndRestartCounters, connectWithMongoose, disconnectWithMongoose } from '../../../../test';
+import {
+  clearDatabaseAndRestartCounters,
+  connectWithMongoose,
+  disconnectWithMongoose,
+  sanitizeTestObject,
+} from '../../../../test';
 import { createUser } from '../fixtures/createUser';
 import { schema } from '../../../schema/schema';
 import { getContext } from '../../../context';
@@ -21,7 +26,6 @@ describe('UserRegisterMutation', () => {
             message
           }
           me {
-            id
             username
           }
         }
@@ -30,35 +34,30 @@ describe('UserRegisterMutation', () => {
 
     const rootValue = {};
     const contextValue = getContext();
+    const variables = {
+      email: 'violetit@mail.com',
+      username: 'awesomeusername',
+      password: 'awesomepassword',
+    };
 
     const result = await graphql({
       schema,
-      source: mutation,
       rootValue,
       contextValue,
-      variableValues: {
-        input: {
-          username: 'nogw',
-          email: 'nogw@nogw.com',
-          password: 'a9218c490c89864790bf',
-        },
-      },
+      source: mutation,
+      variableValues: { input: variables },
     });
 
     expect(result.errors).toBeUndefined();
-
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    const { token, me, error } = result.data.userRegister;
-
-    expect(error).toBeNull();
-    expect(token).toBeDefined();
-    expect(me.id).toBeDefined();
+    expect(result.data.userRegister.error).toBeNull();
+    expect(result.data.userRegister.token).toBeDefined();
+    expect(result.data.userRegister.me.username).toBe(variables.username);
+    expect(sanitizeTestObject(result.data, ['token'])).toMatchSnapshot();
   });
 
   it('should not registrate user if email belongs to another user', async () => {
     const { email } = await createUser({
-      email: 'nogw@nogw.com',
+      email: 'violetit@mail.com',
     });
 
     const mutation = `
@@ -74,24 +73,24 @@ describe('UserRegisterMutation', () => {
 
     const rootValue = {};
     const contextValue = getContext();
+    const variables = {
+      email: email,
+      username: 'awesomeusername',
+      password: 'awesomepassword',
+    };
 
     const result = await graphql({
       schema,
-      source: mutation,
       rootValue,
       contextValue,
-      variableValues: {
-        input: {
-          username: 'nogw',
-          email,
-          password: 'a9218c490c89864790bf',
-        },
-      },
+      source: mutation,
+      variableValues: { input: variables },
     });
 
     expect(result.errors).toBeUndefined();
     expect(result.data.userRegister.token).toBeNull();
     expect(result.data.userRegister.error.message).toBe('This email is already used');
+    expect(sanitizeTestObject(result.data)).toMatchSnapshot();
   });
 
   it('should not registrate user if username belongs to another user', async () => {
@@ -112,23 +111,23 @@ describe('UserRegisterMutation', () => {
 
     const rootValue = {};
     const contextValue = getContext();
+    const variables = {
+      email: 'violetit@mail.com',
+      username: username,
+      password: 'awesomepassword',
+    };
 
     const result = await graphql({
       schema,
-      source: mutation,
       rootValue,
       contextValue,
-      variableValues: {
-        input: {
-          username,
-          email: 'nogw@nogw.com',
-          password: 'a9218c490c89864790bf',
-        },
-      },
+      source: mutation,
+      variableValues: { input: variables },
     });
 
     expect(result.errors).toBeUndefined();
     expect(result.data.userRegister.token).toBeNull();
     expect(result.data.userRegister.error.message).toBe('This username is already used');
+    expect(sanitizeTestObject(result.data)).toMatchSnapshot();
   });
 });

@@ -1,6 +1,11 @@
 import { graphql } from 'graphql';
 
-import { clearDatabaseAndRestartCounters, connectWithMongoose, disconnectWithMongoose } from '../../../../test';
+import {
+  clearDatabaseAndRestartCounters,
+  connectWithMongoose,
+  disconnectWithMongoose,
+  sanitizeTestObject,
+} from '../../../../test';
 import { getContext } from '../../../context';
 import { schema } from '../../../schema/schema';
 
@@ -36,13 +41,13 @@ describe('postCreateMutation', () => {
       }
     `;
 
+    const contextValue = getContext({ user });
+
     const variableValues = {
       title: 'Post Title',
       content: 'Post Content',
       community: community._id.toString(),
     };
-
-    const contextValue = getContext({ user });
 
     const result = await graphql({
       schema,
@@ -52,16 +57,12 @@ describe('postCreateMutation', () => {
     });
 
     expect(result.errors).toBeUndefined();
-
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    const { postEdge, error } = result.data.postCreate;
-
-    expect(error).toBeNull();
-    expect(postEdge.node.id).toBeDefined();
-    expect(postEdge.node.title).toBe(variableValues.title);
-    expect(postEdge.node.content).toBe(variableValues.content);
-    expect(postEdge.node.author.username).toBe(user.username);
+    expect(result.data.postCreate.error).toBeNull();
+    expect(result.data.postCreate.postEdge.node.id).toBeDefined();
+    expect(result.data.postCreate.postEdge.node.title).toBe(variableValues.title);
+    expect(result.data.postCreate.postEdge.node.content).toBe(variableValues.content);
+    expect(result.data.postCreate.postEdge.node.author.username).toBe(user.username);
+    expect(sanitizeTestObject(result.data, ['id'])).toMatchSnapshot();
   });
 
   it("should not create a post if doesn't have authorization header", async () => {
@@ -82,13 +83,13 @@ describe('postCreateMutation', () => {
       }
     `;
 
+    const contextValue = getContext();
+
     const variableValues = {
       title: 'Post Title',
       content: 'Post Content',
       community: community._id.toString(),
     };
-
-    const contextValue = getContext();
 
     const result = await graphql({
       schema,
@@ -100,6 +101,7 @@ describe('postCreateMutation', () => {
     expect(result.errors).toBeUndefined();
     expect(result.data.postCreate.postEdge).toBeNull();
     expect(result.data.postCreate.error.message).toBe('You are not logged in!');
+    expect(sanitizeTestObject(result.data)).toMatchSnapshot();
   });
 
   it('should not create a post if the community does not exists', async () => {
@@ -120,13 +122,13 @@ describe('postCreateMutation', () => {
       }
     `;
 
+    const contextValue = getContext({ user });
+
     const variableValues = {
       title: 'Post Title',
       content: 'Post Content',
       community: '123',
     };
-
-    const contextValue = getContext({ user });
 
     const result = await graphql({
       schema,
@@ -138,5 +140,6 @@ describe('postCreateMutation', () => {
     expect(result.errors).toBeUndefined();
     expect(result.data.postCreate.postEdge).toBeNull();
     expect(result.data.postCreate.error.message).toBe('Community not found!');
+    expect(sanitizeTestObject(result.data)).toMatchSnapshot();
   });
 });

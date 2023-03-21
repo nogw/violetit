@@ -1,0 +1,35 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`UserRegisterMutation should not registrate user if email belongs to another user 1`] = `
+Object {
+  "userRegister": Object {
+    "error": Object {
+      "message": "This email is already used",
+    },
+    "token": "EMPTY",
+  },
+}
+`;
+
+exports[`UserRegisterMutation should not registrate user if username belongs to another user 1`] = `
+Object {
+  "userRegister": Object {
+    "error": Object {
+      "message": "This username is already used",
+    },
+    "token": "EMPTY",
+  },
+}
+`;
+
+exports[`UserRegisterMutation should registrate an user 1`] = `
+Object {
+  "userRegister": Object {
+    "error": "EMPTY",
+    "me": Object {
+      "username": "awesomeusername",
+    },
+    "token": "FROZEN-TOKEN",
+  },
+}
+`;

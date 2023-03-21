@@ -1,0 +1,28 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CommunityJoinMutation should create a new community 1`] = `
+Object {
+  "communityJoin": Object {
+    "communityEdge": Object {
+      "node": Object {
+        "id": "FROZEN-ID",
+        "members": Object {
+          "edges": Array [
+            Object {
+              "node": Object {
+                "id": "FROZEN-ID",
+              },
+            },
+            Object {
+              "node": Object {
+                "id": "FROZEN-ID",
+              },
+            },
+          ],
+        },
+      },
+    },
+    "error": "EMPTY",
+  },
+}
+`;

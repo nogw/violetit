@@ -1,6 +1,11 @@
 import { graphql } from 'graphql';
 
-import { clearDatabaseAndRestartCounters, connectWithMongoose, disconnectWithMongoose } from '../../../../test';
+import {
+  clearDatabaseAndRestartCounters,
+  connectWithMongoose,
+  disconnectWithMongoose,
+  sanitizeTestObject,
+} from '../../../../test';
 import { createUser } from '../fixtures/createUser';
 import { schema } from '../../../schema/schema';
 import { getContext } from '../../../context';
@@ -13,56 +18,51 @@ afterAll(disconnectWithMongoose);
 
 describe('UserLoginMutation', () => {
   it('should login with a registered user', async () => {
-    const { email } = await createUser({
-      username: 'nogw',
+    const { username, email } = await createUser({
       email: 'nogw@nogw.com',
       password: 'a9218c490c89864790bf',
     });
 
     const mutation = `
-      mutation UserLoginMutation($email: String!, $password: String!) {
-        userLogin(input: { email: $email, password: $password }) {
+      mutation UserLoginMutation($input: UserLoginInput!) {
+        userLogin(input: $input) {
           token
           error {
             message
           }
           me {
-            id
             username
           }
         }
       }
     `;
 
+    const rootValue = {};
     const contextValue = getContext();
+    const variables = {
+      email: email,
+      password: 'a9218c490c89864790bf',
+    };
 
     const result = await graphql({
       schema,
-      source: mutation,
+      rootValue,
       contextValue,
-      variableValues: {
-        email,
-        password: 'a9218c490c89864790bf',
-      },
+      source: mutation,
+      variableValues: { input: variables },
     });
 
     expect(result.errors).toBeUndefined();
-
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    const { token, me, error } = result.data.userLogin;
-
-    expect(error).toBeNull();
-    expect(me.id).toBeDefined();
-    expect(token).toBeDefined();
+    expect(result.data.userLogin.error).toBeNull();
+    expect(result.data.userLogin.token).toBeDefined();
+    expect(result.data.userLogin.me.username).toBe(username);
+    expect(sanitizeTestObject(result.data, ['token'])).toMatchSnapshot();
   });
 
   it("should display error if username isn't exists", async () => {
-    await createUser();
-
     const mutation = `
-      mutation UserLoginMutation($email: String!, $password: String!) {
-        userLogin(input: { email: $email, password: $password }) {
+      mutation UserLoginMutation($input: UserLoginInput!) {
+        userLogin(input: $input) {
           token
           error {
             message
@@ -75,31 +75,36 @@ describe('UserLoginMutation', () => {
       }
     `;
 
+    const rootValue = {};
     const contextValue = getContext();
+    const variables = {
+      email: 'awesome@fpmail.com',
+      password: 'awesomepassword',
+    };
 
     const result = await graphql({
       schema,
-      source: mutation,
+      rootValue,
       contextValue,
-      variableValues: {
-        email: 'nogw@nogw',
-        password: 'a9218c490c89864790bf',
-      },
+      source: mutation,
+      variableValues: { input: variables },
     });
 
     expect(result.errors).toBeUndefined();
+    expect(result.data.userLogin.token).toBeNull();
     expect(result.data.userLogin.me).toBeNull();
     expect(result.data.userLogin.error.message).toBe('This user was not registered');
+    expect(sanitizeTestObject(result.data)).toMatchSnapshot();
   });
 
   it('should display error if password is incorrect', async () => {
     const { email } = await createUser({
-      email: 'nogw@nogw',
+      email: 'violetit@mail.com',
     });
 
     const mutation = `
-      mutation UserLoginMutation($email: String!, $password: String!) {
-        userLogin(input: { email: $email, password: $password }) {
+      mutation UserLoginMutation($input: UserLoginInput!) {
+        userLogin(input: $input) {
           token
           error {
             message
@@ -111,20 +116,25 @@ describe('UserLoginMutation', () => {
       }
     `;
 
+    const rootValue = {};
     const contextValue = getContext();
+    const variables = {
+      email: email,
+      password: 'awesomepassword',
+    };
 
     const result = await graphql({
       schema,
-      source: mutation,
+      rootValue,
       contextValue,
-      variableValues: {
-        email: email,
-        password: 'a9218c490c89864790bf',
-      },
+      source: mutation,
+      variableValues: { input: variables },
     });
 
     expect(result.errors).toBeUndefined();
+    expect(result.data.userLogin.token).toBeNull();
     expect(result.data.userLogin.me).toBeNull();
     expect(result.data.userLogin.error.message).toBe('This password is incorrect');
+    expect(sanitizeTestObject(result.data)).toMatchSnapshot();
   });
 });

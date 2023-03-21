@@ -8,12 +8,15 @@ declare global {
       __MONGO_DB_NAME__: string;
     }
   }
+
+  var __MONGO_DB_NAME__: string;
+  var __MONGO_URI__: string;
 }
 
 const mongooseOptions: ConnectOptions = {
   autoIndex: false,
   connectTimeoutMS: 10000,
-  dbName: global.__MONGO_DB_NAME,
+  dbName: global.__MONGO_DB_NAME__,
 };
 
 export const connectWithMongoose = async (): Promise<typeof mongoose> => {

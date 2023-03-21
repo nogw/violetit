@@ -1,0 +1,41 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`postCreateMutation should create a post 1`] = `
+Object {
+  "postCreate": Object {
+    "error": "EMPTY",
+    "postEdge": Object {
+      "node": Object {
+        "author": Object {
+          "username": "user#0",
+        },
+        "content": "Post Content",
+        "id": "FROZEN-ID",
+        "title": "Post Title",
+      },
+    },
+  },
+}
+`;
+
+exports[`postCreateMutation should not create a post if doesn't have authorization header 1`] = `
+Object {
+  "postCreate": Object {
+    "error": Object {
+      "message": "You are not logged in!",
+    },
+    "postEdge": "EMPTY",
+  },
+}
+`;
+
+exports[`postCreateMutation should not create a post if the community does not exists 1`] = `
+Object {
+  "postCreate": Object {
+    "error": Object {
+      "message": "Community not found!",
+    },
+    "postEdge": "EMPTY",
+  },
+}
+`;

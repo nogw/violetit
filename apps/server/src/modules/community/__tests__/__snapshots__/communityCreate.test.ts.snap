@@ -1,0 +1,47 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CommunityCreateMutation should create a new community 1`] = `
+Object {
+  "communityCreate": Object {
+    "communityEdge": Object {
+      "node": Object {
+        "id": "FROZEN-ID",
+        "members": Object {
+          "edges": Array [
+            Object {
+              "node": Object {
+                "id": "FROZEN-ID",
+              },
+            },
+          ],
+        },
+        "name": "NogwCommunity",
+        "title": "Nogw Community",
+      },
+    },
+    "error": "EMPTY",
+  },
+}
+`;
+
+exports[`CommunityCreateMutation should not create a new community if doesn't have authorization header 1`] = `
+Object {
+  "communityCreate": Object {
+    "communityEdge": "EMPTY",
+    "error": Object {
+      "message": "You are not logged in!",
+    },
+  },
+}
+`;
+
+exports[`CommunityCreateMutation should not registrate user if name belongs to another community 1`] = `
+Object {
+  "communityCreate": Object {
+    "communityEdge": "EMPTY",
+    "error": Object {
+      "message": "A community with this name has already been created",
+    },
+  },
+}
+`;

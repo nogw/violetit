@@ -1,6 +1,11 @@
 import { graphql } from 'graphql';
 
-import { clearDatabaseAndRestartCounters, connectWithMongoose, disconnectWithMongoose } from '../../../../test';
+import {
+  clearDatabaseAndRestartCounters,
+  connectWithMongoose,
+  disconnectWithMongoose,
+  sanitizeTestObject,
+} from '../../../../test';
 import { createCommunityWithAdmin } from '../fixtures/createCommunityWithAdmin';
 import { createUser } from '../../user/fixtures/createUser';
 import { schema } from '../../../schema/schema';
@@ -40,6 +45,8 @@ describe('CommunityJoinMutation', () => {
       }
     `;
 
+    const contextValue = getContext({ user });
+
     const variableValues = {
       communityId: community._id.toString(),
     };
@@ -47,19 +54,19 @@ describe('CommunityJoinMutation', () => {
     const result = await graphql({
       schema,
       source: mutation,
-      contextValue: getContext({ user }),
+      contextValue,
       variableValues,
     });
-
-    expect(result.errors).toBeUndefined();
 
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     const { communityEdge, error } = result.data.communityJoin;
     const membersId = communityEdge.node.members.edges.map(edge => fromGlobalId(edge.node.id).id);
 
+    expect(result.errors).toBeUndefined();
     expect(error).toBeNull();
     expect(communityEdge.node.members.edges).toHaveLength(2);
     expect(membersId).toContain(user._id.toString());
+    expect(sanitizeTestObject(result.data, ['id'])).toMatchSnapshot();
   });
 });

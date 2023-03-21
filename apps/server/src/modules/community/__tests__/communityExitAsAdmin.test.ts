@@ -1,6 +1,11 @@
 import { graphql } from 'graphql';
 
-import { clearDatabaseAndRestartCounters, connectWithMongoose, disconnectWithMongoose } from '../../../../test';
+import {
+  clearDatabaseAndRestartCounters,
+  connectWithMongoose,
+  disconnectWithMongoose,
+  sanitizeTestObject,
+} from '../../../../test';
 import { createCommunityWithAdmin } from '../fixtures/createCommunityWithAdmin';
 import { schema } from '../../../schema/schema';
 import { getContext } from '../../../context';
@@ -38,6 +43,8 @@ describe('CommunityExitAsAdminMutation', () => {
       }
     `;
 
+    const contextValue = getContext({ user });
+
     const variableValues = {
       communityId: community._id.toString(),
     };
@@ -45,17 +52,14 @@ describe('CommunityExitAsAdminMutation', () => {
     const result = await graphql({
       schema,
       source: mutation,
-      contextValue: getContext({ user }),
+      contextValue,
       variableValues,
     });
 
     expect(result.errors).toBeUndefined();
-
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    const { communityEdge, error } = result.data.communityExitAsAdmin;
-    expect(error).toBeNull();
-    expect(communityEdge).toBeNull();
+    expect(result.data.communityExitAsAdmin.error).toBeNull();
+    expect(result.data.communityExitAsAdmin.communityEdge).toBeNull();
+    expect(sanitizeTestObject(result.data, ['id'])).toMatchSnapshot();
   });
 
   it('should not exit if user is not a community admin', async () => {
@@ -78,6 +82,8 @@ describe('CommunityExitAsAdminMutation', () => {
       }
     `;
 
+    const contextValue = getContext({ user });
+
     const variableValues = {
       communityId: community._id.toString(),
     };
@@ -85,12 +91,13 @@ describe('CommunityExitAsAdminMutation', () => {
     const result = await graphql({
       schema,
       source: mutation,
-      contextValue: getContext({ user }),
+      contextValue,
       variableValues,
     });
 
     expect(result.errors).toBeUndefined();
     expect(result.data.communityExitAsAdmin.communityEdge).toBeNull();
     expect(result.data.communityExitAsAdmin.error.message).toBe('You are not a member of this community');
+    expect(sanitizeTestObject(result.data, ['id'])).toMatchSnapshot();
   });
 });

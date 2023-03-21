@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CommunityExitAsAdminMutation should exit a community as admin 1`] = `
+Object {
+  "communityExitAsAdmin": Object {
+    "communityEdge": "EMPTY",
+    "error": "EMPTY",
+  },
+}
+`;
+
+exports[`CommunityExitAsAdminMutation should not exit if user is not a community admin 1`] = `
+Object {
+  "communityExitAsAdmin": Object {
+    "communityEdge": "EMPTY",
+    "error": Object {
+      "message": "You are not a member of this community",
+    },
+  },
+}
+`;

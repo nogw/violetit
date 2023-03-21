@@ -1,6 +1,11 @@
 import { graphql } from 'graphql';
 
-import { clearDatabaseAndRestartCounters, connectWithMongoose, disconnectWithMongoose } from '../../../../test';
+import {
+  clearDatabaseAndRestartCounters,
+  connectWithMongoose,
+  disconnectWithMongoose,
+  sanitizeTestObject,
+} from '../../../../test';
 import { createUser } from '../../user/fixtures/createUser';
 import { schema } from '../../../schema/schema';
 import { getContext } from '../../../context';
@@ -40,6 +45,8 @@ describe('CommunityCreateMutation', () => {
       }
     `;
 
+    const contextValue = getContext({ user });
+
     const variableValues = {
       name: 'NogwCommunity',
       title: 'Nogw Community',
@@ -48,12 +55,11 @@ describe('CommunityCreateMutation', () => {
     const result = await graphql({
       schema,
       source: mutation,
-      contextValue: getContext({ user }),
+      contextValue,
       variableValues,
     });
 
     expect(result.errors).toBeUndefined();
-
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     const { communityEdge, error } = result.data.communityCreate;
@@ -63,11 +69,11 @@ describe('CommunityCreateMutation', () => {
     expect(communityEdge.node.name).toBe(variableValues.name);
     expect(communityEdge.node.title).toBe(variableValues.title);
     expect(communityEdge.node.members.edges).toHaveLength(1);
-
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     const membersId = communityEdge.node.members.edges.map(edge => fromGlobalId(edge.node.id).id);
     expect(membersId).toContain(user._id.toString());
+    expect(sanitizeTestObject(result.data, ['id'])).toMatchSnapshot();
   });
 
   it("should not create a new community if doesn't have authorization header", async () => {
@@ -100,6 +106,7 @@ describe('CommunityCreateMutation', () => {
     expect(result.errors).toBeUndefined();
     expect(result.data.communityCreate.communityEdge).toBeNull();
     expect(result.data.communityCreate.error.message).toBe('You are not logged in!');
+    expect(sanitizeTestObject(result.data)).toMatchSnapshot();
   });
 
   it('should not registrate user if name belongs to another community', async () => {
@@ -120,6 +127,8 @@ describe('CommunityCreateMutation', () => {
       }
     `;
 
+    const contextValue = getContext({ user });
+
     const variableValues = {
       name: 'NogwCommunity',
       title: 'Nogw Community',
@@ -128,19 +137,20 @@ describe('CommunityCreateMutation', () => {
     await graphql({
       schema,
       source: mutation,
-      contextValue: getContext({ user }),
+      contextValue,
       variableValues,
     });
 
     const result = await graphql({
       schema,
       source: mutation,
-      contextValue: getContext({ user }),
+      contextValue,
       variableValues,
     });
 
     expect(result.errors).toBeUndefined();
     expect(result.data.communityCreate.communityEdge).toBeNull();
     expect(result.data.communityCreate.error.message).toBe('A community with this name has already been created');
+    expect(sanitizeTestObject(result.data)).toMatchSnapshot();
   });
 });

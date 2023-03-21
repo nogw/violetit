@@ -1,6 +1,11 @@
 import { graphql } from 'graphql';
 
-import { clearDatabaseAndRestartCounters, connectWithMongoose, disconnectWithMongoose } from '../../../../test';
+import {
+  clearDatabaseAndRestartCounters,
+  connectWithMongoose,
+  disconnectWithMongoose,
+  sanitizeTestObject,
+} from '../../../../test';
 import { createPost } from '../../post/fixtures/createPost';
 import { createUser } from '../../user/fixtures/createUser';
 import { getContext } from '../../../context';
@@ -35,12 +40,12 @@ describe('VoteCreateMutation', () => {
       }
     `;
 
+    const contextValue = getContext({ user: user });
+
     const variableValues = {
       postId: post._id.toString(),
       type: 'UPVOTE',
     };
-
-    const contextValue = getContext({ user: user });
 
     const result = await graphql({
       schema,
@@ -50,14 +55,10 @@ describe('VoteCreateMutation', () => {
     });
 
     expect(result.errors).toBeUndefined();
-
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    const { post: postLiked, vote, error } = result.data.voteCreate;
-
-    expect(error).toBeNull();
-    expect(vote.node.type).toBe('UPVOTE');
-    expect(postLiked.votesCount).toBe(1);
+    expect(result.data.voteCreate.error).toBeNull();
+    expect(result.data.voteCreate.vote.node.type).toBe('UPVOTE');
+    expect(result.data.voteCreate.post.votesCount).toBe(1);
+    expect(sanitizeTestObject(result.data)).toMatchSnapshot();
   });
 
   it('should not vote for the same post more than once', async () => {
@@ -82,12 +83,12 @@ describe('VoteCreateMutation', () => {
       }
     `;
 
+    const contextValue = getContext({ user: user });
+
     const variableValues = {
       postId: post._id.toString(),
       type: 'UPVOTE',
     };
-
-    const contextValue = getContext({ user: user });
 
     await graphql({
       schema,
@@ -103,13 +104,11 @@ describe('VoteCreateMutation', () => {
       variableValues,
     });
 
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    const { post: postLiked, vote, error } = result.data.voteCreate;
-
-    expect(error).toBeNull();
-    expect(vote.node.type).toBe('UPVOTE');
-    expect(postLiked.votesCount).toBe(1);
+    expect(result.errors).toBeUndefined();
+    expect(result.data.voteCreate.error).toBeNull();
+    expect(result.data.voteCreate.vote.node.type).toBe('UPVOTE');
+    expect(result.data.voteCreate.post.votesCount).toBe(1);
+    expect(sanitizeTestObject(result.data)).toMatchSnapshot();
   });
 
   it("should not create a post if doesn't have authorization header", async () => {
@@ -128,12 +127,12 @@ describe('VoteCreateMutation', () => {
       }
     `;
 
+    const contextValue = getContext();
+
     const variableValues = {
       postId: post._id.toString(),
       type: 'UPVOTE',
     };
-
-    const contextValue = getContext();
 
     const result = await graphql({
       schema,
@@ -145,5 +144,6 @@ describe('VoteCreateMutation', () => {
     expect(result.errors).toBeUndefined();
     expect(result.data.voteCreate.post).toBeNull();
     expect(result.data.voteCreate.error.message).toBe('You are not logged in!');
+    expect(sanitizeTestObject(result.data)).toMatchSnapshot();
   });
 });

@@ -1,0 +1,44 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`VoteCreateMutation should not create a post if doesn't have authorization header 1`] = `
+Object {
+  "voteCreate": Object {
+    "error": Object {
+      "message": "You are not logged in!",
+    },
+    "post": "EMPTY",
+  },
+}
+`;
+
+exports[`VoteCreateMutation should not vote for the same post more than once 1`] = `
+Object {
+  "voteCreate": Object {
+    "error": "EMPTY",
+    "post": Object {
+      "votesCount": "EMPTY",
+    },
+    "vote": Object {
+      "node": Object {
+        "type": "UPVOTE",
+      },
+    },
+  },
+}
+`;
+
+exports[`VoteCreateMutation should upvote a post 1`] = `
+Object {
+  "voteCreate": Object {
+    "error": "EMPTY",
+    "post": Object {
+      "votesCount": "EMPTY",
+    },
+    "vote": Object {
+      "node": Object {
+        "type": "UPVOTE",
+      },
+    },
+  },
+}
+`;
