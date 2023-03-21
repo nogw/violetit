@@ -1,9 +1,8 @@
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const package = require('./package');
+const pkg = require('./package');
 
 module.exports = {
-  displayName: package.name,
-  preset: 'ts-jest',
+  displayName: pkg.name,
   testEnvironment: './test/environment/mongodb.ts',
   testPathIgnorePatterns: ['/node_modules/', './dist'],
   coverageReporters: ['lcov', 'html'],

@@ -6,10 +6,12 @@
   "scripts": {
     "prebuild": "[ -d ./dist ]; rm -rf ./dist",
     "build": "tsc",
-    "schema:generate": "ts-node scripts/generateSchema.ts",
-    "start:prod": "node dist/tsc/src/index.ts",
-    "start:dev": "ts-node-dev src/index.ts",
-    "copy-env": "cp .env.example .env"
+    "schema:generate": "yarn b scripts/generateSchema.ts",
+    "start:prod": "node dist/tsc/src/index.js",
+    "start:dev": "webpack --watch --progress",
+    "copy-env": "cp .env.example .env",
+    "test": "jest",
+    "b": "babel-node --extensions \".es6,.js,.es,.jsx,.mjs,.ts,.tsx\""
   },
   "dependencies": {
     "@entria/graphql-mongo-helpers": "^1.1.2",
@@ -38,12 +40,15 @@
     "@types/koa__cors": "^3.3.0",
     "@types/koa__router": "^12.0.0",
     "@types/mongoose": "^5.11.97",
+    "@types/supertest": "^2.0.12",
     "babel-jest": "28.1.2",
+    "babel-loader": "^9.1.2",
     "dotenv-safe": "^8.2.0",
     "jest": "28.1.2",
     "jest-environment-node": "28.1.2",
     "supertest": "^6.3.3",
-    "ts-jest": "28.0.5",
-    "ts-node-dev": "^2.0.0"
+    "webpack": "^5.76.2",
+    "webpack-cli": "^5.0.1",
+    "webpack-node-externals": "^3.0.0"
   }
 }
