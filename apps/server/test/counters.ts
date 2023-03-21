@@ -1,4 +1,11 @@
 declare global {
+  // eslint-disable-next-line @typescript-eslint/no-namespace
+  namespace NodeJS {
+    interface Global {
+      __COUNTERS__: Record<string, 0>;
+    }
+  }
+
   var __COUNTERS__: Record<string, number>;
 }
 

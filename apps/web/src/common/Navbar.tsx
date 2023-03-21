@@ -4,7 +4,7 @@ import { RiMagicFill } from 'react-icons/ri';
 import { MdExitToApp } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
 
-import { CommunityComposerPopup } from '../modules/community/CommunityComposerPopup';
+import { CommunityComposerPopup } from '../modules/community/CommunityCreatePopup';
 import { SearchBar } from '../modules/search/SearchBar';
 import { useAuth } from '../modules/auth/useAuth';
 import { Link } from './Link';
