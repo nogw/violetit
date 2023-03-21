@@ -26,7 +26,7 @@ export const userLogin = mutationWithClientMutationId({
       return fieldError('password', 'This password is incorrect');
     }
 
-    const token = generateJwtToken(user._id);
+    const token = generateJwtToken(user);
 
     return {
       token,

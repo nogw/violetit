@@ -39,7 +39,7 @@ export const userRegister = mutationWithClientMutationId({
 
     await user.save();
 
-    const token = generateJwtToken(user._id);
+    const token = generateJwtToken(user);
 
     return {
       token,

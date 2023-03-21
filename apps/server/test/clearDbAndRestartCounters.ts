@@ -6,7 +6,7 @@ const clearDatabase = async () => {
   await mongoose.connection.dropDatabase();
 };
 
-export const clearDatabaseAndRestartCounters = async (): Promise<void> => {
+export const clearDbAndRestartCounters = async (): Promise<void> => {
   await clearDatabase();
   restartCounters();
 };

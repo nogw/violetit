@@ -1,7 +1,7 @@
 import { graphql } from 'graphql';
 
 import {
-  clearDatabaseAndRestartCounters,
+  clearDbAndRestartCounters,
   connectWithMongoose,
   disconnectWithMongoose,
   sanitizeTestObject,
@@ -13,7 +13,7 @@ import { schema } from '../../../schema/schema';
 
 beforeAll(connectWithMongoose);
 
-beforeEach(clearDatabaseAndRestartCounters);
+beforeEach(clearDbAndRestartCounters);
 
 afterAll(disconnectWithMongoose);
 

@@ -1,4 +1,4 @@
-export * from './clearDatabase';
+export * from './clearDbAndRestartCounters';
 export * from './connectWithMongoose';
 export * from './disconnectWithMongoose';
 export * from './sanitizeTestObject';
