@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Application should return 200 and return logged user 1`] = `
+Object {
+  "data": Object {
+    "me": Object {
+      "email": "user0@violetit.com",
+      "username": "user#0",
+    },
+  },
+}
+`;

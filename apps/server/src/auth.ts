@@ -20,6 +20,6 @@ export const getUser = async (token: Maybe<string>): Promise<Maybe<IUserDocument
   return user;
 };
 
-export const generateJwtToken = (userId: string) => {
-  return `JWT ${jwt.sign({ id: userId }, config.JWT_SECRET)}`;
+export const generateJwtToken = (user: IUserDocument) => {
+  return `JWT ${jwt.sign({ id: user._id }, config.JWT_SECRET)}`;
 };
