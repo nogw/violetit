@@ -1,0 +1,578 @@
+"""
+Root of all queries
+"""
+type Query {
+  """
+  Fetches an object given its ID
+  """
+  node(
+    """
+    The ID of an object
+    """
+    id: ID!
+  ): Node
+
+  """
+  Fetches objects given their IDs
+  """
+  nodes(
+    """
+    The IDs of objects
+    """
+    ids: [ID!]!
+  ): [Node]!
+
+  """
+  Logged user
+  """
+  me: User
+
+  """
+  Connection to all communities
+  """
+  communities(
+    after: String
+    first: Int
+    before: String
+    last: Int
+    filters: CommunityFilters
+  ): CommunityConnectionConnection!
+
+  """
+  Connection to all posts
+  """
+  posts(after: String, first: Int, before: String, last: Int, filters: PostFilter): PostConnectionConnection!
+}
+
+"""
+An object with an ID
+"""
+interface Node {
+  """
+  The id of the object.
+  """
+  id: ID!
+}
+
+type User implements Node {
+  """
+  The ID of an object
+  """
+  id: ID!
+  username: String!
+  email: String!
+  communities(after: String, first: Int, before: String, last: Int): CommunityConnectionConnection!
+}
+
+"""
+A connection to a list of items.
+"""
+type CommunityConnectionConnection implements Connection {
+  """
+  Number of items in this connection.
+  """
+  count: Int
+
+  """
+  A count of the total number of objects in this connection, ignoring pagination.
+  This allows a client to fetch the first five objects by passing "5" as the
+  argument to "first", then fetch the total count so it could display "5 of 83",
+  for example.
+  """
+  totalCount: Int
+
+  """
+  Offset from start.
+  """
+  startCursorOffset: Int!
+
+  """
+  Offset till end.
+  """
+  endCursorOffset: Int!
+
+  """
+  Information to aid in pagination.
+  """
+  pageInfo: PageInfo!
+
+  """
+  A list of edges.
+  """
+  edges: [CommunityConnectionEdge]!
+}
+
+"""
+A connection to a list of items.
+"""
+interface Connection {
+  """
+  Number of items in this connection.
+  """
+  count: Int
+
+  """
+  A count of the total number of objects in this connection, ignoring pagination.
+  This allows a client to fetch the first five objects by passing "5" as the
+  argument to "first", then fetch the total count so it could display "5 of 83",
+  for example.
+  """
+  totalCount: Int
+
+  """
+  Offset from start.
+  """
+  startCursorOffset: Int!
+
+  """
+  Offset till end.
+  """
+  endCursorOffset: Int!
+
+  """
+  Information to aid in pagination.
+  """
+  pageInfo: PageInfo!
+}
+
+"""
+Information about pagination in a connection.
+"""
+type PageInfo {
+  """
+  When paginating forwards, are there more items?
+  """
+  hasNextPage: Boolean!
+
+  """
+  When paginating backwards, are there more items?
+  """
+  hasPreviousPage: Boolean!
+
+  """
+  When paginating backwards, the cursor to continue.
+  """
+  startCursor: String
+
+  """
+  When paginating forwards, the cursor to continue.
+  """
+  endCursor: String
+}
+
+"""
+An edge in a connection.
+"""
+type CommunityConnectionEdge {
+  """
+  The item at the end of the edge.
+  """
+  node: Community
+
+  """
+  A cursor for use in pagination.
+  """
+  cursor: String!
+}
+
+type Community implements Node {
+  """
+  The ID of an object
+  """
+  id: ID!
+
+  """
+  mongoose _id
+  """
+  _id: String!
+  createdAt: String
+  updatedAt: String
+  name: String!
+  title: String!
+  admin: ID!
+  mods: [ID]!
+  members(after: String, first: Int, before: String, last: Int): UserConnectionConnection!
+  joined: Boolean!
+}
+
+"""
+A connection to a list of items.
+"""
+type UserConnectionConnection implements Connection {
+  """
+  Number of items in this connection.
+  """
+  count: Int
+
+  """
+  A count of the total number of objects in this connection, ignoring pagination.
+  This allows a client to fetch the first five objects by passing "5" as the
+  argument to "first", then fetch the total count so it could display "5 of 83",
+  for example.
+  """
+  totalCount: Int
+
+  """
+  Offset from start.
+  """
+  startCursorOffset: Int!
+
+  """
+  Offset till end.
+  """
+  endCursorOffset: Int!
+
+  """
+  Information to aid in pagination.
+  """
+  pageInfo: PageInfo!
+
+  """
+  A list of edges.
+  """
+  edges: [UserConnectionEdge]!
+}
+
+"""
+An edge in a connection.
+"""
+type UserConnectionEdge {
+  """
+  The item at the end of the edge.
+  """
+  node: User
+
+  """
+  A cursor for use in pagination.
+  """
+  cursor: String!
+}
+
+"""
+Used to filter communities
+"""
+input CommunityFilters {
+  OR: [CommunityFilters]
+  AND: [CommunityFilters]
+
+  """
+  Order reviews by DateOrderingInputType.
+  """
+  orderBy: [DateOrdering!]
+
+  """
+  Filter by search.
+  """
+  search: String
+}
+
+"""
+Input to order by createdAt or updatedAt.
+"""
+input DateOrdering {
+  """
+  Field used to sort, e.g. CREATED_AT.
+  """
+  field: DateEnumType!
+
+  """
+  Direction used to sort, e.g. ASC.
+  """
+  direction: DirectionEnum!
+}
+
+enum DateEnumType {
+  """
+  creation date
+  """
+  CREATED_AT
+
+  """
+  document update date
+  """
+  UPDATED_AT
+}
+
+enum DirectionEnum {
+  ASC
+  DESC
+}
+
+"""
+A connection to a list of items.
+"""
+type PostConnectionConnection implements Connection {
+  """
+  Number of items in this connection.
+  """
+  count: Int
+
+  """
+  A count of the total number of objects in this connection, ignoring pagination.
+  This allows a client to fetch the first five objects by passing "5" as the
+  argument to "first", then fetch the total count so it could display "5 of 83",
+  for example.
+  """
+  totalCount: Int
+
+  """
+  Offset from start.
+  """
+  startCursorOffset: Int!
+
+  """
+  Offset till end.
+  """
+  endCursorOffset: Int!
+
+  """
+  Information to aid in pagination.
+  """
+  pageInfo: PageInfo!
+
+  """
+  A list of edges.
+  """
+  edges: [PostConnectionEdge]!
+}
+
+"""
+An edge in a connection.
+"""
+type PostConnectionEdge {
+  """
+  The item at the end of the edge.
+  """
+  node: Post
+
+  """
+  A cursor for use in pagination.
+  """
+  cursor: String!
+}
+
+type Post implements Node {
+  """
+  The ID of an object
+  """
+  id: ID!
+  createdAt: String
+  updatedAt: String
+  title: String!
+  content: String!
+  author: User
+  community: Community
+  votesCount: Int!
+  meHasVoted: Vote
+}
+
+type Vote implements Node {
+  """
+  The ID of an object
+  """
+  id: ID!
+  createdAt: String
+  updatedAt: String
+  type: String!
+  post: ID!
+  user: ID!
+}
+
+"""
+Used to filter posts
+"""
+input PostFilter {
+  OR: [PostFilter]
+  AND: [PostFilter]
+
+  """
+  Order reviews by DateOrderingInputType.
+  """
+  orderBy: [DateOrdering!]
+
+  """
+  Filter by community.
+  """
+  community: ID
+}
+
+"""
+Root of all mutations
+"""
+type Mutation {
+  userRegister(input: UserRegisterInput!): UserRegisterPayload
+  userLogin(input: UserLoginInput!): UserLoginPayload
+  communityCreate(input: CommunityCreateInput!): CommunityCreatePayload
+  communityJoin(input: CommunityJoinInput!): CommunityJoinPayload
+  communityExit(input: CommunityExitInput!): CommunityExitPayload
+  communityExitAsAdmin(input: CommunityExitAsAdminInput!): CommunityExitAsAdminPayload
+  postCreate(input: PostCreateInput!): PostCreatePayload
+  voteCreate(input: VoteCreateInput!): VoteCreatePayload
+}
+
+type UserRegisterPayload {
+  token: String
+  me: User
+
+  """
+  Default success field resolver.
+  """
+  success: String
+  error: FieldError
+  clientMutationId: String
+}
+
+type FieldError {
+  field: String
+  message: String
+}
+
+input UserRegisterInput {
+  username: String!
+  email: String!
+  password: String!
+  clientMutationId: String
+}
+
+type UserLoginPayload {
+  token: String
+  me: User
+
+  """
+  Default success field resolver.
+  """
+  success: String
+
+  """
+  Default error field resolver.
+  """
+  error: String
+  clientMutationId: String
+}
+
+input UserLoginInput {
+  email: String!
+  password: String!
+  clientMutationId: String
+}
+
+type CommunityCreatePayload {
+  communityEdge: CommunityConnectionEdge
+  error: FieldError
+
+  """
+  Default success field resolver.
+  """
+  success: String
+  clientMutationId: String
+}
+
+input CommunityCreateInput {
+  name: String!
+  title: String!
+  clientMutationId: String
+}
+
+type CommunityJoinPayload {
+  communityEdge: CommunityConnectionEdge
+  error: FieldError
+
+  """
+  Default success field resolver.
+  """
+  success: String
+  clientMutationId: String
+}
+
+input CommunityJoinInput {
+  communityId: String!
+  clientMutationId: String
+}
+
+type CommunityExitPayload {
+  communityEdge: CommunityConnectionEdge
+  error: FieldError
+
+  """
+  Default success field resolver.
+  """
+  success: String
+  clientMutationId: String
+}
+
+input CommunityExitInput {
+  communityId: String!
+  clientMutationId: String
+}
+
+type CommunityExitAsAdminPayload {
+  communityEdge: CommunityConnectionEdge
+  error: FieldError
+
+  """
+  Default success field resolver.
+  """
+  success: String
+  clientMutationId: String
+}
+
+input CommunityExitAsAdminInput {
+  communityId: String!
+  clientMutationId: String
+}
+
+type PostCreatePayload {
+  postEdge: PostConnectionEdge
+  error: FieldError
+
+  """
+  Default success field resolver.
+  """
+  success: String
+  clientMutationId: String
+}
+
+input PostCreateInput {
+  title: String!
+  content: String!
+  community: String!
+  clientMutationId: String
+}
+
+type VoteCreatePayload {
+  post: Post
+  vote: VoteConnectionEdge
+
+  """
+  Default success field resolver.
+  """
+  success: String
+  error: FieldError
+  clientMutationId: String
+}
+
+"""
+An edge in a connection.
+"""
+type VoteConnectionEdge {
+  """
+  The item at the end of the edge
+  """
+  node: Vote
+
+  """
+  A cursor for use in pagination
+  """
+  cursor: String!
+}
+
+input VoteCreateInput {
+  postId: String!
+  type: VoteType
+  clientMutationId: String
+}
+
+enum VoteType {
+  UPVOTE
+  DOWNVOTE
+}
