@@ -442,11 +442,7 @@ type UserLoginPayload {
   Default success field resolver.
   """
   success: String
-
-  """
-  Default error field resolver.
-  """
-  error: String
+  error: FieldError
   clientMutationId: String
 }
 
