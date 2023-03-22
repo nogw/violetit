@@ -1,0 +1,25 @@
+{
+  "pipeline": {
+    "build": {
+      "outputs": ["dist/**", ".next/**"],
+      "dependsOn": ["^build"]
+    },
+    "test": {
+      "outputs": ["coverage/**"],
+      "dependsOn": []
+    },
+    "lint": {
+      "outputs": []
+    },
+    "start": {
+      "cache": false
+    },
+    "start:dev": {
+      "cache": false
+    },
+    "copy-env": {
+      "outputs": [],
+      "cache": false
+    }
+  }
+}

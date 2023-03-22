@@ -6,7 +6,8 @@
 
 - [Project Archicteture](#project-archicteture)
 - [Stack](#stack)
-- [How to run](#how-to-run)
+- [Getting Started](#getting-started)
+  - [Installation](#installation)
   - [Developer environment](#developer-environment)
   - [Copy environment files](#copy-environment-files)
   - [Fill environment files](#fill-environment-files)
@@ -70,7 +71,7 @@
 - [x] Routing (react-router-dom)
 - [ ] Jest + Testing Library
 
-## How to run
+## Getting Started
 
 ### Installation
 
