@@ -5,14 +5,18 @@
 # Table of contents
 
 - [Project Archicteture](#project-archicteture)
+- [Stack](#stack)
 - [How to run](#how-to-run)
-  - [Environment](#developer-environment)
-  - [Dependencies](#install-the-dependencies)
-  - [Run server](#running-server)
-  - [Run web](#running-web)
-  - [Run project](#run-both-web-and-server-packages)
+  - [Developer environment](#developer-environment)
+  - [Copy environment files](#copy-environment-files)
+  - [Fill environment files](#fill-environment-files)
+  - [Install the dependencies](#install-the-dependencies)
+  - [Running server](#running-server)
+  - [Running web](#running-web)
+  - [Run both web and server packages](#run-both--web--and--server--packages)
+- [Contributing](#contributing)
 - [References](#references)
-- [Author Info](#author-info)
+- [Contact](#contact)
 
 ## Project Archicteture
 
@@ -67,6 +71,14 @@
 - [ ] Jest + Testing Library
 
 ## How to run
+
+### Installation
+
+Clone the repo
+
+```
+git clone https://github.com/nogw/violetit.git
+```
 
 ### Developer environment
 
@@ -143,6 +155,25 @@ If you have completed the necessary setup for the required packages, you can run
 yarn dev:all
 ```
 
+## Contributing
+
+Contributions are welcome from everyone! Here's how you can get started:
+
+### Issues
+
+If you encounter any bugs or have any feature requests, please create an issue with a description of the problem
+
+### Pull Requests
+
+Pull requests from anyone are appreciated and can help make this project better! To get started, follow these steps:
+
+1. Fork the repository
+2. Clone the repository to your local machine
+3. Create a new branch for your changes and switch to it (`git checkout -b feature/featureName`)
+4. Make your changes and commit them (`git commit -m 'Add some featureName'`)
+5. Push your changes to your fork (`git push origin feature/featureName`)
+6. Create a pull request in the original repository
+
 ## References
 
 - [Awesome Woovi Challenge](https://github.com/entria/awesome-woovi-challenge)
@@ -151,8 +182,9 @@ yarn dev:all
 - [RBFA GraphQL API](https://github.com/daniloab/rbaf-graphql-api)
 - [Relay Real World](https://github.com/sibelius/relay-realworld)
 
-## Author Info
+## Contact
 
-- Follow me on [Twitter](https://twitter.com/nogchou)
+- Twitter - [@nogchou](https://twitter.com/nogchou)
+- Discord - noge#4932
 
 [Back To The Top](#violetit)
