@@ -1,4 +1,16 @@
-# Violetit - Woovi Challenge
+<div align="center">
+  <h1>Violetit - Woovi Challenge</h1>
+  <a href="https://i.imgur.com/qpeAw1f.png">
+    <img src="https://i.imgur.com/qpeAw1f.png" alt="Logo" height="50%" width="50%" style="border-radius:5px">
+  </a>
+  <p align="center">
+    Violetit is a Reddit clone
+    <br />
+    <a href="https://github.com/nogw/violetit">View Demo (Soon)</a>
+    ·
+    <a href="https://github.com/nogw/violetit/issues">Report Bug</a>
+  </p>
+</div>
 
 > **_NOTE:_** Some scripts of this project have been written based on Unix commands (e.g, cp, rm), so if you are running this project on a Windows-based system, you may face difficulties with the `yarn copy-envs` command. In this case, you can manually copy the `.env.example` files and rename them to `.env`
 

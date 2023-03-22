@@ -55,7 +55,7 @@ export const PostDetail = (props: PostDetailProps) => {
 
   return (
     <Wrapper {...wrapperProps}>
-      <Card className="h-min p-0 hover:border-gray-400">
+      <Card className="h-min px-0 py-0 hover:border-gray-400">
         <VoteButtons post={post} />
         <CardContent className="pt-2">
           <PostHeader post={post} />

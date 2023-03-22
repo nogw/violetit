@@ -13,7 +13,7 @@ type CardTitledProps = React.HTMLAttributes<HTMLDivElement> & {
 export const CardTitled = React.forwardRef<HTMLDivElement, CardTitledProps>(
   ({ title, className, children, ...props }, ref) => {
     return (
-      <Card ref={ref} className={clsx('flex h-min max-w-xs flex-col p-0 pt-0', className)} {...props}>
+      <Card ref={ref} className={clsx('flex h-min max-w-xs flex-col px-0 pt-0', className)} {...props}>
         <Flex className="mb-2 rounded-t bg-blue-500 p-2">
           <h1 className="text-sm font-semibold text-white">{title}</h1>
         </Flex>
