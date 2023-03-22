@@ -1,5 +1,5 @@
 import React, { ButtonHTMLAttributes } from 'react';
-import { TbArrowBigTop, TbArrowBigDown } from 'react-icons/tb';
+import { TbArrowBigUp, TbArrowBigDown } from 'react-icons/tb';
 import clsx from 'clsx';
 
 type VoteButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
@@ -20,9 +20,7 @@ export const VoteButton = React.forwardRef<HTMLButtonElement, VoteButtonProps>(
     return (
       <button {...props} ref={ref}>
         {direction === 'up' ? (
-          <TbArrowBigTop
-            className={clsx(styles.base, styles.upvote, { [styles.upvoted_active]: voted === 'UPVOTE' })}
-          />
+          <TbArrowBigUp className={clsx(styles.base, styles.upvote, { [styles.upvoted_active]: voted === 'UPVOTE' })} />
         ) : (
           <TbArrowBigDown
             className={clsx(styles.base, styles.downvote, { [styles.downvote_active]: voted === 'DOWNVOTE' })}

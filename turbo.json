@@ -8,10 +8,7 @@
       "outputs": ["coverage/**"],
       "dependsOn": []
     },
-    "lint": {
-      "outputs": []
-    },
-    "start": {
+    "start:prod": {
       "cache": false
     },
     "start:dev": {

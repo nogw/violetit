@@ -5,7 +5,7 @@ import { useSnackbar } from 'notistack';
 import { useState } from 'react';
 
 import { VoteCreateMutation, VoteType } from './mutations/__generated__/VoteCreateMutation.graphql';
-import { VoteButtons_post$key } from './mutations/__generated__/VoteButtons_post.graphql';
+import { VoteButtons_post$key } from './__generated__/VoteButtons_post.graphql';
 import { VoteCreate } from './mutations/VoteCreateMutation';
 
 type VoteButtonsProps = {

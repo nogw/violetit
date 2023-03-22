@@ -3,9 +3,10 @@
   "license": "MIT",
   "version": "0.0.1",
   "scripts": {
-    "build": "yarn relay && tsc && vite build",
+    "build": "yarn relay",
     "preview": "vite preview",
     "relay": "relay-compiler",
+    "start:prod": "vite build",
     "start:dev": "vite",
     "copy-env": "cp .env.example .env"
   },

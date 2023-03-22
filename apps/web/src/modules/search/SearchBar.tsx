@@ -4,7 +4,7 @@ import { Suspense, useCallback, useEffect, useRef, useState } from 'react';
 import { graphql, useLazyLoadQuery } from 'react-relay';
 import { useLocation } from 'react-router-dom';
 
-import { SearchQuery } from './__generated__/SearchQuery.graphql';
+import { SearchBarQuery } from './__generated__/SearchBarQuery.graphql';
 import { SearchList } from './SearchList';
 
 export const SearchBar = () => {
@@ -12,7 +12,7 @@ export const SearchBar = () => {
   const [search, setSearch] = useState('');
   const location = useLocation();
 
-  const query = useLazyLoadQuery<SearchQuery>(
+  const query = useLazyLoadQuery<SearchBarQuery>(
     graphql`
       query SearchBarQuery {
         ...SearchList_query

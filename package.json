@@ -16,7 +16,7 @@
     "copy-envs": "turbo run copy-env",
     "dev:all": "turbo run start:dev --parallel",
     "dev:web": "yarn workspace @violetit/web start:dev",
-    "dev:server": "yarn workspace @violetit/server start:dev"
+    "dev:server": "dev start:dev"
   },
   "devDependencies": {
     "@babel/core": "^7.21.3",
