@@ -1,12 +1,12 @@
 <div align="center">
   <h1>Violetit - Woovi Challenge</h1>
   <a href="https://i.imgur.com/qpeAw1f.png">
-    <img src="https://i.imgur.com/qpeAw1f.png" alt="Logo" height="50%" width="50%">
+    <img src="https://i.imgur.com/aKgKZSc.png" alt="Logo" height="50%" width="50%">
   </a>
   <p align="center">
     Violetit is a Reddit clone
     <br />
-    <a href="https://github.com/nogw/violetit">View Demo (Soon)</a>
+    <a href="https://violetit.vercel.app/">View Demo</a>
     ·
     <a href="https://github.com/nogw/violetit/issues">Report Bug</a>
   </p>
