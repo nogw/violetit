@@ -3,11 +3,11 @@
   "license": "MIT",
   "version": "0.0.1",
   "scripts": {
-    "build": "yarn relay",
+    "build": "yarn relay && tsc --noEmit && vite build",
     "preview": "vite preview",
     "relay": "relay-compiler",
-    "start:prod": "vite build",
     "start:dev": "vite",
+    "start:prod": "vite --host 0.0.0.0",
     "copy-env": "cp .env.example .env"
   },
   "dependencies": {

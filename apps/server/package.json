@@ -5,7 +5,7 @@
   "main": "dist/index.js",
   "scripts": {
     "prebuild": "[ -d ./dist ]; rm -rf ./dist",
-    "build": "tsc",
+    "build": "yarn schema:generate && tsc",
     "schema:generate": "yarn b scripts/generateSchema.ts",
     "start:prod": "node dist/tsc/src/index.js",
     "start:dev": "webpack --watch --progress",
