@@ -49,7 +49,7 @@ const LoginPage = () => {
         enqueueSnackbar(userRegister?.success, { variant: 'success' });
 
         signin(userRegister?.token, () => {
-          navigate('/feed', { replace: true });
+          navigate('/', { replace: true });
         });
       },
     });
