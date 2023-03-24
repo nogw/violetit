@@ -70,7 +70,7 @@ export const PostComposerDetail = () => {
   return (
     <Box className="m-2">
       <SelectInput
-        initial="u/me"
+        initial="Select a community"
         options={communities}
         value={community}
         onChange={e => setCommunity(e.target.value)}
