@@ -3,7 +3,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { SnackbarProvider } from 'notistack';
 
 import { RelayEnvironment } from './relay/RelayEnvironment';
-import { AuthProvider } from './modules/auth/AuthContext';
+import { AuthProvider } from './modules/Auth/AuthContext';
 
 interface ProvidersProps {
   children: React.ReactNode;

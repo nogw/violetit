@@ -126,6 +126,13 @@ MONGO_URI=
 VITE_GRAPHQL_URL=
 ```
 
+### Update path to schema
+
+```
+### apps/web/relay.config.js
+schema: '../server/graphql/schema.graphql',
+```
+
 ### Install the dependencies
 
 ```sh

@@ -1,12 +1,13 @@
 import { Routes as Router, Route } from 'react-router-dom';
 
-import { AuthLayout } from './modules/auth/AuthLayout';
-import { LoginRoutes } from './modules/user/LoginRoutes';
+import { AuthLayout } from './modules/Auth/AuthLayout';
+import { LoginRoutes } from './modules/User/LoginRoutes';
 
-import { FeedPage } from './modules/feed/FeedPage';
-import { CommunityPage } from './modules/community/CommunityPage';
-import { PostDetailPage } from './modules/post/PostPage';
-import { PostComposerDetail } from './modules/post/PostComposerDetail';
+import { CommunityPanelPage } from './modules/Community/CommunityPanelPage';
+import { CommunityPage } from './modules/Community/CommunityPage';
+import { PostDetailPage } from './modules/Post/PostPage';
+import { PostComposer } from './modules/Post/PostComposer';
+import { FeedPage } from './modules/Feed/FeedPage';
 
 export const Routes = () => {
   return (
@@ -14,9 +15,10 @@ export const Routes = () => {
       <Route path="/auth/*" element={<LoginRoutes />} />
       <Route element={<AuthLayout />}>
         <Route path="/" element={<FeedPage />} />
-        <Route path="/submit" element={<PostComposerDetail />} />
-        <Route path="/r/:community" element={<CommunityPage />} />
-        <Route path="/r/:community/:post" element={<PostDetailPage />} />
+        <Route path="/submit" element={<PostComposer />} />
+        <Route path="/r/:community/:tags?" element={<CommunityPage />} />
+        <Route path="/r/:community/p/:post" element={<PostDetailPage />} />
+        <Route path="/r/panel/:community" element={<CommunityPanelPage />} />
       </Route>
     </Router>
   );

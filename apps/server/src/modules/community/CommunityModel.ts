@@ -1,6 +1,5 @@
 import mongoose, { Document, Types, Schema } from 'mongoose';
-
-const { ObjectId } = mongoose.Schema.Types;
+import ObjectId = Schema.Types.ObjectId;
 
 export interface ICommunity {
   _id: Types.ObjectId;

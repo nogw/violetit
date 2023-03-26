@@ -40,8 +40,7 @@ const graphQlServer = graphqlHTTP(graphQLSettingsPerReq);
 
 router.all('/graphql', graphQlServer);
 
-//app.use(cors({ credentials: true }));
-app.use(cors());
+app.use(cors({ credentials: true }));
 app.use(bodyParser());
 app.use(router.routes());
 app.use(router.allowedMethods());

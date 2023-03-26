@@ -4,9 +4,9 @@ import { RiMagicFill } from 'react-icons/ri';
 import { MdExitToApp } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
 
-import { CommunityComposerPopup } from '../modules/community/CommunityCreatePopup';
-import { SearchBar } from '../modules/search/SearchBar';
-import { useAuth } from '../modules/auth/useAuth';
+import { CommunityCreatePopup } from '../modules/Community/CommunityCreatePopup';
+import { SearchBar } from '../modules/Search/SearchBar';
+import { useAuth } from '../modules/Auth/useAuth';
 import { Link } from './Link';
 
 type NavbarProps = {
@@ -27,7 +27,7 @@ export const Navbar = ({ title }: NavbarProps) => {
       </Flex>
       <Flex className="h-full items-center gap-2">
         <SearchBar />
-        <CommunityComposerPopup />
+        <CommunityCreatePopup />
         <Button variant="neutral" onClick={() => signout(() => navigate('/auth', { replace: true }))}>
           <MdExitToApp className="h-6 w-6" />
         </Button>
