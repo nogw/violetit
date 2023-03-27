@@ -8,6 +8,7 @@ import TagLoader from './TagLoader';
 import { timestampResolver } from '@entria/graphql-mongo-helpers';
 import { UserType } from '../user/UserType';
 import UserLoader from '../user/UserLoader';
+import CommunityLoader from '../community/CommunityLoader';
 import { nodeInterface, registerTypeLoader } from '../node/typeRegister';
 
 export const TagType = new GraphQLObjectType<ITagDocument, GraphQLContext>({
@@ -22,6 +23,10 @@ export const TagType = new GraphQLObjectType<ITagDocument, GraphQLContext>({
     color: {
       type: GraphQLString,
       resolve: ({ color }) => color,
+    },
+    community: {
+      type: UserType,
+      resolve: ({ community }, _, context) => CommunityLoader.load(context, community),
     },
     createdBy: {
       type: UserType,

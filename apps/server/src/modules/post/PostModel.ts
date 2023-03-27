@@ -1,6 +1,7 @@
-import mongoose, { Schema, Types, Document } from 'mongoose';
+import mongoose, { Document, Schema, Types } from 'mongoose';
 
 export interface IPost {
+  tags: Types.ObjectId;
   title: string;
   content?: string;
   author: Types.ObjectId;
@@ -13,6 +14,11 @@ export interface IPostDocument extends IPost, Document {}
 
 const PostSchema = new Schema(
   {
+    tags: {
+      type: Types.ObjectId,
+      ref: 'Tags',
+      require: true,
+    },
     title: {
       type: String,
       require: true,

@@ -1,4 +1,4 @@
-import { GraphQLNonNull, GraphQLString } from 'graphql';
+import { GraphQLID, GraphQLList, GraphQLNonNull, GraphQLString } from 'graphql';
 import { mutationWithClientMutationId, toGlobalId } from 'graphql-relay';
 import { successField, getObjectId } from '@entria/graphql-mongo-helpers';
 
@@ -15,6 +15,7 @@ import PostLoader from '../PostLoader';
 export const postCreate = mutationWithClientMutationId({
   name: 'PostCreate',
   inputFields: {
+    tags: { type: new GraphQLNonNull(new GraphQLList(GraphQLID)) },
     title: { type: new GraphQLNonNull(GraphQLString) },
     content: { type: new GraphQLNonNull(GraphQLString) },
     community: { type: new GraphQLNonNull(GraphQLString) },
@@ -48,9 +49,7 @@ export const postCreate = mutationWithClientMutationId({
       resolve: async ({ id }, _, context) => {
         const post = await PostLoader.load(context, id);
 
-        if (!post) {
-          return null;
-        }
+        if (!post) return null;
 
         return {
           cursor: toGlobalId('Post', post._id),

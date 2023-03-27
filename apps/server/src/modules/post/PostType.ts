@@ -1,4 +1,4 @@
-import { GraphQLObjectType, GraphQLString, GraphQLNonNull, GraphQLInt } from 'graphql';
+import { GraphQLObjectType, GraphQLString, GraphQLNonNull, GraphQLInt, GraphQLList } from 'graphql';
 
 import { connectionDefinitions, timestampResolver } from '@entria/graphql-mongo-helpers';
 
@@ -11,7 +11,7 @@ import { UserType } from '../user/UserType';
 import UserLoader from '../user/UserLoader';
 
 import { IPostDocument } from './PostModel';
-import { load } from './PostLoader';
+import PostLoader from './PostLoader';
 
 import { CommunityType } from '../community/CommunityType';
 import CommunityLoader from '../community/CommunityLoader';
@@ -19,12 +19,17 @@ import CommunityLoader from '../community/CommunityLoader';
 import { VoteModel } from '../vote/VoteModel';
 import { VoteType } from '../vote/VoteType';
 import VoteLoader from '../vote/VoteLoader';
+import { TagType } from '../tag/TagType';
 
 export const PostType = new GraphQLObjectType<IPostDocument, GraphQLContext>({
   name: 'Post',
   fields: () => ({
     id: globalIdField('Post'),
     ...timestampResolver,
+    tags: {
+      type: new GraphQLList(TagType),
+      resolve: post => post.tags,
+    },
     title: {
       type: new GraphQLNonNull(GraphQLString),
       resolve: post => post.title,
@@ -73,4 +78,4 @@ export const PostConnection = connectionDefinitions({
   nodeType: PostType,
 });
 
-registerTypeLoader(PostType, load);
+registerTypeLoader(PostType, PostLoader.load);

@@ -4,6 +4,7 @@ import ObjectId = mongoose.Schema.Types.ObjectId;
 export interface ITag {
   label: string;
   color: string;
+  community: Types.ObjectId;
   createdBy: Types.ObjectId;
   createdAt: Date;
   updatedAt: Date;
@@ -19,6 +20,10 @@ const TagSchema = new Schema(
     },
     color: {
       type: String,
+      required: true,
+    },
+    community: {
+      type: ObjectId,
       required: true,
     },
     createdBy: {
