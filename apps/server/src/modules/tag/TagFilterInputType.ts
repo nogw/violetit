@@ -6,12 +6,12 @@ import { FilterMapping } from '@entria/graphql-mongo-helpers/lib/types';
 import { DateOrdering, DateOrderingInputType } from '../../graphql/filters';
 import { GraphQLArgFilter, ObjectId } from '../../types';
 
-export type PostsArgFilters = GraphQLArgFilter<{
+export type TagArgFilters = GraphQLArgFilter<{
   orderBy?: DateOrdering[];
   category?: ObjectId;
 }>;
 
-export const PostFilterMapping: FilterMapping = {
+export const TagFilterMapping: FilterMapping = {
   orderBy: {
     type: FILTER_CONDITION_TYPE.AGGREGATE_PIPELINE,
     pipeline: (value: DateOrdering[]) => [{ $sort: buildSortFromArg(value) }],
@@ -22,15 +22,15 @@ export const PostFilterMapping: FilterMapping = {
   },
 };
 
-export const PostFiltersInputType: GraphQLInputObjectType = new GraphQLInputObjectType({
-  name: 'PostFilter',
-  description: 'Used to filter posts',
+export const TagFiltersInputType: GraphQLInputObjectType = new GraphQLInputObjectType({
+  name: 'TagFilter',
+  description: 'Used to filter tags',
   fields: () => ({
     OR: {
-      type: new GraphQLList(PostFiltersInputType),
+      type: new GraphQLList(TagFiltersInputType),
     },
     AND: {
-      type: new GraphQLList(PostFiltersInputType),
+      type: new GraphQLList(TagFiltersInputType),
     },
     orderBy: {
       type: new GraphQLList(new GraphQLNonNull(DateOrderingInputType)),

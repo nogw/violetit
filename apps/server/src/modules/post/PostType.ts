@@ -1,7 +1,5 @@
-import { GraphQLObjectType, GraphQLString, GraphQLNonNull, GraphQLInt, GraphQLList } from 'graphql';
-
 import { connectionDefinitions, timestampResolver } from '@entria/graphql-mongo-helpers';
-
+import { GraphQLObjectType, GraphQLString, GraphQLNonNull, GraphQLInt } from 'graphql';
 import { globalIdField } from 'graphql-relay';
 
 import { nodeInterface, registerTypeLoader } from '../node/typeRegister';
@@ -19,17 +17,12 @@ import CommunityLoader from '../community/CommunityLoader';
 import { VoteModel } from '../vote/VoteModel';
 import { VoteType } from '../vote/VoteType';
 import VoteLoader from '../vote/VoteLoader';
-import { TagType } from '../tag/TagType';
 
 export const PostType = new GraphQLObjectType<IPostDocument, GraphQLContext>({
   name: 'Post',
   fields: () => ({
     id: globalIdField('Post'),
     ...timestampResolver,
-    tags: {
-      type: new GraphQLList(TagType),
-      resolve: post => post.tags,
-    },
     title: {
       type: new GraphQLNonNull(GraphQLString),
       resolve: post => post.title,
@@ -74,7 +67,7 @@ export const PostType = new GraphQLObjectType<IPostDocument, GraphQLContext>({
 });
 
 export const PostConnection = connectionDefinitions({
-  name: 'PostConnection',
+  name: 'Post',
   nodeType: PostType,
 });
 

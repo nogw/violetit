@@ -3,6 +3,9 @@ import { connectionArgs } from '@entria/graphql-mongo-helpers';
 
 import { nodeField, nodesField } from '../modules/node/typeRegister';
 
+import { UserType } from '../modules/user/UserType';
+import UserLoader from '../modules/user/UserLoader';
+
 import { PostFiltersInputType } from '../modules/post/PostFilterInputType';
 import { PostConnection } from '../modules/post/PostType';
 import PostLoader from '../modules/post/PostLoader';
@@ -10,9 +13,6 @@ import PostLoader from '../modules/post/PostLoader';
 import { CommunityFiltersInputType } from '../modules/community/CommunityFilterInputType';
 import { CommunityConnection } from '../modules/community/CommunityType';
 import CommunityLoader from '../modules/community/CommunityLoader';
-
-import { UserType } from '../modules/user/UserType';
-import UserLoader from '../modules/user/UserLoader';
 
 export const QueryType = new GraphQLObjectType({
   name: 'Query',

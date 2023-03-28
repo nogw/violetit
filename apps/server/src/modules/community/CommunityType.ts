@@ -45,22 +45,20 @@ export const CommunityType = new GraphQLObjectType<ICommunityDocument, GraphQLCo
       type: new GraphQLNonNull(TagConnection.connectionType),
       args: { ...connectionArgs },
       resolve: async (community, args, context) => {
-        return await TagLoader.loadAll(context, withFilter(args, { community: community._id }));
+        return TagLoader.loadAll(context, withFilter(args, { community: community._id }));
       },
     },
     members: {
       type: new GraphQLNonNull(UserConnection.connectionType),
       args: { ...connectionArgs },
       resolve: async (community, args, context) => {
-        return await UserLoader.loadAll(context, withFilter(args, { communities: community._id }));
+        return UserLoader.loadAll(context, withFilter(args, { communities: community._id }));
       },
     },
     joined: {
       type: new GraphQLNonNull(GraphQLBoolean),
       resolve: async (community, _, context) => {
-        if (!context?.user) {
-          return false;
-        }
+        if (!context?.user) return false;
 
         return community.members.some(member => member.equals(context.user?._id));
       },
@@ -70,7 +68,7 @@ export const CommunityType = new GraphQLObjectType<ICommunityDocument, GraphQLCo
 });
 
 export const CommunityConnection = connectionDefinitions({
-  name: 'CommunityConnection',
+  name: 'Community',
   nodeType: CommunityType,
 });
 

@@ -29,12 +29,12 @@ const PostSchema = new Schema(
       type: String,
     },
     author: {
-      type: Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: 'User',
       require: true,
     },
     community: {
-      type: Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: 'Community',
       require: true,
     },

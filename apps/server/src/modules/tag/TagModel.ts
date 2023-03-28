@@ -1,7 +1,7 @@
 import mongoose, { Document, Schema, Types } from 'mongoose';
-import ObjectId = mongoose.Schema.Types.ObjectId;
 
 export interface ITag {
+  _id: Types.ObjectId;
   label: string;
   color: string;
   community: Types.ObjectId;
@@ -10,7 +10,7 @@ export interface ITag {
   updatedAt: Date;
 }
 
-export interface ITagDocument extends ITag, Document {}
+export type ITagDocument = ITag & Document;
 
 const TagSchema = new Schema(
   {
@@ -22,20 +22,22 @@ const TagSchema = new Schema(
       type: String,
       required: true,
     },
-    community: {
-      type: ObjectId,
-      required: true,
-    },
     createdBy: {
-      type: ObjectId,
-      required: true,
+      type: Schema.Types.ObjectId,
+      ref: 'User',
+      require: true,
+    },
+    community: {
+      type: Schema.Types.ObjectId,
+      ref: 'Community',
+      require: true,
     },
   },
   {
-    collection: 'Tag',
+    collection: 'Post',
     timestamps: {
-      createdAt: 'createdAt',
-      updatedAt: 'updatedAt',
+      createdAt: true,
+      updatedAt: true,
     },
   },
 );

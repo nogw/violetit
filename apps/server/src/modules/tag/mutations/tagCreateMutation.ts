@@ -6,10 +6,10 @@ import { GraphQLContext } from '../../../graphql/types';
 import { errorField } from '../../error-field/ErrorField';
 import { fieldError } from '../../../utils/fieldError';
 
+import { CommunityModel } from '../../community/CommunityModel';
 import { TagConnection } from '../TagType';
 import { TagModel } from '../TagModel';
 import TagLoader from '../TagLoader';
-import { CommunityModel } from 'src/modules/community/CommunityModel';
 
 export const tagCreateMutation = mutationWithClientMutationId({
   name: 'TagCreate',

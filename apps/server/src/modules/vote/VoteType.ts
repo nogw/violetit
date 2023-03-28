@@ -29,7 +29,7 @@ export const VoteType = new GraphQLObjectType<IVote, GraphQLContext>({
 });
 
 export const VoteConnection = connectionDefinitions({
-  name: 'VoteConnection',
+  name: 'Vote',
   nodeType: VoteType,
 });
 

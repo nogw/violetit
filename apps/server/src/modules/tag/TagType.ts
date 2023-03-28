@@ -1,43 +1,47 @@
-import { GraphQLObjectType, GraphQLString } from 'graphql';
-import { connectionDefinitions, globalIdField } from 'graphql-relay';
+import { connectionDefinitions, objectIdResolver, timestampResolver } from '@entria/graphql-mongo-helpers';
+import { GraphQLObjectType, GraphQLString, GraphQLNonNull } from 'graphql';
+import { globalIdField } from 'graphql-relay';
 
+import { nodeInterface, registerTypeLoader } from '../node/typeRegister';
 import { GraphQLContext } from '../../graphql/types';
 
 import { ITagDocument } from './TagModel';
 import TagLoader from './TagLoader';
-import { timestampResolver } from '@entria/graphql-mongo-helpers';
+
 import { UserType } from '../user/UserType';
 import UserLoader from '../user/UserLoader';
+
+import { CommunityType } from '../community/CommunityType';
 import CommunityLoader from '../community/CommunityLoader';
-import { nodeInterface, registerTypeLoader } from '../node/typeRegister';
 
 export const TagType = new GraphQLObjectType<ITagDocument, GraphQLContext>({
   name: 'Tag',
   fields: () => ({
     id: globalIdField('Tag'),
-    ...timestampResolver,
     label: {
-      type: GraphQLString,
+      type: new GraphQLNonNull(GraphQLString),
       resolve: ({ label }) => label,
     },
     color: {
-      type: GraphQLString,
+      type: new GraphQLNonNull(GraphQLString),
       resolve: ({ color }) => color,
-    },
-    community: {
-      type: UserType,
-      resolve: ({ community }, _, context) => CommunityLoader.load(context, community),
     },
     createdBy: {
       type: UserType,
       resolve: ({ createdBy }, _, context) => UserLoader.load(context, createdBy),
     },
+    community: {
+      type: CommunityType,
+      resolve: ({ community }, _, context) => CommunityLoader.load(context, community),
+    },
+    ...objectIdResolver,
+    ...timestampResolver,
   }),
   interfaces: () => [nodeInterface],
 });
 
 export const TagConnection = connectionDefinitions({
-  name: 'TagConnection',
+  name: 'Tag',
   nodeType: TagType,
 });
 
