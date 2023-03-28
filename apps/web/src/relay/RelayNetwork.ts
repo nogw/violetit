@@ -25,6 +25,9 @@ const forceFetch = (cacheConfig: CacheConfig): boolean => {
 const fetchGraphQL = async (params: RequestParameters, variables: Variables) => {
   const token = storage.getAuthToken();
 
+  //eslint-disable-next-line
+  console.log(token);
+
   const response = await fetch(GRAPHQL_URL, {
     method: 'POST',
     headers: {

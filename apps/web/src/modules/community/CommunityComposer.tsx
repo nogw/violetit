@@ -13,7 +13,6 @@ export const CommunityComposer = () => {
 
   const [name, setName] = useState<string>('');
   const [title, setTitle] = useState<string>('');
-
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
   const [communityCreate, isPending] = useMutation<CommunityCreateMutation>(CommunityCreate);

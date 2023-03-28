@@ -6,7 +6,7 @@ import { LoginRoutes } from './modules/user/LoginRoutes';
 import { FeedPage } from './modules/feed/FeedPage';
 import { CommunityPage } from './modules/community/CommunityPage';
 import { PostDetailPage } from './modules/post/PostPage';
-import { PostComposerDetail } from './modules/post/PostComposerDetail';
+import { PostComposer } from './modules/post/PostComposer';
 
 export const Routes = () => {
   return (
@@ -14,7 +14,7 @@ export const Routes = () => {
       <Route path="/auth/*" element={<LoginRoutes />} />
       <Route element={<AuthLayout />}>
         <Route path="/" element={<FeedPage />} />
-        <Route path="/submit" element={<PostComposerDetail />} />
+        <Route path="/submit" element={<PostComposer />} />
         <Route path="/r/:community" element={<CommunityPage />} />
         <Route path="/r/:community/:post" element={<PostDetailPage />} />
       </Route>

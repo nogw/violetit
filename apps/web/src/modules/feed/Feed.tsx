@@ -4,7 +4,7 @@ import { useLazyLoadQuery } from 'react-relay';
 import { graphql } from 'relay-runtime';
 
 import { FeedListPaginationQuery } from './__generated__/FeedListPaginationQuery.graphql';
-import { PostComposer } from 'src/modules/post/PostComposer';
+import { PostCreate } from 'src/modules/post/PostCreate';
 import { FeedList } from './FeedList';
 
 const feedPostsLazyLoadQuery = graphql`
@@ -22,7 +22,7 @@ export const Feed = (props: FeedProps) => {
 
   return (
     <Flex className="w-full flex-col">
-      <PostComposer />
+      <PostCreate />
       <FeedList query={query} queryVariables={props} />
     </Flex>
   );

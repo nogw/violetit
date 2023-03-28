@@ -6,7 +6,7 @@ import { useLocation } from 'react-router-dom';
 
 import { CommunityComposer } from './CommunityComposer';
 
-export const CommunityComposerPopup = () => {
+export const CommunityCreatePopup = () => {
   const [showPopup, setShowPopup] = useState(false);
   const location = useLocation();
 
