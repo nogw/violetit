@@ -1,4 +1,5 @@
 export { Box } from './Box';
+export { Tag } from './Tag';
 export { Button } from './Button';
 export { Card } from './Card';
 export { CardTitled } from './CardTitled';
@@ -15,4 +16,5 @@ export { Text } from './Text';
 export { TextArea } from './TextArea';
 export { TextField } from './TextField';
 export { SelectInput } from './SelectInput';
+export { RadioInput } from './RadioInput';
 export { VoteButton } from './VoteButton';
