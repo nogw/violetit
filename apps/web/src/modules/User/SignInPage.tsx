@@ -9,7 +9,7 @@ import * as yup from 'yup';
 import { UserLoginMutation } from './mutations/__generated__/UserLoginMutation.graphql';
 import { UserLogin } from './mutations/UserLoginMutation';
 import { InputField } from 'src/common/InputField';
-import { useAuth } from 'src/modules/auth/useAuth';
+import { useAuth } from 'src/modules/Auth/useAuth';
 
 type signInValues = {
   email: string;

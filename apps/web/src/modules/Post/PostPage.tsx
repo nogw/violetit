@@ -4,7 +4,7 @@ import { useLazyLoadQuery } from 'react-relay';
 import { useParams } from 'react-router-dom';
 import { graphql } from 'relay-runtime';
 
-import { CommunityLayout } from '../community/CommunityLayout';
+import { CommunityLayout } from '../Community/CommunityLayout';
 import { PostPageQuery } from './__generated__/PostPageQuery.graphql';
 import { PostDetail } from './PostDetail';
 
@@ -26,7 +26,7 @@ export const PostDetailPage = () => {
   }
 
   return (
-    <CommunityLayout id={String(community)}>
+    <CommunityLayout withInfo id={String(community)}>
       <PostDetail isDetail post={data.post} />
     </CommunityLayout>
   );

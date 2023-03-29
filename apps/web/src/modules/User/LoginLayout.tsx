@@ -1,6 +1,6 @@
 import { Outlet, Navigate, useLocation } from 'react-router-dom';
 
-import { useAuth } from 'src/modules/auth/useAuth';
+import { useAuth } from 'src/modules/Auth/useAuth';
 import { Link } from 'src/common/Link';
 
 const SignUpOrLoginLink = ({ pathname }: { pathname: string }) => {

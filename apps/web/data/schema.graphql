@@ -26,12 +26,12 @@ type Query {
   Logged user
   """
   me: User
+  community(id: String!): Community
 
   """
   Connection to all communities
   """
   communities(after: String, first: Int, before: String, last: Int, filters: CommunityFilters): CommunityConnection!
-  community(id: String!): Community
 
   """
   Connection to all posts
@@ -251,7 +251,6 @@ type Tag implements Node {
   id: ID!
   label: String!
   color: String!
-  createdBy: User
   community: Community
 
   """
@@ -430,6 +429,7 @@ type Post implements Node {
   author: User
   community: Community
   votesCount: Int!
+  tags: [Tag]
   meHasVoted: Vote
 }
 
@@ -598,11 +598,17 @@ type PostCreatePayload {
 }
 
 input PostCreateInput {
-  tags: [ID]!
   title: String!
   content: String!
   community: String!
+  tags: [tags]
   clientMutationId: String
+}
+
+input tags {
+  id: ID!
+  color: String!
+  label: String!
 }
 
 type VoteCreatePayload {

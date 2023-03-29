@@ -4,9 +4,9 @@ import { RiMagicFill } from 'react-icons/ri';
 import { MdExitToApp } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
 
-import { CommunityCreatePopup } from '../modules/community/CommunityCreatePopup';
-import { SearchBar } from '../modules/search/SearchBar';
-import { useAuth } from '../modules/auth/useAuth';
+import { CommunityCreatePopup } from '../modules/Community/CommunityCreatePopup';
+import { SearchBar } from '../modules/Search/SearchBar';
+import { useAuth } from '../modules/Auth/useAuth';
 import { Link } from './Link';
 
 type NavbarProps = {

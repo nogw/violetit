@@ -4,7 +4,7 @@ import { useLazyLoadQuery } from 'react-relay';
 import { graphql } from 'relay-runtime';
 
 import { FeedListPaginationQuery } from './__generated__/FeedListPaginationQuery.graphql';
-import { PostCreate } from 'src/modules/post/PostCreate';
+import { PostCreate } from 'src/modules/Post/PostCreate';
 import { FeedList } from './FeedList';
 
 const feedPostsLazyLoadQuery = graphql`

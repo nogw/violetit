@@ -9,7 +9,7 @@ import * as yup from 'yup';
 import { UserRegisterMutation } from './mutations/__generated__/UserRegisterMutation.graphql';
 import { UserRegister } from './mutations/UserRegisterMutation';
 import { InputField } from 'src/common/InputField';
-import { useAuth } from 'src/modules/auth/useAuth';
+import { useAuth } from 'src/modules/Auth/useAuth';
 
 type signUpValues = {
   username: string;

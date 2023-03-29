@@ -1,6 +1,8 @@
 import { Flex, Box, Button, Heading, Text } from '@violetit/ui';
 
 import { graphql, useFragment, useMutation } from 'react-relay';
+import { BsFillGearFill } from 'react-icons/bs';
+import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 
 import { CommunityHeader_community$key } from './__generated__/CommunityHeader_community.graphql';
@@ -16,6 +18,8 @@ type CommunityHeaderProps = {
 };
 
 export const CommunityHeader = (props: CommunityHeaderProps) => {
+  const navigate = useNavigate();
+
   const community = useFragment<CommunityHeader_community$key>(
     graphql`
       fragment CommunityHeader_community on Community {
@@ -23,6 +27,7 @@ export const CommunityHeader = (props: CommunityHeaderProps) => {
         name
         title
         joined
+        amIOwner
       }
     `,
     props.community,
@@ -71,11 +76,16 @@ export const CommunityHeader = (props: CommunityHeaderProps) => {
           </Link>
           <Text color="secondary">r/{community.name}</Text>
         </Flex>
-        <Box>
+        <Flex className="h-min gap-2">
           <Button variant={joinedButtonProps.variant} onClick={e => handleJoin(e)}>
             {joinedButtonProps.text}
           </Button>
-        </Box>
+          {community.amIOwner ? (
+            <Button variant="neutral" onClick={() => navigate(`/r/panel/${community.id}`)}>
+              <BsFillGearFill /> Mod Tools
+            </Button>
+          ) : null}
+        </Flex>
       </Flex>
     </Flex>
   );

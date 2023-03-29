@@ -6,8 +6,8 @@ import { Fragment } from 'react';
 import { PostDetail_post$key } from './__generated__/PostDetail_post.graphql';
 import { PostHeader } from './PostHeader';
 import { PostFooter } from './PostFooter';
-import { VoteButtons } from 'src/modules/vote/VoteButtons';
-import { Link } from 'src/common/Link';
+import { VoteButtons } from '../Vote/VoteButtons';
+import { Link } from '../../common/Link';
 
 type WrapperProps = {
   to?: string;

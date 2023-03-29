@@ -18,10 +18,11 @@ const CommunityLayoutMe = graphql`
 
 type CommunityLayoutProps = {
   id: string;
+  withInfo: boolean;
   children: React.ReactElement;
 };
 
-export const CommunityLayout = ({ id, children }: CommunityLayoutProps) => {
+export const CommunityLayout = ({ id, withInfo, children }: CommunityLayoutProps) => {
   const data = useLazyLoadQuery<CommunityLayoutMeQuery>(CommunityLayoutMe, { id });
 
   if (!data || !data.community) {
@@ -33,7 +34,7 @@ export const CommunityLayout = ({ id, children }: CommunityLayoutProps) => {
       <CommunityHeader community={data.community} />
       <Flex className="w-full gap-2 px-2">
         {children}
-        <CommunityInfo community={data.community} />
+        {withInfo ? <CommunityInfo community={data.community} /> : null}
       </Flex>
     </Box>
   );
