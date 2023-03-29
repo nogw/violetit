@@ -5,13 +5,19 @@ import { IoMdPricetags } from 'react-icons/io';
 import { useLocation } from 'react-router-dom';
 import { graphql } from 'relay-runtime';
 
-import { Button, InfoText, Flex, Box, Popup, Checkbox } from '@violetit/ui';
+import { Button, InfoText, Flex, Box, Popup, Checkbox, Tag } from '@violetit/ui';
 import { PostComposerTagsQuery } from './__generated__/PostComposerTagsQuery.graphql';
+
+type TagValue = {
+  id: string;
+  label: string;
+  color: string;
+};
 
 type PostComposerTagsProps = {
   community: string;
-  selectedValues: Array<string>;
-  onSelectedChange: (selectedValues: Array<string>) => void;
+  selectedTags: Array<TagValue>;
+  onSelectedChange: (selectedValues: Array<TagValue>) => void;
 };
 
 const QueryPostComposerTags = graphql`
@@ -22,6 +28,7 @@ const QueryPostComposerTags = graphql`
           node {
             id
             label
+            color
           }
         }
       }
@@ -29,7 +36,7 @@ const QueryPostComposerTags = graphql`
   }
 `;
 
-export const PostComposerTags = ({ community, selectedValues, onSelectedChange }: PostComposerTagsProps) => {
+export const PostComposerTags = ({ community, selectedTags, onSelectedChange }: PostComposerTagsProps) => {
   const data = useLazyLoadQuery<PostComposerTagsQuery>(QueryPostComposerTags, { id: community });
 
   const [showPopup, setShowPopup] = useState(false);
@@ -39,11 +46,20 @@ export const PostComposerTags = ({ community, selectedValues, onSelectedChange }
     setShowPopup(false);
   }, [location]);
 
-  const handleChange = (value: string, isChecked: boolean) => {
-    const selected = isChecked
-      ? [...selectedValues, value]
-      : selectedValues.filter(selectedValue => selectedValue !== value);
-    onSelectedChange(selected);
+  const handleChange = (value: TagValue, isChecked: boolean) => {
+    const select = isChecked
+      ? [...selectedTags, value]
+      : selectedTags.filter(selectedValue => selectedValue.id !== value.id);
+    onSelectedChange(select);
+  };
+
+  const handleClean = () => {
+    onSelectedChange([]);
+    setShowPopup(false);
+  };
+
+  const handleSave = () => {
+    setShowPopup(false);
   };
 
   if (!data.community?.tags || data.community.tags.edges.length === 0) {
@@ -51,10 +67,15 @@ export const PostComposerTags = ({ community, selectedValues, onSelectedChange }
   }
 
   const communities = data.community.tags.edges.flatMap(edge => (edge?.node ? edge.node : []));
-  const options = communities.map(node => ({ value: node.id, label: node.label }));
+  const options = communities.map(node => ({ id: node.id, label: node.label, color: node.color }));
 
   return (
     <Box>
+      <Flex className="mb-4 gap-1">
+        {selectedTags.map(value => {
+          return <Tag label={value.label} color={value.color} />;
+        })}
+      </Flex>
       <Button size="md" variant="neutral" onClick={() => setShowPopup(true)}>
         <IoMdPricetags />
         Choose the tags
@@ -64,20 +85,20 @@ export const PostComposerTags = ({ community, selectedValues, onSelectedChange }
           <Popup title="Choose the appropriate tags" handleClose={() => setShowPopup(false)}>
             <Flex className="flex-col gap-2">
               <Flex className="flex-col">
-                {options.map(({ value, label }, index) => (
+                {options.map(option => (
                   <Checkbox
-                    key={index}
-                    label={label}
-                    isChecked={selectedValues.includes(value)}
-                    onCheckedChange={isChecked => handleChange(value, isChecked)}
+                    key={option.id}
+                    label={option.label}
+                    isChecked={selectedTags.some(tag => option.id === tag.id)}
+                    onCheckedChange={isChecked => handleChange(option, isChecked)}
                   />
                 ))}
               </Flex>
               <Flex className="gap-2 border-t pt-3">
-                <Button variant="secondary" onClick={() => onSelectedChange([])}>
+                <Button variant="secondary" onClick={handleClean}>
                   Clear
                 </Button>
-                <Button variant="primary" onClick={() => setShowPopup(false)}>
+                <Button variant="primary" onClick={handleSave}>
                   Save
                 </Button>
               </Flex>

@@ -10,6 +10,12 @@ import { PostCreate } from './mutations/PostCreateMutation';
 import { PostComposerTags } from './PostComposerTags';
 import { PostComposerQuery } from './__generated__/PostComposerQuery.graphql';
 
+type TagValue = {
+  id: string;
+  label: string;
+  color: string;
+};
+
 export const QueryPostComposer = graphql`
   query PostComposerQuery {
     me {
@@ -28,7 +34,7 @@ export const QueryPostComposer = graphql`
 export const PostComposer = () => {
   const navigate = useNavigate();
 
-  const [tags, setTags] = useState<string[]>([]);
+  const [tags, setTags] = useState<TagValue[]>([]);
   const [title, setTitle] = useState<string>('');
   const [content, setContent] = useState<string>('');
   const [community, setCommunity] = useState<string>('');
@@ -39,9 +45,11 @@ export const PostComposer = () => {
   const onSubmit = () => {
     closeSnackbar();
 
+    const tagsId = tags.map(tag => tag.id);
+
     postCreate({
       variables: {
-        tags,
+        tags: tagsId,
         title,
         content,
         community,
@@ -94,7 +102,7 @@ export const PostComposer = () => {
         <Flex className="w-full flex-col gap-4">
           <TextField placeholder="Title" value={title} onChange={e => setTitle(e.target.value)} />
           <TextArea value={content} onChange={e => setContent(e.target.value)} />
-          <PostComposerTags community={community} selectedValues={tags} onSelectedChange={setTags} />
+          <PostComposerTags community={community} selectedTags={tags} onSelectedChange={setTags} />
           <Box className="ml-auto">
             <Button disabled={isDisabled} size="md" variant="primary" onClick={onSubmit}>
               Create post

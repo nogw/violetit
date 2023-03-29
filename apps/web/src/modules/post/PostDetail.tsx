@@ -1,4 +1,4 @@
-import { Card, CardContent, Flex, Heading, Text } from '@violetit/ui';
+import { Card, CardContent, Flex, Heading, Tag, Text } from '@violetit/ui';
 
 import { graphql, useFragment } from 'react-relay';
 import { Fragment } from 'react';
@@ -43,6 +43,14 @@ export const PostDetail = (props: PostDetailProps) => {
         community {
           id
         }
+        tags {
+          edges {
+            node {
+              color
+              label
+            }
+          }
+        }
         ...VoteButtons_post
         ...PostHeader_post
         ...PostFooter_post
@@ -53,6 +61,8 @@ export const PostDetail = (props: PostDetailProps) => {
 
   const wrapperProps = isDetail ? {} : { to: `/r/${post.community?.id}/${post.id}` };
 
+  const tagsMapped = post.tags ? post.tags.edges.flatMap(edge => (edge?.node ? edge.node : [])) : [];
+
   return (
     <Wrapper {...wrapperProps}>
       <Card className="h-min px-0 py-0 hover:border-gray-400">
@@ -60,7 +70,12 @@ export const PostDetail = (props: PostDetailProps) => {
         <CardContent className="pt-2">
           <PostHeader post={post} />
           <Flex className="my-1 flex-col gap-1">
-            <Heading variant="h5">{post.title}</Heading>
+            <Heading variant="h5">
+              {post.title}{' '}
+              {tagsMapped.map(({ label, color }) => (
+                <Tag label={label} color={color} />
+              ))}
+            </Heading>
             <Text clamp={!isDetail} variant="p4">
               {post.content}
             </Text>
