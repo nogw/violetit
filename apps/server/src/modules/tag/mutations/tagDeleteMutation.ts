@@ -29,7 +29,7 @@ export const tagDeleteMutation = mutationWithClientMutationId({
     const foundMemberIdInAdmin = foundCommunity.admin.equals(context.user._id);
     const foundMemberIdInMods = foundCommunity.mods.includes(context.user?._id);
 
-    if (!foundMemberIdInAdmin || !foundMemberIdInMods) {
+    if (!foundMemberIdInAdmin && !foundMemberIdInMods) {
       return fieldError('community', 'You are not allowed to create tags');
     }
 

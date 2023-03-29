@@ -5,7 +5,6 @@ export interface ITag {
   label: string;
   color: string;
   community: Types.ObjectId;
-  createdBy: Types.ObjectId;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -22,11 +21,6 @@ const TagSchema = new Schema(
       type: String,
       required: true,
     },
-    createdBy: {
-      type: Schema.Types.ObjectId,
-      ref: 'User',
-      require: true,
-    },
     community: {
       type: Schema.Types.ObjectId,
       ref: 'Community',
@@ -34,7 +28,7 @@ const TagSchema = new Schema(
     },
   },
   {
-    collection: 'Post',
+    collection: 'Tag',
     timestamps: {
       createdAt: true,
       updatedAt: true,
@@ -43,3 +37,4 @@ const TagSchema = new Schema(
 );
 
 export const TagModel = mongoose.model<ITagDocument>('Tag', TagSchema);
+export { TagSchema };

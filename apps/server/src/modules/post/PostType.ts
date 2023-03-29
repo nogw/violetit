@@ -18,11 +18,13 @@ import { VoteModel } from '../vote/VoteModel';
 import { VoteType } from '../vote/VoteType';
 import VoteLoader from '../vote/VoteLoader';
 
+import { TagConnection } from '../tag/TagType';
+import TagLoader from '../tag/TagLoader';
+
 export const PostType = new GraphQLObjectType<IPostDocument, GraphQLContext>({
   name: 'Post',
   fields: () => ({
     id: globalIdField('Post'),
-    ...timestampResolver,
     title: {
       type: new GraphQLNonNull(GraphQLString),
       resolve: post => post.title,
@@ -31,37 +33,46 @@ export const PostType = new GraphQLObjectType<IPostDocument, GraphQLContext>({
       type: new GraphQLNonNull(GraphQLString),
       resolve: post => post.content,
     },
+    tags: {
+      type: TagConnection.connectionType,
+      resolve: (post, _, context) => {
+        return TagLoader.loadAll(context, post.tags);
+      },
+    },
     author: {
       type: UserType,
-      resolve: ({ author }, _, context) => UserLoader.load(context, author),
+      resolve: (post, _, context) => {
+        return UserLoader.load(context, post.author);
+      },
     },
     community: {
       type: CommunityType,
-      resolve: ({ community }, _, context) => CommunityLoader.load(context, community),
+      resolve: (post, _, context) => {
+        return CommunityLoader.load(context, post.community);
+      },
     },
     votesCount: {
       type: new GraphQLNonNull(GraphQLInt),
-      resolve: async post => (await VoteModel.countVotes({ post: post._id }))?.total,
+      resolve: async post => {
+        return (await VoteModel.countVotes({ post: post._id }))?.total;
+      },
     },
     meHasVoted: {
       type: VoteType,
       resolve: async (post, _, context) => {
-        if (!context.user?._id) {
-          return null;
-        }
+        if (!context.user?._id) return null;
 
         const vote = await VoteModel.findOne({
           post: post._id,
           user: context.user._id,
         });
 
-        if (!vote) {
-          return null;
-        }
+        if (!vote) return null;
 
         return VoteLoader.load(context, vote._id);
       },
     },
+    ...timestampResolver,
   }),
   interfaces: () => [nodeInterface],
 });

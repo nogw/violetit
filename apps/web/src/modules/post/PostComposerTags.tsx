@@ -55,7 +55,6 @@ export const PostComposerTags = ({ community, selectedTags, onSelectedChange }: 
 
   const handleClean = () => {
     onSelectedChange([]);
-    setShowPopup(false);
   };
 
   const handleSave = () => {

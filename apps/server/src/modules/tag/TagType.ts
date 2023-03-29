@@ -8,9 +8,6 @@ import { GraphQLContext } from '../../graphql/types';
 import { ITagDocument } from './TagModel';
 import TagLoader from './TagLoader';
 
-import { UserType } from '../user/UserType';
-import UserLoader from '../user/UserLoader';
-
 import { CommunityType } from '../community/CommunityType';
 import CommunityLoader from '../community/CommunityLoader';
 
@@ -25,10 +22,6 @@ export const TagType = new GraphQLObjectType<ITagDocument, GraphQLContext>({
     color: {
       type: new GraphQLNonNull(GraphQLString),
       resolve: ({ color }) => color,
-    },
-    createdBy: {
-      type: UserType,
-      resolve: ({ createdBy }, _, context) => UserLoader.load(context, createdBy),
     },
     community: {
       type: CommunityType,

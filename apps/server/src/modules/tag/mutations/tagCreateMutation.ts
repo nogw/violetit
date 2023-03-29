@@ -24,15 +24,15 @@ export const tagCreateMutation = mutationWithClientMutationId({
     }
 
     const foundCommunity = await CommunityModel.findById(getObjectId(communityId));
+    if (!foundCommunity) return fieldError('community', "This community doesn't exist");
 
-    if (!foundCommunity) {
-      return fieldError('community', "This community doesn't exist");
-    }
+    const foundTagInCommunity = await TagModel.findOne({ label, community: getObjectId(communityId) });
+    if (foundTagInCommunity) return fieldError('tag', 'A tag with that name has already been created');
 
     const foundMemberIdInAdmin = foundCommunity.admin.equals(context.user._id);
     const foundMemberIdInMods = foundCommunity.mods.includes(context.user?._id);
 
-    if (!foundMemberIdInAdmin || !foundMemberIdInMods) {
+    if (!foundMemberIdInAdmin && !foundMemberIdInMods) {
       return fieldError('community', 'You are not allowed to create tags');
     }
 
@@ -40,7 +40,6 @@ export const tagCreateMutation = mutationWithClientMutationId({
       label,
       color,
       community: foundCommunity._id,
-      createdBy: context.user,
     }).save();
 
     return {
