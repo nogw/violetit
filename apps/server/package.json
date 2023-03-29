@@ -41,7 +41,7 @@
     "@types/koa__router": "^12.0.0",
     "@types/mongoose": "^5.11.97",
     "@types/supertest": "^2.0.12",
-    "babel-jest": "28.1.2",
+    "babel-jest": "29.5.0",
     "babel-loader": "^9.1.2",
     "dotenv-safe": "^8.2.0",
     "jest": "28.1.2",
