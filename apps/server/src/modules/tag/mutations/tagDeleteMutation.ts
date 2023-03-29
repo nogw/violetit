@@ -33,7 +33,7 @@ export const tagDeleteMutation = mutationWithClientMutationId({
       return fieldError('community', 'You are not allowed to create tags');
     }
 
-    await TagModel.findOneAndDelete({ _id: tagId });
+    await TagModel.findOneAndDelete({ _id: getObjectId(tagId) });
 
     return {
       success: 'Tag deleted with success',

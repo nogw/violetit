@@ -24,6 +24,8 @@ export const CommunityType = new GraphQLObjectType<ICommunityDocument, GraphQLCo
   name: 'Community',
   fields: () => ({
     id: globalIdField('Community'),
+    ...objectIdResolver,
+    ...timestampResolver,
     name: {
       type: new GraphQLNonNull(GraphQLString),
       resolve: community => community.name,
@@ -57,12 +59,20 @@ export const CommunityType = new GraphQLObjectType<ICommunityDocument, GraphQLCo
       type: new GraphQLNonNull(GraphQLBoolean),
       resolve: async (community, _, context) => {
         if (!context?.user) return false;
-
         return community.members.some(member => member.equals(context.user?._id));
       },
     },
-    ...objectIdResolver,
-    ...timestampResolver,
+    amIOwner: {
+      type: new GraphQLNonNull(GraphQLBoolean),
+      resolve: async (community, _, context) => {
+        if (!context?.user) return false;
+
+        const imAdmin = community.admin._id.equals(context.user?._id);
+        const imModerator = community.mods.some(mod => mod.equals(context.user?._id));
+
+        return imAdmin || imModerator;
+      },
+    },
   }),
   interfaces: () => [nodeInterface],
 });

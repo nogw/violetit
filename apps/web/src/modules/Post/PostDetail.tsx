@@ -1,13 +1,13 @@
-import { Card, CardContent, Flex, Heading, Tag, Text } from '@violetit/ui';
+import { Box, Card, CardContent, Flex, Heading, Tag, Text } from '@violetit/ui';
 
 import { graphql, useFragment } from 'react-relay';
+import { useNavigate } from 'react-router-dom';
 import { Fragment } from 'react';
 
 import { PostDetail_post$key } from './__generated__/PostDetail_post.graphql';
+import { VoteButtons } from '../Vote/VoteButtons';
 import { PostHeader } from './PostHeader';
 import { PostFooter } from './PostFooter';
-import { VoteButtons } from '../Vote/VoteButtons';
-import { Link } from '../../common/Link';
 
 type WrapperProps = {
   to?: string;
@@ -20,11 +20,13 @@ type PostDetailProps = {
 };
 
 const Wrapper = ({ to, children }: WrapperProps) => {
+  const navigate = useNavigate();
+
   if (to) {
     return (
-      <Link className="hover:none" to={to}>
+      <Box className="cursor-pointer" onClick={() => navigate(to)}>
         {children}
-      </Link>
+      </Box>
     );
   }
 
@@ -44,12 +46,9 @@ export const PostDetail = (props: PostDetailProps) => {
           id
         }
         tags {
-          edges {
-            node {
-              color
-              label
-            }
-          }
+          id
+          label
+          color
         }
         ...VoteButtons_post
         ...PostHeader_post
@@ -61,7 +60,7 @@ export const PostDetail = (props: PostDetailProps) => {
 
   const wrapperProps = isDetail ? {} : { to: `/r/${post.community?.id}/${post.id}` };
 
-  const tagsMapped = post.tags ? post.tags.edges.flatMap(edge => (edge?.node ? edge.node : [])) : [];
+  const tagsMapped = post.tags ? post.tags.flatMap(edge => (edge ? edge : [])) : [];
 
   return (
     <Wrapper {...wrapperProps}>
@@ -72,8 +71,8 @@ export const PostDetail = (props: PostDetailProps) => {
           <Flex className="my-1 flex-col gap-1">
             <Heading variant="h5">
               {post.title}{' '}
-              {tagsMapped.map(({ label, color }) => (
-                <Tag label={label} color={color} />
+              {tagsMapped.map(({ id, label, color }) => (
+                <Tag key={id} label={label} color={color} />
               ))}
             </Heading>
             <Text clamp={!isDetail} variant="p4">

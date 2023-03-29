@@ -189,6 +189,7 @@ type Community implements Node {
   tags(after: String, first: Int, before: String, last: Int): TagConnection!
   members(after: String, first: Int, before: String, last: Int): UserConnection!
   joined: Boolean!
+  amIOwner: Boolean!
 }
 
 """
@@ -426,10 +427,10 @@ type Post implements Node {
   updatedAt: String
   title: String!
   content: String!
+  tags: [Tag]
   author: User
   community: Community
   votesCount: Int!
-  tags: [Tag]
   meHasVoted: Vote
 }
 
@@ -438,11 +439,11 @@ type Vote implements Node {
   The ID of an object
   """
   id: ID!
-  createdAt: String
-  updatedAt: String
   type: String!
   post: ID!
   user: ID!
+  createdAt: String
+  updatedAt: String
 }
 
 """
@@ -601,14 +602,8 @@ input PostCreateInput {
   title: String!
   content: String!
   community: String!
-  tags: [tags]
+  tags: [ID]
   clientMutationId: String
-}
-
-input tags {
-  id: ID!
-  color: String!
-  label: String!
 }
 
 type VoteCreatePayload {

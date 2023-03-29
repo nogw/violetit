@@ -1,5 +1,5 @@
 import { connectionDefinitions, timestampResolver } from '@entria/graphql-mongo-helpers';
-import { GraphQLObjectType, GraphQLString, GraphQLNonNull, GraphQLInt } from 'graphql';
+import { GraphQLObjectType, GraphQLString, GraphQLNonNull, GraphQLInt, GraphQLList } from 'graphql';
 import { globalIdField } from 'graphql-relay';
 
 import { nodeInterface, registerTypeLoader } from '../node/typeRegister';
@@ -18,13 +18,14 @@ import { VoteModel } from '../vote/VoteModel';
 import { VoteType } from '../vote/VoteType';
 import VoteLoader from '../vote/VoteLoader';
 
-import { TagConnection } from '../tag/TagType';
+import { TagType } from '../tag/TagType';
 import TagLoader from '../tag/TagLoader';
 
 export const PostType = new GraphQLObjectType<IPostDocument, GraphQLContext>({
   name: 'Post',
   fields: () => ({
     id: globalIdField('Post'),
+    ...timestampResolver,
     title: {
       type: new GraphQLNonNull(GraphQLString),
       resolve: post => post.title,
@@ -34,9 +35,10 @@ export const PostType = new GraphQLObjectType<IPostDocument, GraphQLContext>({
       resolve: post => post.content,
     },
     tags: {
-      type: TagConnection.connectionType,
+      // TODO:  It should be a connection pagination
+      type: new GraphQLList(TagType),
       resolve: (post, _, context) => {
-        return TagLoader.loadAll(context, post.tags);
+        return post.tags.map(tag => TagLoader.load(context, tag));
       },
     },
     author: {
@@ -72,7 +74,6 @@ export const PostType = new GraphQLObjectType<IPostDocument, GraphQLContext>({
         return VoteLoader.load(context, vote._id);
       },
     },
-    ...timestampResolver,
   }),
   interfaces: () => [nodeInterface],
 });
