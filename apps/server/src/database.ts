@@ -1,9 +1,11 @@
 import mongoose from 'mongoose';
 
-import { config } from './config';
+import { config, isProd } from './config';
 
 export const connectDatabase = async (): Promise<void> => {
   mongoose.set('strictQuery', true);
+  mongoose.set('debug', !isProd);
+
   /* eslint-disable no-console */
   mongoose.connection
     .once('open', () => console.log('database connected'))

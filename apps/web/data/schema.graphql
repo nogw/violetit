@@ -26,22 +26,17 @@ type Query {
   Logged user
   """
   me: User
+  community(id: String!): Community
 
   """
   Connection to all communities
   """
-  communities(
-    after: String
-    first: Int
-    before: String
-    last: Int
-    filters: CommunityFilters
-  ): CommunityConnectionConnection!
+  communities(after: String, first: Int, before: String, last: Int, filters: CommunityFilters): CommunityConnection!
 
   """
   Connection to all posts
   """
-  posts(after: String, first: Int, before: String, last: Int, filters: PostFilter): PostConnectionConnection!
+  posts(after: String, first: Int, before: String, last: Int, filters: PostFilter): PostConnection!
 }
 
 """
@@ -61,13 +56,13 @@ type User implements Node {
   id: ID!
   username: String!
   email: String!
-  communities(after: String, first: Int, before: String, last: Int): CommunityConnectionConnection!
+  communities(after: String, first: Int, before: String, last: Int): CommunityConnection!
 }
 
 """
 A connection to a list of items.
 """
-type CommunityConnectionConnection implements Connection {
+type CommunityConnection implements Connection {
   """
   Number of items in this connection.
   """
@@ -99,7 +94,7 @@ type CommunityConnectionConnection implements Connection {
   """
   A list of edges.
   """
-  edges: [CommunityConnectionEdge]!
+  edges: [CommunityEdge]!
 }
 
 """
@@ -163,7 +158,7 @@ type PageInfo {
 """
 An edge in a connection.
 """
-type CommunityConnectionEdge {
+type CommunityEdge {
   """
   The item at the end of the edge.
   """
@@ -191,14 +186,16 @@ type Community implements Node {
   title: String!
   admin: ID!
   mods: [ID]!
-  members(after: String, first: Int, before: String, last: Int): UserConnectionConnection!
+  tags(after: String, first: Int, before: String, last: Int): TagConnection!
+  members(after: String, first: Int, before: String, last: Int): UserConnection!
   joined: Boolean!
+  amIOwner: Boolean!
 }
 
 """
 A connection to a list of items.
 """
-type UserConnectionConnection implements Connection {
+type TagConnection implements Connection {
   """
   Number of items in this connection.
   """
@@ -230,13 +227,83 @@ type UserConnectionConnection implements Connection {
   """
   A list of edges.
   """
-  edges: [UserConnectionEdge]!
+  edges: [TagEdge]!
 }
 
 """
 An edge in a connection.
 """
-type UserConnectionEdge {
+type TagEdge {
+  """
+  The item at the end of the edge.
+  """
+  node: Tag
+
+  """
+  A cursor for use in pagination.
+  """
+  cursor: String!
+}
+
+type Tag implements Node {
+  """
+  The ID of an object
+  """
+  id: ID!
+  label: String!
+  color: String!
+  community: Community
+
+  """
+  mongoose _id
+  """
+  _id: String!
+  createdAt: String
+  updatedAt: String
+}
+
+"""
+A connection to a list of items.
+"""
+type UserConnection implements Connection {
+  """
+  Number of items in this connection.
+  """
+  count: Int
+
+  """
+  A count of the total number of objects in this connection, ignoring pagination.
+  This allows a client to fetch the first five objects by passing "5" as the
+  argument to "first", then fetch the total count so it could display "5 of 83",
+  for example.
+  """
+  totalCount: Int
+
+  """
+  Offset from start.
+  """
+  startCursorOffset: Int!
+
+  """
+  Offset till end.
+  """
+  endCursorOffset: Int!
+
+  """
+  Information to aid in pagination.
+  """
+  pageInfo: PageInfo!
+
+  """
+  A list of edges.
+  """
+  edges: [UserEdge]!
+}
+
+"""
+An edge in a connection.
+"""
+type UserEdge {
   """
   The item at the end of the edge.
   """
@@ -301,7 +368,7 @@ enum DirectionEnum {
 """
 A connection to a list of items.
 """
-type PostConnectionConnection implements Connection {
+type PostConnection implements Connection {
   """
   Number of items in this connection.
   """
@@ -333,13 +400,13 @@ type PostConnectionConnection implements Connection {
   """
   A list of edges.
   """
-  edges: [PostConnectionEdge]!
+  edges: [PostEdge]!
 }
 
 """
 An edge in a connection.
 """
-type PostConnectionEdge {
+type PostEdge {
   """
   The item at the end of the edge.
   """
@@ -360,6 +427,7 @@ type Post implements Node {
   updatedAt: String
   title: String!
   content: String!
+  tags: [Tag]
   author: User
   community: Community
   votesCount: Int!
@@ -371,11 +439,11 @@ type Vote implements Node {
   The ID of an object
   """
   id: ID!
-  createdAt: String
-  updatedAt: String
   type: String!
   post: ID!
   user: ID!
+  createdAt: String
+  updatedAt: String
 }
 
 """
@@ -408,6 +476,8 @@ type Mutation {
   communityExitAsAdmin(input: CommunityExitAsAdminInput!): CommunityExitAsAdminPayload
   postCreate(input: PostCreateInput!): PostCreatePayload
   voteCreate(input: VoteCreateInput!): VoteCreatePayload
+  tagCreateMutation(input: TagCreateInput!): TagCreatePayload
+  tagDeleteMutation(input: TagDeleteInput!): TagDeletePayload
 }
 
 type UserRegisterPayload {
@@ -453,7 +523,7 @@ input UserLoginInput {
 }
 
 type CommunityCreatePayload {
-  communityEdge: CommunityConnectionEdge
+  communityEdge: CommunityEdge
   error: FieldError
 
   """
@@ -470,7 +540,7 @@ input CommunityCreateInput {
 }
 
 type CommunityJoinPayload {
-  communityEdge: CommunityConnectionEdge
+  communityEdge: CommunityEdge
   error: FieldError
 
   """
@@ -486,7 +556,7 @@ input CommunityJoinInput {
 }
 
 type CommunityExitPayload {
-  communityEdge: CommunityConnectionEdge
+  communityEdge: CommunityEdge
   error: FieldError
 
   """
@@ -502,7 +572,7 @@ input CommunityExitInput {
 }
 
 type CommunityExitAsAdminPayload {
-  communityEdge: CommunityConnectionEdge
+  communityEdge: CommunityEdge
   error: FieldError
 
   """
@@ -518,7 +588,7 @@ input CommunityExitAsAdminInput {
 }
 
 type PostCreatePayload {
-  postEdge: PostConnectionEdge
+  postEdge: PostEdge
   error: FieldError
 
   """
@@ -532,12 +602,13 @@ input PostCreateInput {
   title: String!
   content: String!
   community: String!
+  tags: [ID]
   clientMutationId: String
 }
 
 type VoteCreatePayload {
   post: Post
-  vote: VoteConnectionEdge
+  vote: VoteEdge
 
   """
   Default success field resolver.
@@ -550,7 +621,7 @@ type VoteCreatePayload {
 """
 An edge in a connection.
 """
-type VoteConnectionEdge {
+type VoteEdge {
   """
   The item at the end of the edge
   """
@@ -571,4 +642,37 @@ input VoteCreateInput {
 enum VoteType {
   UPVOTE
   DOWNVOTE
+}
+
+type TagCreatePayload {
+  tagEdge: TagEdge
+
+  """
+  Default success field resolver.
+  """
+  success: String
+  error: FieldError
+  clientMutationId: String
+}
+
+input TagCreateInput {
+  label: String!
+  color: String!
+  communityId: String!
+  clientMutationId: String
+}
+
+type TagDeletePayload {
+  """
+  Default success field resolver.
+  """
+  success: String
+  error: FieldError
+  clientMutationId: String
+}
+
+input TagDeleteInput {
+  tagId: String!
+  communityId: String!
+  clientMutationId: String
 }

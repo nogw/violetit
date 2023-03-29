@@ -2,10 +2,10 @@ import { FILTER_CONDITION_TYPE, getObjectId } from '@entria/graphql-mongo-helper
 
 import { GraphQLEnumType, GraphQLID, GraphQLInputObjectType } from 'graphql';
 
-export const voteFilterMapping = {
+export const VoteFilterMapping = {
   user: {
     type: FILTER_CONDITION_TYPE.MATCH_1_TO_1,
-    format: (val: string) => val || getObjectId(val),
+    format: (val: string) => val && getObjectId(val),
   },
   post: {
     type: FILTER_CONDITION_TYPE.MATCH_1_TO_1,

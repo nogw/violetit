@@ -8,7 +8,7 @@ import { GraphQLContext } from '../../graphql/types';
 import { registerTypeLoader, nodeInterface } from '../node/typeRegister';
 
 import { IUserDocument } from './UserModel';
-import { load } from './UserLoader';
+import UserLoader from './UserLoader';
 
 import { CommunityConnection } from '../community/CommunityType';
 import CommunityLoader from '../community/CommunityLoader';
@@ -37,8 +37,8 @@ export const UserType = new GraphQLObjectType<IUserDocument, GraphQLContext>({
 });
 
 export const UserConnection = connectionDefinitions({
-  name: 'UserConnection',
+  name: 'User',
   nodeType: UserType,
 });
 
-registerTypeLoader(UserType, load);
+registerTypeLoader(UserType, UserLoader.load);

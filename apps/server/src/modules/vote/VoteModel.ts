@@ -1,5 +1,4 @@
 import mongoose, { Document, Model, Types } from 'mongoose';
-
 import ObjectId = mongoose.Schema.Types.ObjectId;
 
 export interface IVote extends Document {

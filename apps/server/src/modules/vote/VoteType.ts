@@ -11,7 +11,6 @@ export const VoteType = new GraphQLObjectType<IVote, GraphQLContext>({
   name: 'Vote',
   fields: () => ({
     id: globalIdField('Vote'),
-    ...timestampResolver,
     type: {
       type: new GraphQLNonNull(GraphQLString),
       resolve: vote => vote.type,
@@ -24,12 +23,13 @@ export const VoteType = new GraphQLObjectType<IVote, GraphQLContext>({
       type: new GraphQLNonNull(GraphQLID),
       resolve: vote => vote.user,
     },
+    ...timestampResolver,
   }),
   interfaces: () => [nodeInterface],
 });
 
 export const VoteConnection = connectionDefinitions({
-  name: 'VoteConnection',
+  name: 'Vote',
   nodeType: VoteType,
 });
 
