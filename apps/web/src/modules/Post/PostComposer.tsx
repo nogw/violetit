@@ -68,7 +68,7 @@ export const PostComposer = () => {
         const postId = postEdge.node?.id;
         const communityId = postEdge.node?.community?.id;
 
-        navigate(`/r/${communityId}/${postId}`, {
+        navigate(`/r/${communityId}/p/${postId}`, {
           replace: true,
         });
       },

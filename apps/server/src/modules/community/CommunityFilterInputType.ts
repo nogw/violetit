@@ -21,8 +21,10 @@ export const communityFilterMapping = {
     format: (value: string) => {
       if (!value) return {};
 
+      const search = escapeRegex(value);
+
       return {
-        $or: [{ name: { $regex: escapeRegex(value) } }, { title: { $regex: escapeRegex(value) } }],
+        $or: [{ name: { $regex: search } }, { title: { $regex: search } }],
       };
     },
   },

@@ -34,10 +34,11 @@ export const PostType = new GraphQLObjectType<IPostDocument, GraphQLContext>({
       type: new GraphQLNonNull(GraphQLString),
       resolve: post => post.content,
     },
+    // TODO:  It should be a connection pagination
     tags: {
-      // TODO:  It should be a connection pagination
       type: new GraphQLList(TagType),
       resolve: (post, _, context) => {
+        if (!post.tags) return [];
         return post.tags.map(tag => TagLoader.load(context, tag));
       },
     },

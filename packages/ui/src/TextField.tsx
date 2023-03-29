@@ -22,7 +22,7 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
 
     return (
       <Flex className="flex-col">
-        <Label>{label}</Label>
+        {label ? <Label>{label}</Label> : null}
         <input ref={ref} className={clsx(styles.base, styles.effects, styles.variant[variant])} {...props} />
       </Flex>
     );

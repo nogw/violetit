@@ -15,6 +15,7 @@ const feedPostsLazyLoadQuery = graphql`
 
 type FeedProps = {
   community?: string;
+  tags?: string;
 };
 
 export const Feed = (props: FeedProps) => {

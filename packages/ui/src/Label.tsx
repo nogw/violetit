@@ -7,7 +7,7 @@ type LabelProps = React.InputHTMLAttributes<HTMLLabelElement> & {
 
 export const Label = React.forwardRef<HTMLLabelElement, LabelProps>(({ children, ...props }, ref) => {
   const styles = {
-    base: 'text-sm',
+    base: 'text-sm mb-1 font-bold text-gray-500',
   };
 
   return (

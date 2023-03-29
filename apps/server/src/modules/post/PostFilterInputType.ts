@@ -1,15 +1,9 @@
-import { GraphQLID, GraphQLInputObjectType, GraphQLList, GraphQLNonNull } from 'graphql';
+import { GraphQLID, GraphQLInputObjectType, GraphQLList, GraphQLNonNull, GraphQLString } from 'graphql';
 
 import { FILTER_CONDITION_TYPE, buildSortFromArg, getObjectId } from '@entria/graphql-mongo-helpers';
 import { FilterMapping } from '@entria/graphql-mongo-helpers/lib/types';
 
 import { DateOrdering, DateOrderingInputType } from '../../graphql/filters';
-import { GraphQLArgFilter, ObjectId } from '../../types';
-
-export type PostsArgFilters = GraphQLArgFilter<{
-  orderBy?: DateOrdering[];
-  category?: ObjectId;
-}>;
 
 export const PostFilterMapping: FilterMapping = {
   orderBy: {
@@ -19,6 +13,14 @@ export const PostFilterMapping: FilterMapping = {
   community: {
     type: FILTER_CONDITION_TYPE.MATCH_1_TO_1,
     format: (value: string) => value && getObjectId(value),
+  },
+  tags: {
+    type: FILTER_CONDITION_TYPE.MATCH_1_TO_1,
+    format: (value: string) => value && { $in: [getObjectId(value)] },
+  },
+  title: {
+    type: FILTER_CONDITION_TYPE.MATCH_1_TO_1,
+    format: (value: string) => value && { $regex: new RegExp(value, 'i') },
   },
 };
 
@@ -39,6 +41,14 @@ export const PostFiltersInputType: GraphQLInputObjectType = new GraphQLInputObje
     community: {
       type: GraphQLID,
       description: 'Filter by community.',
+    },
+    tags: {
+      type: GraphQLID,
+      description: 'Filter by tag.',
+    },
+    title: {
+      type: GraphQLString,
+      description: 'Filter by title.',
     },
   }),
 });

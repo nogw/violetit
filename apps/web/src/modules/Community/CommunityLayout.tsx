@@ -32,7 +32,7 @@ export const CommunityLayout = ({ id, withInfo, children }: CommunityLayoutProps
   return (
     <Box>
       <CommunityHeader community={data.community} />
-      <Flex className="w-full gap-2 px-2">
+      <Flex className="w-full gap-2 px-2 pb-2">
         {children}
         {withInfo ? <CommunityInfo community={data.community} /> : null}
       </Flex>

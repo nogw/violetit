@@ -16,8 +16,8 @@ export const Routes = () => {
       <Route element={<AuthLayout />}>
         <Route path="/" element={<FeedPage />} />
         <Route path="/submit" element={<PostComposer />} />
-        <Route path="/r/:community" element={<CommunityPage />} />
-        <Route path="/r/:community/:post" element={<PostDetailPage />} />
+        <Route path="/r/:community/:tags?" element={<CommunityPage />} />
+        <Route path="/r/:community/p/:post" element={<PostDetailPage />} />
         <Route path="/r/panel/:community" element={<CommunityPanelPage />} />
       </Route>
     </Router>

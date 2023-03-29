@@ -34,7 +34,7 @@ const FeedListFragment = graphql`
 
 type FeedListProps = {
   query: FeedList_query$key;
-  queryVariables?: { community?: string };
+  queryVariables?: { community?: string; tags?: string };
 };
 
 export const FeedList = ({ query, queryVariables }: FeedListProps) => {

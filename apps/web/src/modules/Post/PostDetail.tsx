@@ -1,13 +1,13 @@
-import { Box, Card, CardContent, Flex, Heading, Tag, Text } from '@violetit/ui';
+import { Card, CardContent, Flex, Heading, Tag, Text } from '@violetit/ui';
 
 import { graphql, useFragment } from 'react-relay';
-import { useNavigate } from 'react-router-dom';
 import { Fragment } from 'react';
 
 import { PostDetail_post$key } from './__generated__/PostDetail_post.graphql';
 import { VoteButtons } from '../Vote/VoteButtons';
 import { PostHeader } from './PostHeader';
 import { PostFooter } from './PostFooter';
+import { Link } from '../../common/Link';
 
 type WrapperProps = {
   to?: string;
@@ -20,19 +20,16 @@ type PostDetailProps = {
 };
 
 const Wrapper = ({ to, children }: WrapperProps) => {
-  const navigate = useNavigate();
-
   if (to) {
     return (
-      <Box className="cursor-pointer" onClick={() => navigate(to)}>
+      <Link className="hover:none" to={to}>
         {children}
-      </Box>
+      </Link>
     );
   }
 
   return <Fragment>{children}</Fragment>;
 };
-
 export const PostDetail = (props: PostDetailProps) => {
   const { isDetail = false } = props;
 
@@ -58,7 +55,7 @@ export const PostDetail = (props: PostDetailProps) => {
     props.post,
   );
 
-  const wrapperProps = isDetail ? {} : { to: `/r/${post.community?.id}/${post.id}` };
+  const wrapperProps = isDetail ? {} : { to: `/r/${post.community?.id}/p/${post.id}` };
 
   const tagsMapped = post.tags ? post.tags.flatMap(edge => (edge ? edge : [])) : [];
 
@@ -72,7 +69,9 @@ export const PostDetail = (props: PostDetailProps) => {
             <Heading variant="h5">
               {post.title}{' '}
               {tagsMapped.map(({ id, label, color }) => (
-                <Tag key={id} label={label} color={color} />
+                <Link underline={false} key={id} to={`/r/${post.community?.id}/${id}`}>
+                  <Tag label={label} color={color} />
+                </Link>
               ))}
             </Heading>
             <Text clamp={!isDetail} variant="p4">
