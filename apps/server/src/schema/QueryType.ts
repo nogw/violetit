@@ -8,7 +8,7 @@ import UserLoader from '../modules/user/UserLoader';
 
 import { PostFiltersInputType } from '../modules/post/PostFilterInputType';
 import { PostConnection } from '../modules/post/PostType';
-import PostLoader from '../modules/post/PostLoader';
+import PostLoader, { loadTrendingPosts } from '../modules/post/PostLoader';
 
 import { CommunityConnection, CommunityType } from '../modules/community/CommunityType';
 import { CommunityFiltersInputType } from '../modules/community/CommunityFilterInputType';
@@ -62,7 +62,13 @@ export const QueryType = new GraphQLObjectType({
         },
       },
       resolve: async (_, args, context) => {
-        return PostLoader.loadAll(context, args);
+        const { trending, ...rest } = args.filters || {};
+
+        if (trending) {
+          return loadTrendingPosts(rest, context);
+        }
+
+        return PostLoader.loadAll(context, rest);
       },
     },
   }),

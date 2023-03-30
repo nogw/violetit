@@ -34,7 +34,7 @@ export const TagFiltersInputType: GraphQLInputObjectType = new GraphQLInputObjec
     },
     orderBy: {
       type: new GraphQLList(new GraphQLNonNull(DateOrderingInputType)),
-      description: 'Order reviews by DateOrderingInputType.',
+      description: 'Order tags by DateOrderingInputType.',
     },
     community: {
       type: GraphQLID,

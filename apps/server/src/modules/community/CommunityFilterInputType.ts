@@ -42,7 +42,7 @@ export const CommunityFiltersInputType: GraphQLInputObjectType = new GraphQLInpu
     },
     orderBy: {
       type: new GraphQLList(new GraphQLNonNull(DateOrderingInputType)),
-      description: 'Order reviews by DateOrderingInputType.',
+      description: 'Order communities by DateOrderingInputType.',
     },
     search: {
       type: GraphQLString,

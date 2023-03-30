@@ -27,7 +27,7 @@ export const UserType = new GraphQLObjectType<IUserDocument, GraphQLContext>({
       type: new GraphQLNonNull(CommunityConnection.connectionType),
       args: { ...connectionArgs },
       resolve: async (user, args, context) => {
-        await CommunityLoader.loadAll(context, withFilter(args, { members: user._id }));
+        return CommunityLoader.loadAll(context, withFilter(args, { members: user._id }));
       },
     },
     ...timestampResolver,
