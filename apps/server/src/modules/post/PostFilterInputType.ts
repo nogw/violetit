@@ -1,4 +1,4 @@
-import { GraphQLID, GraphQLInputObjectType, GraphQLList, GraphQLNonNull, GraphQLString } from 'graphql';
+import { GraphQLID, GraphQLInputObjectType, GraphQLList, GraphQLNonNull } from 'graphql';
 
 import { FILTER_CONDITION_TYPE, buildSortFromArg, getObjectId } from '@entria/graphql-mongo-helpers';
 import { FilterMapping } from '@entria/graphql-mongo-helpers/lib/types';
@@ -17,10 +17,6 @@ export const PostFilterMapping: FilterMapping = {
   tags: {
     type: FILTER_CONDITION_TYPE.MATCH_1_TO_1,
     format: (value: string) => value && { $in: [getObjectId(value)] },
-  },
-  title: {
-    type: FILTER_CONDITION_TYPE.MATCH_1_TO_1,
-    format: (value: string) => value && { $regex: new RegExp(value, 'i') },
   },
 };
 
@@ -45,10 +41,6 @@ export const PostFiltersInputType: GraphQLInputObjectType = new GraphQLInputObje
     tags: {
       type: GraphQLID,
       description: 'Filter by tag.',
-    },
-    title: {
-      type: GraphQLString,
-      description: 'Filter by title.',
     },
   }),
 });
