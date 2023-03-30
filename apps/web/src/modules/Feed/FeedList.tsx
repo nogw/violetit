@@ -34,11 +34,11 @@ const FeedListFragment = graphql`
 
 type FeedListProps = {
   query: FeedList_query$key;
-  queryVariables?: { community?: string; tags?: string };
+  queryVariables?: { community?: string; tags?: string; trending?: boolean };
 };
 
 export const FeedList = ({ query, queryVariables }: FeedListProps) => {
-  const [, startTransition] = useTransition();
+  const [_, startTransition] = useTransition();
 
   const { data, refetch, hasNext, loadNext, isLoadingNext } = usePaginationFragment<
     FeedListPaginationQuery,

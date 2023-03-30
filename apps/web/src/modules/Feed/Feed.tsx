@@ -8,7 +8,7 @@ import { HiFire } from 'react-icons/hi';
 import { FeedListPaginationQuery } from './__generated__/FeedListPaginationQuery.graphql';
 import { PostCreate } from '../Post/PostCreate';
 import { FeedList } from './FeedList';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 
 const feedPostsLazyLoadQuery = graphql`
   query FeedPostsQuery {
@@ -49,18 +49,20 @@ export const Feed = (props: FeedProps) => {
     });
   };
 
-  const getVariantButton = (name: 'New' | 'Hot') => {
-    return queryVariables.current === name ? 'secondary' : 'neutral';
-  };
+  const getVariantButton = useMemo(() => {
+    return (name: 'New' | 'Hot') => {
+      return queryVariables.current === name ? 'secondary' : 'neutral';
+    };
+  }, [queryVariables]);
 
   return (
     <Flex className="w-full flex-col">
       <PostCreate />
       <Card className="mb-2 gap-2">
-        <Button variant={getVariantButton('New')} onClick={handleNewPosts}>
+        <Button variant={getVariantButton('New')} onClick={handleNewPosts} aria-label="Show new posts">
           <IoFlagOutline /> New
         </Button>
-        <Button variant={getVariantButton('Hot')} onClick={handleHotPosts}>
+        <Button variant={getVariantButton('Hot')} onClick={handleHotPosts} aria-label="Show top rated posts">
           <HiFire /> Top rated
         </Button>
       </Card>
