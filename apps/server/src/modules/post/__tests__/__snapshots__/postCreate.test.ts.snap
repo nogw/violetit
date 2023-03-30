@@ -39,3 +39,14 @@ Object {
   },
 }
 `;
+
+exports[`postCreateMutation should not create a post with a tag from another community 1`] = `
+Object {
+  "postCreate": Object {
+    "error": Object {
+      "message": "Invalid tags used to create post!",
+    },
+    "postEdge": "EMPTY",
+  },
+}
+`;

@@ -24,8 +24,6 @@ export const CommunityType = new GraphQLObjectType<ICommunityDocument, GraphQLCo
   name: 'Community',
   fields: () => ({
     id: globalIdField('Community'),
-    ...objectIdResolver,
-    ...timestampResolver,
     name: {
       type: new GraphQLNonNull(GraphQLString),
       resolve: community => community.name,
@@ -73,6 +71,8 @@ export const CommunityType = new GraphQLObjectType<ICommunityDocument, GraphQLCo
         return imAdmin || imModerator;
       },
     },
+    ...objectIdResolver,
+    ...timestampResolver,
   }),
   interfaces: () => [nodeInterface],
 });

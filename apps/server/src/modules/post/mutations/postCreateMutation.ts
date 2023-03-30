@@ -7,6 +7,7 @@ import { fieldError } from '../../../utils/fieldError';
 
 import { GraphQLContext } from '../../../graphql/types';
 import { CommunityModel } from '../../community/CommunityModel';
+import { TagModel } from '../../tag/TagModel';
 
 import { PostConnection } from '../PostType';
 import { PostModel } from '../PostModel';
@@ -22,18 +23,10 @@ type postCreateArgs = {
 export const postCreate = mutationWithClientMutationId({
   name: 'PostCreate',
   inputFields: {
-    title: {
-      type: new GraphQLNonNull(GraphQLString),
-    },
-    content: {
-      type: new GraphQLNonNull(GraphQLString),
-    },
-    community: {
-      type: new GraphQLNonNull(GraphQLString),
-    },
-    tags: {
-      type: new GraphQLList(GraphQLID),
-    },
+    tags: { type: new GraphQLList(GraphQLID) },
+    title: { type: new GraphQLNonNull(GraphQLString) },
+    content: { type: new GraphQLNonNull(GraphQLString) },
+    community: { type: new GraphQLNonNull(GraphQLString) },
   },
   mutateAndGetPayload: async ({ tags, community, ...rest }: postCreateArgs, context: GraphQLContext) => {
     if (!context?.user) {
@@ -46,7 +39,18 @@ export const postCreate = mutationWithClientMutationId({
       return fieldError('community', 'Community not found!');
     }
 
-    const tagsObjectId = tags.map(id => getObjectId(id));
+    const tagsObjectId = tags ? tags.map(id => getObjectId(id)) : [];
+
+    if (tagsObjectId.length > 0) {
+      const count = await TagModel.countDocuments({
+        _id: { $in: tagsObjectId },
+        community: communityFound._id,
+      });
+
+      if (count != tagsObjectId.length) {
+        return fieldError('tag', 'Invalid tags used to create post!');
+      }
+    }
 
     const postCreated = await new PostModel({
       tags: tagsObjectId,

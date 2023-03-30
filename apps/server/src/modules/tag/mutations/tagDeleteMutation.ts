@@ -30,7 +30,7 @@ export const tagDeleteMutation = mutationWithClientMutationId({
     const foundMemberIdInMods = foundCommunity.mods.includes(context.user?._id);
 
     if (!foundMemberIdInAdmin && !foundMemberIdInMods) {
-      return fieldError('community', 'You are not allowed to create tags');
+      return fieldError('community', 'You are not allowed to delete tags');
     }
 
     await TagModel.findOneAndDelete({ _id: getObjectId(tagId) });

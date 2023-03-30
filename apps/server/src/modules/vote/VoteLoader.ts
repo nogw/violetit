@@ -4,7 +4,6 @@ import { VoteFilterMapping } from './VoteFilterInputType';
 import { registerLoader } from '../loader/loaderRegister';
 import { VoteModel } from './VoteModel';
 
-// shouldValidateContextUser: true,
 const Loader = createLoader({
   model: VoteModel,
   loaderName: 'VoteLoader',

@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`tagDeleteMutation should delete a tag 1`] = `
+Object {
+  "tagDeleteMutation": Object {
+    "error": "EMPTY",
+    "success": "Tag deleted with success",
+  },
+}
+`;
+
+exports[`tagDeleteMutation should not delete a tag if user is not admin or mod 1`] = `
+Object {
+  "tagDeleteMutation": Object {
+    "error": Object {
+      "message": "You are not allowed to delete tags",
+    },
+  },
+}
+`;

@@ -1,0 +1,38 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`tagCreateMutation should create a tag 1`] = `
+Object {
+  "tagCreateMutation": Object {
+    "error": "EMPTY",
+    "success": "Tag created with success",
+    "tagEdge": Object {
+      "node": Object {
+        "id": "FROZEN-ID",
+        "label": "awesome tag",
+      },
+    },
+  },
+}
+`;
+
+exports[`tagCreateMutation should not create a tag if there is another with the same label 1`] = `
+Object {
+  "tagCreateMutation": Object {
+    "error": Object {
+      "message": "A tag with that name has already been created",
+    },
+    "tagEdge": "EMPTY",
+  },
+}
+`;
+
+exports[`tagCreateMutation should not create a tag if user is not admin or mod 1`] = `
+Object {
+  "tagCreateMutation": Object {
+    "error": Object {
+      "message": "You are not allowed to create tags",
+    },
+    "tagEdge": "EMPTY",
+  },
+}
+`;

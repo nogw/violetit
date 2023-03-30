@@ -1,22 +1,24 @@
 import mongoose, { Document, Schema, Types } from 'mongoose';
 
 export interface IPost {
-  tags: Types.ObjectId[];
+  _id: Types.ObjectId;
   title: string;
   content?: string;
+  tags: Types.ObjectId[];
   author: Types.ObjectId;
   community: Types.ObjectId;
   createdAt: Date;
   updatedAt: Date;
 }
 
-export interface IPostDocument extends IPost, Document {}
+export type IPostDocument = IPost & Document;
 
 const PostSchema = new Schema(
   {
     tags: {
       type: [Schema.Types.ObjectId],
       ref: 'Tags',
+      default: [],
       require: true,
     },
     title: {

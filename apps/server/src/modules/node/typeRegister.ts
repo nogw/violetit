@@ -1,5 +1,5 @@
 import { fromGlobalId, nodeDefinitions } from 'graphql-relay';
-import { GraphQLObjectType } from 'graphql';
+import { GraphQLObjectType, GraphQLTypeResolver } from 'graphql';
 
 import { GraphQLContext } from '../../graphql/types';
 
@@ -12,30 +12,44 @@ type TypeLoaders = {
   };
 };
 
-const typesLoaders: TypeLoaders = {};
+const getTypeRegister = () => {
+  const typesLoaders: TypeLoaders = {};
 
-export const { nodeField, nodesField, nodeInterface } = nodeDefinitions(
-  (globalId, context: GraphQLContext) => {
-    const { type, id } = fromGlobalId(globalId);
+  const getTypesLoaders = () => typesLoaders;
 
-    const { load } = typesLoaders[type] || { load: null };
+  const registerTypeLoader = (type: GraphQLObjectType, load: Load) => {
+    typesLoaders[type.name] = {
+      type,
+      load,
+    };
 
-    return (load && load(context, id)) || null;
-  },
-  obj => {
-    const { type } = typesLoaders[obj.constructor.name] || { type: null };
-
-    return type.name;
-  },
-);
-
-export const getTypesLoaders = () => typesLoaders;
-
-export const registerTypeLoader = (type: GraphQLObjectType, load: Load) => {
-  typesLoaders[type.name] = {
-    type,
-    load,
+    return type;
   };
 
-  return type;
+  const { nodeField, nodesField, nodeInterface } = nodeDefinitions(
+    (globalId: string, context: GraphQLContext) => {
+      const { type, id } = fromGlobalId(globalId);
+
+      const { load } = typesLoaders[type] || { load: null };
+
+      return (load && load(context, id)) || null;
+    },
+    (obj: GraphQLTypeResolver<unknown, GraphQLContext>) => {
+      const { type } = typesLoaders[obj.constructor.name] || { type: null };
+
+      return type.name;
+    },
+  );
+
+  return {
+    registerTypeLoader,
+    getTypesLoaders,
+    nodeInterface,
+    nodesField,
+    nodeField,
+  };
 };
+
+const { registerTypeLoader, nodeField, nodesField, nodeInterface } = getTypeRegister();
+
+export { registerTypeLoader, nodeField, nodesField, nodeInterface };

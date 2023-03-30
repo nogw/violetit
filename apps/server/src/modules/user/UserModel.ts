@@ -2,12 +2,12 @@ import mongoose, { Document, Schema, Types } from 'mongoose';
 import bcrypt from 'bcryptjs';
 
 export interface IUser {
-  username: string;
   email: string;
+  username: string;
   password: string;
-  communities: Types.ObjectId[];
   createdAt: Date;
   updatedAt: Date;
+  communities: Types.ObjectId[];
 }
 
 export interface IUserDocument extends IUser, Document {

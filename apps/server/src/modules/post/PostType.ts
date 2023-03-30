@@ -1,4 +1,4 @@
-import { connectionDefinitions, timestampResolver } from '@entria/graphql-mongo-helpers';
+import { connectionDefinitions, objectIdResolver, timestampResolver } from '@entria/graphql-mongo-helpers';
 import { GraphQLObjectType, GraphQLString, GraphQLNonNull, GraphQLInt, GraphQLList } from 'graphql';
 import { globalIdField } from 'graphql-relay';
 
@@ -25,7 +25,6 @@ export const PostType = new GraphQLObjectType<IPostDocument, GraphQLContext>({
   name: 'Post',
   fields: () => ({
     id: globalIdField('Post'),
-    ...timestampResolver,
     title: {
       type: new GraphQLNonNull(GraphQLString),
       resolve: post => post.title,
@@ -34,8 +33,8 @@ export const PostType = new GraphQLObjectType<IPostDocument, GraphQLContext>({
       type: new GraphQLNonNull(GraphQLString),
       resolve: post => post.content,
     },
-    // TODO:  It should be a connection pagination
     tags: {
+      // TODO:  It should be a connection pagination
       type: new GraphQLList(TagType),
       resolve: (post, _, context) => {
         if (!post.tags) return [];
@@ -75,6 +74,8 @@ export const PostType = new GraphQLObjectType<IPostDocument, GraphQLContext>({
         return VoteLoader.load(context, vote._id);
       },
     },
+    ...objectIdResolver,
+    ...timestampResolver,
   }),
   interfaces: () => [nodeInterface],
 });

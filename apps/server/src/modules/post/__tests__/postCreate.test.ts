@@ -10,6 +10,7 @@ import { getContext } from '../../../context';
 import { schema } from '../../../schema/schema';
 
 import { createCommunityWithAdmin } from '../../community/fixtures/createCommunityWithAdmin';
+import { createTag } from '../../tag/fixtures/createTag';
 
 beforeAll(connectWithMongoose);
 
@@ -21,9 +22,14 @@ describe('postCreateMutation', () => {
   it('should create a post', async () => {
     const { user, community } = await createCommunityWithAdmin();
 
+    const tag = await createTag({
+      label: 'awesome tag',
+      community: community._id,
+    });
+
     const mutation = `
-      mutation PostCreateMutation($title: String!, $content: String!, $community: String!) {
-        postCreate(input: { title: $title, content: $content, community: $community }) {
+      mutation PostCreateMutation($tags: [ID!]!, $title: String!, $content: String!, $community: String!) {
+        postCreate(input: { tags: $tags, title: $title, content: $content, community: $community }) {
           error {
             message
           }
@@ -44,6 +50,7 @@ describe('postCreateMutation', () => {
     const contextValue = getContext({ user });
 
     const variableValues = {
+      tags: [tag.id],
       title: 'Post Title',
       content: 'Post Content',
       community: community._id.toString(),
@@ -63,6 +70,58 @@ describe('postCreateMutation', () => {
     expect(result.data.postCreate.postEdge.node.content).toBe(variableValues.content);
     expect(result.data.postCreate.postEdge.node.author.username).toBe(user.username);
     expect(sanitizeTestObject(result.data, ['id'])).toMatchSnapshot();
+  });
+
+  it('should not create a post with a tag from another community', async () => {
+    const { community: anotherCommunity } = await createCommunityWithAdmin();
+
+    const tag = await createTag({
+      label: 'awesome tag',
+      community: anotherCommunity._id,
+    });
+
+    const { user, community } = await createCommunityWithAdmin();
+
+    const mutation = `
+      mutation PostCreateMutation($tags: [ID!]!, $title: String!, $content: String!, $community: String!) {
+        postCreate(input: { tags: $tags, title: $title, content: $content, community: $community }) {
+          error {
+            message
+          }
+          postEdge {
+            node {
+              id
+              title
+              content
+              author {
+                username
+              }
+            }
+          }
+        }
+      }
+    `;
+
+    const contextValue = getContext({ user });
+
+    const variableValues = {
+      tags: [tag.id],
+      title: 'Post Title',
+      content: 'Post Content',
+      community: community._id.toString(),
+    };
+
+    const result = await graphql({
+      schema,
+      source: mutation,
+      contextValue,
+      variableValues,
+    });
+
+    expect(result.errors).toBeUndefined();
+    expect(result.data.postCreate.postEdge).toBeNull();
+    expect(result.data.postCreate.error.message).toBe('Invalid tags used to create post!');
+    expect(sanitizeTestObject(result.data)).toMatchSnapshot();
   });
 
   it("should not create a post if doesn't have authorization header", async () => {

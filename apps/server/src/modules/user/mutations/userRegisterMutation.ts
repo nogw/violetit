@@ -9,8 +9,6 @@ import { fieldError } from '../../../utils/fieldError';
 import { UserModel } from '../UserModel';
 import { UserType } from '../UserType';
 
-import { findUserByEmail, findUserByUsername } from '../UserService';
-
 export const userRegister = mutationWithClientMutationId({
   name: 'UserRegister',
   inputFields: {
@@ -19,25 +17,23 @@ export const userRegister = mutationWithClientMutationId({
     password: { type: new GraphQLNonNull(GraphQLString) },
   },
   mutateAndGetPayload: async ({ email, username, password }) => {
-    const existingUser = await findUserByEmail(email);
+    const existingUser = await UserModel.findOne({ email });
 
     if (existingUser) {
       return fieldError('email', 'This email is already used');
     }
 
-    const usernameTaken = await findUserByUsername(username);
+    const usernameTaken = await UserModel.findOne({ username });
 
     if (usernameTaken) {
       return fieldError('password', 'This username is already used');
     }
 
-    const user = new UserModel({
+    const user = await new UserModel({
       email,
       username,
       password,
-    });
-
-    await user.save();
+    }).save();
 
     const token = generateJwtToken(user);
 
