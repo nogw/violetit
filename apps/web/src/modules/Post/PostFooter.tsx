@@ -30,7 +30,9 @@ export const PostFooter = (props: PostFooterProps) => {
   const handleShare = (event: React.MouseEvent) => {
     event.preventDefault();
 
-    navigator.clipboard.writeText(`${community?.id}${id}`);
+    const baseUrl = window.location.origin;
+
+    navigator.clipboard.writeText(`${baseUrl}/r/${community?.id}/p/${id}`);
     enqueueSnackbar('Copied link!', { variant: 'info' });
   };
 
