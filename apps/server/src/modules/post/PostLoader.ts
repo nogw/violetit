@@ -1,22 +1,27 @@
 import { connectionFromMongoAggregate } from '@entria/graphql-mongoose-loader';
-import { createLoader } from '@entria/graphql-mongo-helpers';
-import { GraphQLContext } from 'src/graphql/types';
+import { createLoader, getObjectId } from '@entria/graphql-mongo-helpers';
+import { Maybe } from '@violetit/types';
 
 import { registerLoader } from '../loader/loaderRegister';
+import { GraphQLContext } from '../../graphql/types';
 import { PostFilterMapping } from './PostFilterInputType';
 import { PostModel } from './PostModel';
-import { ConnectionArguments } from 'graphql-relay';
 
 const Loader = createLoader({
   model: PostModel,
   loaderName: 'PostLoader',
   filterMapping: PostFilterMapping,
   isAggregate: true,
-  defaultFilters: (_, args) => (args.filters?.trending ? {} : { orderBy: [{ field: 'createdAt', direction: 1 }] }),
+  defaultFilters: (_, args) => (args.filters?.trending ? {} : { orderBy: [{ field: 'createdAt', direction: -1 }] }),
 });
 
-export const loadTrendingPosts = async (args: ConnectionArguments, context: GraphQLContext) => {
+export const loadTrendingPosts = async (community: Maybe<string>, tags: Maybe<string>, context: GraphQLContext) => {
+  const matchStageCommunity = community ? { community: getObjectId(community) } : {};
+  const matchStageTags = tags ? { tags: { $in: [getObjectId(tags)] } } : {};
+
   const aggregate = PostModel.aggregate([
+    { $match: matchStageCommunity },
+    { $match: matchStageTags },
     {
       $lookup: {
         from: 'Vote',
@@ -54,7 +59,7 @@ export const loadTrendingPosts = async (args: ConnectionArguments, context: Grap
   return connectionFromMongoAggregate({
     aggregate,
     context,
-    args,
+    args: {},
     loader: load as any,
   });
 };

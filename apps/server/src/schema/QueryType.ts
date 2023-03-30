@@ -65,10 +65,10 @@ export const QueryType = new GraphQLObjectType({
         const { trending, ...rest } = args.filters || {};
 
         if (trending) {
-          return loadTrendingPosts(rest, context);
+          return loadTrendingPosts(args.filters.community, args.filters.tags, context);
         }
 
-        return PostLoader.loadAll(context, rest);
+        return PostLoader.loadAll(context, { ...args, filters: rest });
       },
     },
   }),
