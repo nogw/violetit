@@ -72,8 +72,8 @@ const SignInPage = () => {
     <FormikProvider value={formik}>
       <Form>
         <Flex className="flex-col gap-2">
-          <InputField name="email" placeholder="Email" />
-          <InputField name="password" placeholder="Password" type="password" />
+          <InputField name="email" placeholder="Email" aria-required aria-label="Email" />
+          <InputField name="password" placeholder="Password" type="password" aria-required aria-label="Password" />
           <Button disabled={!isValid || isPending} type="submit" aria-label="Log in">
             {isSubmitting ? 'Wait...' : 'Log in'}
           </Button>

@@ -52,7 +52,13 @@ export const SearchBar = () => {
 
   return (
     <Flex className="relative">
-      <TextField placeholder="Search on Violetit" value={search} onChange={e => handleSearch(e)} />
+      <TextField
+        placeholder="Search on Violetit"
+        value={search}
+        onChange={e => handleSearch(e)}
+        aria-required={false}
+        aria-label="Search communities on Violetit"
+      />
       {showResults && (
         <Box className="absolute mt-8 w-full" ref={resultsRef}>
           <Suspense fallback={<h1>a</h1>}>

@@ -64,8 +64,19 @@ export const TagCreatePopup = ({ onCreateTag, communityId }: TagCreatePopupProps
         createPortal(
           <Popup title="Create a community" handleClose={handleClosePopup}>
             <Flex className="flex-col gap-2 border-b pb-2">
-              <TextField placeholder="Tag label" value={tagLabel} onChange={e => setTagLabel(e.target.value)} />
-              <ColorField value={tagColor} onChange={e => setTagColor(e.target.value)} />
+              <TextField
+                placeholder="Tag label"
+                value={tagLabel}
+                onChange={e => setTagLabel(e.target.value)}
+                aria-required
+                aria-label="Tag label"
+              />
+              <ColorField
+                value={tagColor}
+                onChange={e => setTagColor(e.target.value)}
+                aria-required={false}
+                aria-label="Tag color"
+              />
               <Tag label={tagLabel} color={tagColor} />
             </Flex>
             <Flex className="ml-auto gap-2 pt-2">

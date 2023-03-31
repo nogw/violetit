@@ -82,10 +82,16 @@ const LoginPage = () => {
     <FormikProvider value={formik}>
       <Form>
         <Flex className="flex-col gap-2">
-          <InputField name="username" placeholder="Username" />
-          <InputField name="email" placeholder="Email" />
-          <InputField name="password" placeholder="Password" type="password" />
-          <InputField name="passwordConfirm" placeholder="Password Confirm" type="password" />
+          <InputField name="username" placeholder="Username" aria-required aria-label="Username" />
+          <InputField name="email" placeholder="Email" aria-required aria-label="Email" />
+          <InputField name="password" placeholder="Password" type="password" aria-required aria-label="Password" />
+          <InputField
+            name="passwordConfirm"
+            placeholder="Password Confirm"
+            type="password"
+            aria-required
+            aria-label="Password Confirm"
+          />
           <Button disabled={!isValid || isPending} type="submit" variant="primary" aria-label="Create Account">
             {isSubmitting ? 'Wait...' : 'Create Account'}
           </Button>

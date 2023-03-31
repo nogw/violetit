@@ -100,8 +100,19 @@ export const PostComposer = () => {
       />
       <Card className="mt-2 px-4 py-4">
         <Flex className="w-full flex-col gap-4">
-          <TextField placeholder="Title" value={title} onChange={e => setTitle(e.target.value)} />
-          <TextArea value={content} onChange={e => setContent(e.target.value)} />
+          <TextField
+            placeholder="Title"
+            value={title}
+            onChange={e => setTitle(e.target.value)}
+            aria-required
+            aria-label="Post title"
+          />
+          <TextArea
+            value={content}
+            onChange={e => setContent(e.target.value)}
+            aria-required
+            aria-label="Post content"
+          />
           <PostComposerTags community={community} selectedTags={tags} onSelectedChange={setTags} />
           <Box className="ml-auto">
             <Button disabled={isDisabled} size="md" variant="primary" onClick={onSubmit} aria-label="Create post">
