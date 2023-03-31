@@ -38,7 +38,7 @@ export const PostFooter = (props: PostFooterProps) => {
 
   return (
     <Flex className="my-2">
-      <Button size="sm" variant="neutral" onClick={e => handleShare(e)}>
+      <Button size="sm" variant="neutral" onClick={e => handleShare(e)} aria-label="Share post">
         <BiShareAlt />
         <Text color="secondary" variant="p4" weight="semibold">
           Share

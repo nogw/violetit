@@ -57,7 +57,7 @@ export const TagCreatePopup = ({ onCreateTag, communityId }: TagCreatePopupProps
 
   return (
     <Box>
-      <Button variant="secondary" onClick={handleOpenPopup}>
+      <Button variant="secondary" onClick={handleOpenPopup} aria-label="Create tag">
         Create tag
       </Button>
       {showPopup &&
@@ -69,10 +69,10 @@ export const TagCreatePopup = ({ onCreateTag, communityId }: TagCreatePopupProps
               <Tag label={tagLabel} color={tagColor} />
             </Flex>
             <Flex className="ml-auto gap-2 pt-2">
-              <Button variant="secondary" onClick={handleClosePopup}>
+              <Button variant="secondary" onClick={handleClosePopup} aria-label="Cancel tag creation">
                 Cancel
               </Button>
-              <Button variant="primary" onClick={e => handleCreate(e)}>
+              <Button variant="primary" onClick={e => handleCreate(e)} aria-label="Create tag">
                 Create
               </Button>
             </Flex>

@@ -13,7 +13,7 @@ export const Popup = ({ children, title, handleClose }: PopupProps) => {
       <Card className="flex-col">
         <Flex className="mb-2 items-center justify-between gap-4 border-b pb-2">
           <Heading variant="h5">{title}</Heading>
-          <Button variant="neutral" onClick={handleClose}>
+          <Button variant="neutral" onClick={handleClose} aria-label="Close popup">
             <MdClose className="h-5 w-5 text-gray-500" />
           </Button>
         </Flex>

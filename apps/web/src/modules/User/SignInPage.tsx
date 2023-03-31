@@ -74,7 +74,7 @@ const SignInPage = () => {
         <Flex className="flex-col gap-2">
           <InputField name="email" placeholder="Email" />
           <InputField name="password" placeholder="Password" type="password" />
-          <Button disabled={!isValid || isPending} type="submit">
+          <Button disabled={!isValid || isPending} type="submit" aria-label="Log in">
             {isSubmitting ? 'Wait...' : 'Log in'}
           </Button>
         </Flex>

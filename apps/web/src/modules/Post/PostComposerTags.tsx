@@ -53,7 +53,7 @@ export const PostComposerTags = ({ community, selectedTags, onSelectedChange }: 
     onSelectedChange(select);
   };
 
-  const handleClean = () => {
+  const handleClear = () => {
     onSelectedChange([]);
   };
 
@@ -75,7 +75,7 @@ export const PostComposerTags = ({ community, selectedTags, onSelectedChange }: 
           return <Tag label={value.label} color={value.color} />;
         })}
       </Flex>
-      <Button size="md" variant="neutral" onClick={() => setShowPopup(true)}>
+      <Button size="md" variant="neutral" onClick={() => setShowPopup(true)} aria-label="Choose the tags for the post">
         <IoMdPricetags />
         Choose the tags
       </Button>
@@ -94,10 +94,10 @@ export const PostComposerTags = ({ community, selectedTags, onSelectedChange }: 
                 ))}
               </Flex>
               <Flex className="gap-2 border-t pt-3">
-                <Button variant="secondary" onClick={handleClean}>
+                <Button variant="secondary" onClick={handleClear} aria-label="Clear tags">
                   Clear
                 </Button>
-                <Button variant="primary" onClick={handleSave}>
+                <Button variant="primary" onClick={handleSave} aria-label="Save tags">
                   Save
                 </Button>
               </Flex>

@@ -17,6 +17,12 @@ type CommunityHeaderProps = {
   community: CommunityHeader_community$key;
 };
 
+type ButtonProps = {
+  text: string;
+  aria: string;
+  variant: 'primary' | 'secondary';
+};
+
 export const CommunityHeader = (props: CommunityHeaderProps) => {
   const navigate = useNavigate();
 
@@ -62,9 +68,9 @@ export const CommunityHeader = (props: CommunityHeaderProps) => {
     });
   };
 
-  const joinedButtonProps: { text: string; variant: 'primary' | 'secondary' } = joined
-    ? { text: 'Joined', variant: 'primary' }
-    : { text: 'Join', variant: 'secondary' };
+  const buttonProps: ButtonProps = joined
+    ? { text: 'Joined', aria: 'Leave the community', variant: 'primary' }
+    : { text: 'Join', aria: 'Join community', variant: 'secondary' };
 
   return (
     <Flex className="mb-2 h-36 w-full flex-col">
@@ -77,11 +83,11 @@ export const CommunityHeader = (props: CommunityHeaderProps) => {
           <Text color="secondary">r/{community.name}</Text>
         </Flex>
         <Flex className="h-min gap-2">
-          <Button variant={joinedButtonProps.variant} onClick={e => handleJoin(e)}>
-            {joinedButtonProps.text}
+          <Button variant={buttonProps.variant} onClick={e => handleJoin(e)} aria-label={buttonProps.aria}>
+            {buttonProps.text}
           </Button>
           {community.amIOwner ? (
-            <Button variant="neutral" onClick={() => navigate(`/r/panel/${community.id}`)}>
+            <Button variant="neutral" onClick={() => navigate(`/r/panel/${community.id}`)} aria-label="Moderator tools">
               <BsFillGearFill /> Mod Tools
             </Button>
           ) : null}

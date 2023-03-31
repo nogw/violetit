@@ -86,7 +86,7 @@ const LoginPage = () => {
           <InputField name="email" placeholder="Email" />
           <InputField name="password" placeholder="Password" type="password" />
           <InputField name="passwordConfirm" placeholder="Password Confirm" type="password" />
-          <Button disabled={!isValid || isPending} type="submit" variant="primary">
+          <Button disabled={!isValid || isPending} type="submit" variant="primary" aria-label="Create Account">
             {isSubmitting ? 'Wait...' : 'Create Account'}
           </Button>
         </Flex>

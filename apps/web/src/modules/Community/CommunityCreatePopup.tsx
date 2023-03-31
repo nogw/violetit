@@ -18,7 +18,7 @@ export const CommunityCreatePopup = () => {
 
   return (
     <Box>
-      <Button size="md" variant="neutral" onClick={handleOpenPopup}>
+      <Button size="md" aria-label="New community" variant="neutral" onClick={handleOpenPopup}>
         New community
       </Button>
       {showPopup &&

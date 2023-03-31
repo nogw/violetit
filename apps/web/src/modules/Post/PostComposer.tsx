@@ -104,7 +104,7 @@ export const PostComposer = () => {
           <TextArea value={content} onChange={e => setContent(e.target.value)} />
           <PostComposerTags community={community} selectedTags={tags} onSelectedChange={setTags} />
           <Box className="ml-auto">
-            <Button disabled={isDisabled} size="md" variant="primary" onClick={onSubmit}>
+            <Button disabled={isDisabled} size="md" variant="primary" onClick={onSubmit} aria-label="Create post">
               Create post
             </Button>
           </Box>

@@ -83,7 +83,7 @@ export const TagPanel = (props: TagPanelProps) => {
             {currentTags.map(({ id, label, color }) => (
               <Flex key={id} className="items-center justify-between py-2">
                 <Tag label={label} color={color} />
-                <Button variant="neutral" onClick={e => handleDelete(e, id)}>
+                <Button variant="neutral" onClick={e => handleDelete(e, id)} aria-label="Delete tag">
                   <BsTrashFill />
                 </Button>
               </Flex>

@@ -28,7 +28,11 @@ export const Navbar = ({ title }: NavbarProps) => {
       <Flex className="h-full items-center gap-2">
         <SearchBar />
         <CommunityCreatePopup />
-        <Button variant="neutral" onClick={() => signout(() => navigate('/auth', { replace: true }))}>
+        <Button
+          variant="neutral"
+          aria-label="Log out"
+          onClick={() => signout(() => navigate('/auth', { replace: true }))}
+        >
           <MdExitToApp className="h-6 w-6" />
         </Button>
       </Flex>
