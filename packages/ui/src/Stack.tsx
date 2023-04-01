@@ -16,7 +16,7 @@ export const Stack = React.forwardRef<HTMLDivElement, StackProps>(
         row: 'flex-row',
         col: 'flex-col',
       },
-      divide: 'divide-y',
+      divide: 'divide-y dark:divide-neutral-700',
       gap: {
         '0': 'gap-0',
         '1': 'gap-1',

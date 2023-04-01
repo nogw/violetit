@@ -23,8 +23,8 @@ export const Heading = ({ variant = 'h3', weight = 'semibold', color = 'primary'
       extrabold: 'font-extrabold',
     },
     color: {
-      primary: 'text-black',
-      secondary: 'text-gray-500',
+      primary: 'text-black dark:text-white',
+      secondary: 'text-gray-500 dark:text-gray-400',
     },
   };
 

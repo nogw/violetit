@@ -28,12 +28,12 @@ export const CommunityInfo = (props: CommunityInfoProps) => {
     <CardTitled className="hidden md:block" title="About Community">
       <Heading variant="h5">r/{`${community.name}`}</Heading>
       <Flex className="items-center">
-        <BiCake className="mr-1 text-lg" />
+        <BiCake className="mr-1 text-lg text-black dark:text-white" />
         <Text color="secondary" variant="p4">
           {formatDate(new Date(community.createdAt || ''))}
         </Text>
       </Flex>
-      <Flex className="border-y py-2">
+      <Flex className="border-y py-2 dark:border-neutral-700">
         <Flex className="flex-col">
           <Text variant="p2">{community.members.count}</Text>
           <Text color="secondary" variant="p4">

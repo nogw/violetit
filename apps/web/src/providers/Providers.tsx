@@ -1,9 +1,9 @@
 import { RelayEnvironmentProvider } from 'react-relay';
 import { BrowserRouter } from 'react-router-dom';
 import { SnackbarProvider } from 'notistack';
-
-import { RelayEnvironment } from './relay/RelayEnvironment';
-import { AuthProvider } from './modules/Auth/AuthContext';
+import { RelayEnvironment } from '../relay/RelayEnvironment';
+import { ThemeProvider } from './ThemeContext';
+import { AuthProvider } from '../modules/Auth/AuthContext';
 
 interface ProvidersProps {
   children: React.ReactNode;
@@ -11,10 +11,12 @@ interface ProvidersProps {
 
 export const Providers = ({ children }: ProvidersProps) => (
   <RelayEnvironmentProvider environment={RelayEnvironment}>
-    <AuthProvider>
-      <BrowserRouter>
-        <SnackbarProvider>{children}</SnackbarProvider>
-      </BrowserRouter>
-    </AuthProvider>
+    <ThemeProvider>
+      <AuthProvider>
+        <BrowserRouter>
+          <SnackbarProvider>{children}</SnackbarProvider>
+        </BrowserRouter>
+      </AuthProvider>
+    </ThemeProvider>
   </RelayEnvironmentProvider>
 );

@@ -1,7 +1,8 @@
+import { Maybe } from '@violetit/types';
+
 import React, { useState, useMemo, useCallback } from 'react';
 
-import { Maybe } from '@violetit/types';
-import storage from 'src/utils/storage';
+import storage from '../../utils/storage';
 
 export interface AuthContextValue {
   token: Maybe<string>;

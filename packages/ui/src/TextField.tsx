@@ -12,7 +12,6 @@ type TextFieldProps = React.InputHTMLAttributes<HTMLInputElement> & {
 export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
   ({ label, variant = 'md', ...props }, ref) => {
     const styles = {
-      base: 'rounded items-center border border-solid bg-white outline-none inline-flex shrink-0',
       effects: 'hover:border-sky-400 focus:border-sky-400',
       variant: {
         sm: 'w-full px-1 py-0 text-sm',
@@ -23,7 +22,19 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
     return (
       <Flex className="flex-col">
         {label ? <Label>{label}</Label> : null}
-        <input ref={ref} className={clsx(styles.base, styles.effects, styles.variant[variant])} {...props} />
+        <input
+          ref={ref}
+          className={clsx(
+            'bg-white dark:bg-neutral-800',
+            'text-black dark:text-white',
+            'border border-solid dark:border-neutral-700',
+            'placeholder:text-neutral-400 dark:placeholder:text-neutral-500',
+            'inline-flex shrink-0 items-center rounded outline-none',
+            styles.effects,
+            styles.variant[variant],
+          )}
+          {...props}
+        />
       </Flex>
     );
   },

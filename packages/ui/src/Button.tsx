@@ -11,11 +11,11 @@ type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ children, variant = 'primary', size = 'md', isFullWith, ...props }, ref) => {
     const styles = {
-      base: 'cursor-pointer rounded font-bold inline-flex shrink-0 gap-1 items-center justify-center transition-colors',
+      base: 'border cursor-pointer rounded font-bold inline-flex shrink-0 gap-1 items-center justify-center transition-colors',
       variant: {
-        neutral: 'border border-gray-100 bg-gray-100 text-gray-500',
-        primary: 'border border-blue-500 bg-blue-500 text-zinc-50',
-        secondary: 'bg-transparent border border-blue-500 text-blue-500',
+        neutral: 'border-gray-100 bg-gray-100 text-gray-500 dark:bg-neutral-800 dark:text-white dark:border-gray-700',
+        primary: 'border-blue-500 bg-blue-500 text-zinc-50',
+        secondary: 'bg-transparent border-blue-500 text-blue-500',
       },
       effects: {
         neutral: 'hover:bg-gray-200 active:bg-gray-300',

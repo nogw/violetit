@@ -33,8 +33,8 @@ export const Text = ({
       semibold: 'font-semibold',
     },
     color: {
-      primary: 'text-black',
-      secondary: 'text-gray-500',
+      primary: 'text-black dark:text-white',
+      secondary: 'text-gray-500 dark:text-neutral-400',
     },
     underline: 'underline',
     uppercase: 'uppercase',

@@ -1,3 +1,5 @@
+import { Text } from '@violetit/ui';
+
 import { Outlet, Navigate, useLocation } from 'react-router-dom';
 
 import { useAuth } from 'src/modules/Auth/useAuth';
@@ -13,9 +15,9 @@ const SignUpOrLoginLink = ({ pathname }: { pathname: string }) => {
   };
 
   return (
-    <p className="mt-4">
+    <Text>
       {redirectText} <Link to={link.to}>{link.text}</Link>
-    </p>
+    </Text>
   );
 };
 
@@ -30,7 +32,7 @@ const LoginLayout = () => {
   return (
     <main className="flex h-screen items-center justify-center">
       <div className="w-full max-w-xs">
-        <div className="">
+        <div className="mb-4">
           <Outlet />
         </div>
         <SignUpOrLoginLink pathname={pathname} />

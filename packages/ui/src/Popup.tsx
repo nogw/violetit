@@ -11,7 +11,7 @@ export const Popup = ({ children, title, handleClose }: PopupProps) => {
   return (
     <Box className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 transform shadow">
       <Card className="flex-col">
-        <Flex className="mb-2 items-center justify-between gap-4 border-b pb-2">
+        <Flex className="mb-2 items-center justify-between gap-4 border-b pb-2 dark:border-neutral-700">
           <Heading variant="h5">{title}</Heading>
           <Button variant="neutral" onClick={handleClose} aria-label="Close popup">
             <MdClose className="h-5 w-5 text-gray-500" />

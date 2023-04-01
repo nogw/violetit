@@ -1,14 +1,28 @@
 import React from 'react';
+import clsx from 'clsx';
 
-type ColorFieldProps = React.InputHTMLAttributes<HTMLInputElement>;
+import { Label } from './Label';
+import { Flex } from './Flex';
 
-export const ColorField = React.forwardRef<HTMLInputElement, ColorFieldProps>(({ ...props }, ref) => {
+type ColorFieldProps = React.InputHTMLAttributes<HTMLInputElement> & {
+  label?: string;
+};
+
+export const ColorField = React.forwardRef<HTMLInputElement, ColorFieldProps>(({ label, ...props }, ref) => {
   return (
-    <input
-      ref={ref}
-      type="color"
-      className="block h-6 w-full cursor-pointer appearance-none rounded-md border-2 border-gray-300 bg-gray-100 focus:border-blue-500 focus:outline-none"
-      {...props}
-    />
+    <Flex className="flex-col">
+      {label ? <Label>{label}</Label> : null}
+      <input
+        ref={ref}
+        type="color"
+        className={clsx(
+          'bg-gray-100 dark:bg-neutral-900 ',
+          'border-2 border-gray-200 dark:border-neutral-700',
+          'focus:border-blue-500 focus:outline-none',
+          'block h-6 w-full cursor-pointer appearance-none rounded-sm',
+        )}
+        {...props}
+      />
+    </Flex>
   );
 });

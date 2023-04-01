@@ -1,4 +1,4 @@
-import { Button, Box, Flex, Text, Stack, Tag } from '@violetit/ui';
+import { Button, Box, Flex, Text, Stack, Tag, Card } from '@violetit/ui';
 
 import { graphql, useFragment, useMutation } from 'react-relay';
 import { BsTrashFill } from 'react-icons/bs';
@@ -68,12 +68,12 @@ export const TagPanel = (props: TagPanelProps) => {
   };
 
   return (
-    <Flex className="w-full flex-col rounded bg-white p-2">
+    <Card className="w-full flex-col rounded p-2">
       <Box className="ml-auto mb-2">
         <TagCreatePopup onCreateTag={handleCreate} communityId={community.id} />
       </Box>
-      <Flex className="flex-col rounded border border-slate-300">
-        <Box className="bg-gray-200 p-2">
+      <Flex className="flex-col rounded border border-gray-300 dark:border-neutral-700">
+        <Box className="rounded-t bg-gray-200 p-2 dark:bg-neutral-800">
           <Text color="secondary" weight="semibold">
             User tags preview
           </Text>
@@ -91,6 +91,6 @@ export const TagPanel = (props: TagPanelProps) => {
           </Stack>
         </Box>
       </Flex>
-    </Flex>
+    </Card>
   );
 };
