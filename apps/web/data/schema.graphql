@@ -57,6 +57,8 @@ type User implements Node {
   username: String!
   email: String!
   communities(after: String, first: Int, before: String, last: Int): CommunityConnection!
+  createdAt: String
+  updatedAt: String
 }
 
 """
@@ -175,13 +177,6 @@ type Community implements Node {
   The ID of an object
   """
   id: ID!
-
-  """
-  mongoose _id
-  """
-  _id: String!
-  createdAt: String
-  updatedAt: String
   name: String!
   title: String!
   admin: ID!
@@ -190,6 +185,13 @@ type Community implements Node {
   members(after: String, first: Int, before: String, last: Int): UserConnection!
   joined: Boolean!
   amIOwner: Boolean!
+
+  """
+  mongoose _id
+  """
+  _id: String!
+  createdAt: String
+  updatedAt: String
 }
 
 """
@@ -323,7 +325,7 @@ input CommunityFilters {
   AND: [CommunityFilters]
 
   """
-  Order reviews by DateOrderingInputType.
+  Order communities by DateOrderingInputType.
   """
   orderBy: [DateOrdering!]
 
@@ -423,8 +425,6 @@ type Post implements Node {
   The ID of an object
   """
   id: ID!
-  createdAt: String
-  updatedAt: String
   title: String!
   content: String!
   tags: [Tag]
@@ -432,6 +432,13 @@ type Post implements Node {
   community: Community
   votesCount: Int!
   meHasVoted: Vote
+
+  """
+  mongoose _id
+  """
+  _id: String!
+  createdAt: String
+  updatedAt: String
 }
 
 type Vote implements Node {
@@ -454,14 +461,24 @@ input PostFilter {
   AND: [PostFilter]
 
   """
-  Order reviews by DateOrderingInputType.
+  Order posts by DateOrderingInputType.
   """
   orderBy: [DateOrdering!]
+
+  """
+  Filter by tag.
+  """
+  tags: ID
 
   """
   Filter by community.
   """
   community: ID
+
+  """
+  Filter by trending.
+  """
+  trending: Boolean
 }
 
 """
@@ -599,10 +616,10 @@ type PostCreatePayload {
 }
 
 input PostCreateInput {
+  tags: [ID]
   title: String!
   content: String!
   community: String!
-  tags: [ID]
   clientMutationId: String
 }
 

@@ -13,7 +13,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     const styles = {
       base: 'border cursor-pointer rounded font-bold inline-flex shrink-0 gap-1 items-center justify-center transition-colors',
       variant: {
-        neutral: 'border-gray-100 bg-gray-100 text-gray-500 dark:bg-neutral-800 dark:text-white dark:border-gray-700',
+        neutral: 'border-gray-100 bg-gray-100 text-gray-500 dark:bg-neutral-800 dark:text-white dark:bg-neutral-800',
         primary: 'border-blue-500 bg-blue-500 text-zinc-50',
         secondary: 'bg-transparent border-blue-500 text-blue-500',
       },
