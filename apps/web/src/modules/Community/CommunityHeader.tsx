@@ -73,10 +73,10 @@ export const CommunityHeader = (props: CommunityHeaderProps) => {
     : { text: 'Join', aria: 'Join community', variant: 'secondary' };
 
   return (
-    <Flex className="mb-2 h-36 w-full flex-col">
+    <Flex direction="col" isFullWidth className="mb-2 h-36">
       <Box className="h-3/6 bg-blue-500" />
       <Flex className="h-3/6 justify-center bg-white py-2 dark:bg-neutral-900">
-        <Flex className="mr-4 flex-col">
+        <Flex direction="col" className="mr-4">
           <Link to={`/r/${community.id}`}>
             <Heading variant="h4">{community.title}</Heading>
           </Link>

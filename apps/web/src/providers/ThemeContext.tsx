@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useLayoutEffect, useMemo, useState } from 'react';
 
 export interface ThemeContextValue {
   theme: 'light' | 'dark';
@@ -31,6 +31,10 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
 
     localStorage.setItem('@violetit_react_theme', newTheme);
     document.documentElement.classList.value = newTheme;
+  }, [theme]);
+
+  useLayoutEffect(() => {
+    document.documentElement.classList.add(theme);
   }, [theme]);
 
   const value = useMemo<ThemeContextValue>(

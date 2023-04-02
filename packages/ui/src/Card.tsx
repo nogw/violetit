@@ -6,12 +6,17 @@ type CardProps = React.HTMLAttributes<HTMLDivElement> & {
 };
 
 export const Card = React.forwardRef<HTMLDivElement, CardProps>(({ children, className, ...props }, ref) => {
-  const styles = {
-    base: 'flex w-full p-2 rounded border border-gray-300 bg-white dark:bg-neutral-900 dark:border-neutral-800',
-  };
-
   return (
-    <div ref={ref} className={clsx(styles.base, className)} {...props}>
+    <div
+      ref={ref}
+      className={clsx(
+        'flex w-full p-2',
+        'bg-white dark:bg-neutral-900',
+        'rounded border border-gray-300 dark:border-neutral-800',
+        className,
+      )}
+      {...props}
+    >
       {children}
     </div>
   );

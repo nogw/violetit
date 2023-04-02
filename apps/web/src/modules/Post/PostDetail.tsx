@@ -65,7 +65,7 @@ export const PostDetail = (props: PostDetailProps) => {
         <VoteButtons post={post} />
         <CardContent className="pt-2">
           <PostHeader post={post} />
-          <Flex className="my-1 flex-col gap-1">
+          <Flex direction="col" className="my-1 gap-1">
             <Heading variant="h5">
               {post.title}{' '}
               {tagsMapped.map(({ id, label, color }) => (

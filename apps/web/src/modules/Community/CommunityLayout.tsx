@@ -26,13 +26,17 @@ export const CommunityLayout = ({ id, withInfo, children }: CommunityLayoutProps
   const data = useLazyLoadQuery<CommunityLayoutMeQuery>(CommunityLayoutMe, { id });
 
   if (!data || !data.community) {
-    return <ErrorText>Community not found</ErrorText>;
+    return (
+      <Box className="mx-4">
+        <ErrorText>Community not found</ErrorText>
+      </Box>
+    );
   }
 
   return (
     <Box>
       <CommunityHeader community={data.community} />
-      <Flex className="w-full gap-2 px-2 pb-2">
+      <Flex isFullWidth className="gap-2 px-2 pb-2">
         {children}
         {withInfo ? <CommunityInfo community={data.community} /> : null}
       </Flex>

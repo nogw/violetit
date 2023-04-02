@@ -59,7 +59,7 @@ export const VoteButtons = (props: VoteButtonsProps) => {
 
   return (
     <Flex className="w-10 shrink-0 rounded-l bg-gray-100 py-2 dark:bg-neutral-900">
-      <Flex className="grow flex-col items-center">
+      <Flex direction="col" className="grow items-center">
         <VoteButton aria-label="upvote" direction="up" voted={meHasVoted} onClick={e => handleVote(e, 'UPVOTE')} />
         <Text variant="p4" weight="semibold">
           {votesCount ? votesCount : 'Vote'}

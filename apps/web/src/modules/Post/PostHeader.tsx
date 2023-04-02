@@ -30,7 +30,7 @@ export const PostHeader = (props: PostHeaderProps) => {
   const { author, community } = post;
 
   return (
-    <Flex className="items-center gap-2 text-xs text-gray-500">
+    <Flex className="items-center gap-2">
       <Link to={`/r/${community?.id}`}>
         <Text variant="p4">{`r/${community?.name}`}</Text>
       </Link>

@@ -99,7 +99,7 @@ export const PostComposer = () => {
         onChange={e => setCommunity(e.target.value)}
       />
       <Card className="mt-2 px-4 py-4">
-        <Flex className="w-full flex-col gap-4">
+        <Flex direction="col" isFullWidth className="gap-4">
           <TextField
             placeholder="Title"
             value={title}

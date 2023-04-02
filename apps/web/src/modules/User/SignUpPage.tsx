@@ -33,7 +33,7 @@ const LoginPage = () => {
       variables: values,
       onCompleted: ({ userRegister }) => {
         if (userRegister?.error && userRegister.error.message) {
-          const inputs: Array<keyof typeof values> = ['email', 'password', 'username'];
+          const inputs: Array<keyof typeof values> = ['email', 'password', 'username', 'passwordConfirm'];
 
           inputs.forEach(input => {
             actions.setFieldValue(input, '', false);
@@ -81,7 +81,7 @@ const LoginPage = () => {
   return (
     <FormikProvider value={formik}>
       <Form>
-        <Flex className="flex-col gap-2">
+        <Flex direction="col" className="gap-2">
           <InputField name="username" placeholder="Username" aria-required aria-label="Username" />
           <InputField name="email" placeholder="Email" aria-required aria-label="Email" />
           <InputField name="password" placeholder="Password" type="password" aria-required aria-label="Password" />

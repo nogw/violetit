@@ -1,4 +1,4 @@
-import { ErrorText } from '@violetit/ui';
+import { Box, ErrorText } from '@violetit/ui';
 
 import { useLazyLoadQuery } from 'react-relay';
 import { useParams } from 'react-router-dom';
@@ -22,7 +22,11 @@ export const PostDetailPage = () => {
   const data = useLazyLoadQuery<PostPageQuery>(PostPage, { id: String(post) });
 
   if (!data || !data.post) {
-    return <ErrorText>Post not found</ErrorText>;
+    return (
+      <Box className="mx-4">
+        <ErrorText>Post not found</ErrorText>
+      </Box>
+    );
   }
 
   return (

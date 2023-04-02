@@ -7,12 +7,16 @@ interface InfoTextProps {
 }
 
 export const InfoText = React.forwardRef<HTMLDivElement, InfoTextProps>(({ title, children }, ref) => {
-  const style = {
-    base: 'mt-4 rounded border-l-4 border-blue-500 bg-blue-100 px-3 py-1 text-blue-700',
-  };
-
   return (
-    <div ref={ref} className={clsx(style.base)} role="alert">
+    <div
+      ref={ref}
+      className={clsx(
+        'rounded border-l-4 border-blue-500',
+        'bg-blue-100 text-blue-700 dark:bg-blue-800/10',
+        'my-2 p-2',
+      )}
+      role="alert"
+    >
       <p className="font-bold">{title ? title : 'Info'}</p>
       <p>{children}</p>
     </div>

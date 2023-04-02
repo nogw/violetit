@@ -56,7 +56,7 @@ export const Feed = (props: FeedProps) => {
   }, [queryVariables]);
 
   return (
-    <Flex className="w-full flex-col">
+    <Flex direction="col" isFullWidth>
       <PostCreate />
       <Card className="mb-2 gap-2">
         <Button variant={getVariantButton('New')} onClick={handleNewPosts} aria-label="Show new posts">

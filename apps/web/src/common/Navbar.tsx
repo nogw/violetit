@@ -29,7 +29,7 @@ export const Navbar = ({ title }: NavbarProps) => {
           {title}
         </Link>
       </Flex>
-      <Flex className="h-full items-center gap-2">
+      <Flex isFullHeight className="items-center gap-2">
         <SearchBar />
         <CommunityCreatePopup />
         <Button variant="neutral" aria-label="Switch theme" onClick={handleChange}>

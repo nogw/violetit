@@ -34,7 +34,7 @@ export const CommunityInfo = (props: CommunityInfoProps) => {
         </Text>
       </Flex>
       <Flex className="border-y py-2 dark:border-neutral-700">
-        <Flex className="flex-col">
+        <Flex direction="col">
           <Text variant="p2">{community.members.count}</Text>
           <Text color="secondary" variant="p4">
             Members

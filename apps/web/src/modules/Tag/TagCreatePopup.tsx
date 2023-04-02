@@ -63,7 +63,7 @@ export const TagCreatePopup = ({ onCreateTag, communityId }: TagCreatePopupProps
       {showPopup &&
         createPortal(
           <Popup title="Create a community" handleClose={handleClosePopup}>
-            <Flex className="flex-col gap-2 border-b py-2 dark:border-neutral-700">
+            <Flex direction="col" className="gap-2 border-b pb-2 dark:border-neutral-700">
               <TextField
                 placeholder="label"
                 value={tagLabel}
@@ -79,7 +79,7 @@ export const TagCreatePopup = ({ onCreateTag, communityId }: TagCreatePopupProps
                 aria-required={false}
                 aria-label="Tag color"
               />
-              <Tag label={tagLabel} color={tagColor} />
+              {tagLabel && <Tag label={tagLabel} color={tagColor} />}
             </Flex>
             <Flex className="ml-auto gap-2 pt-2">
               <Button variant="secondary" onClick={handleClosePopup} aria-label="Cancel tag creation">

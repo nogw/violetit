@@ -20,7 +20,7 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
     };
 
     return (
-      <Flex className="flex-col">
+      <Flex direction="col">
         {label ? <Label>{label}</Label> : null}
         <input
           ref={ref}

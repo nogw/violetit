@@ -12,7 +12,7 @@ export const Link = ({ children, underline = true, ...props }: LinkProps) => {
   };
 
   return (
-    <RRDLink className={clsx('font-bold text-blue-500', { [styles.underline]: underline })} {...props}>
+    <RRDLink className={clsx('text-xs font-bold text-blue-500', { [styles.underline]: underline })} {...props}>
       {children}
     </RRDLink>
   );

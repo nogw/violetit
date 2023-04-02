@@ -45,7 +45,7 @@ export const CommunityComposer = () => {
 
   return (
     <Box>
-      <Flex className="flex-col gap-2">
+      <Flex direction="col" className="gap-2">
         <TextField
           label="Name"
           placeholder="r/name"

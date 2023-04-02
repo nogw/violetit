@@ -72,7 +72,7 @@ export const TagPanel = (props: TagPanelProps) => {
       <Box className="ml-auto mb-2">
         <TagCreatePopup onCreateTag={handleCreate} communityId={community.id} />
       </Box>
-      <Flex className="flex-col rounded border border-gray-300 dark:border-neutral-700">
+      <Flex direction="col" className="rounded border border-gray-300 dark:border-neutral-700">
         <Box className="rounded-t bg-gray-200 p-2 dark:bg-neutral-800">
           <Text color="secondary" weight="semibold">
             User tags preview

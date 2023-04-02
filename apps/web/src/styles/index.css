@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+body, #app {
+  transition: background-color 0.2s ease-out, border-color 0.2s ease-out, color 0.2s ease-out, fill 0.2s ease-out, opacity 0.2s ease-out, transform 0.2s ease-out, box-shadow 0.2s ease-out;
+}
+
 html.dark body,
 html.dark #app {
   background-color: #000;

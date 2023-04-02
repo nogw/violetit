@@ -70,7 +70,7 @@ export const PostComposerTags = ({ community, selectedTags, onSelectedChange }: 
 
   return (
     <Box>
-      <Flex className="mb-4 gap-1">
+      <Flex className="gap-1">
         {selectedTags.map(value => {
           return <Tag label={value.label} color={value.color} />;
         })}
@@ -82,8 +82,8 @@ export const PostComposerTags = ({ community, selectedTags, onSelectedChange }: 
       {showPopup &&
         createPortal(
           <Popup title="Choose the appropriate tags" handleClose={() => setShowPopup(false)}>
-            <Flex className="flex-col gap-2">
-              <Flex className="flex-col">
+            <Flex direction="col" className="gap-2">
+              <Flex direction="col">
                 {options.map(option => (
                   <Checkbox
                     key={option.id}
