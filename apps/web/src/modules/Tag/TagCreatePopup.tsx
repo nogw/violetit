@@ -20,6 +20,17 @@ export const TagCreatePopup = ({ onCreateTag, communityId }: TagCreatePopupProps
   const [tagLabel, setTagLabel] = useState('');
   const [tagColor, setTagColor] = useState('');
 
+  const handleOpenPopup = () => {
+    setShowPopup(true);
+  };
+
+  const handleClosePopup = () => {
+    setTagLabel('');
+    setTagColor('');
+
+    setShowPopup(false);
+  };
+
   const [commit] = useMutation<CreateTagMutation>(CreateTag);
 
   const handleCreate = (e: React.MouseEvent) => {
@@ -41,18 +52,10 @@ export const TagCreatePopup = ({ onCreateTag, communityId }: TagCreatePopupProps
 
         if (tagCreateMutation?.success && tagCreateMutation?.tagEdge?.node) {
           onCreateTag(tagCreateMutation.tagEdge.node);
-          setShowPopup(false);
+          handleClosePopup();
         }
       },
     });
-  };
-
-  const handleOpenPopup = () => {
-    setShowPopup(true);
-  };
-
-  const handleClosePopup = () => {
-    setShowPopup(false);
   };
 
   return (
