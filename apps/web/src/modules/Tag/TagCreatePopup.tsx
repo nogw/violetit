@@ -79,7 +79,7 @@ export const TagCreatePopup = ({ onCreateTag, communityId }: TagCreatePopupProps
                 aria-required={false}
                 aria-label="Tag color"
               />
-              {tagLabel && <Tag label={tagLabel} color={tagColor} />}
+              {tagLabel && tagColor ? <Tag label={tagLabel} color={tagColor} /> : null}
             </Flex>
             <Flex className="ml-auto gap-2 pt-2">
               <Button variant="secondary" onClick={handleClosePopup} aria-label="Cancel tag creation">
