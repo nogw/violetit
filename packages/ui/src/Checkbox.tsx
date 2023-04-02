@@ -20,7 +20,7 @@ export const Checkbox = ({ label, isChecked, onCheckedChange }: CheckboxProps) =
         checked={isChecked}
         onChange={handleChange}
       />
-      <label className="ml-2 text-gray-700">{label}</label>
+      <label className="ml-2 font-semibold text-gray-700 dark:text-neutral-400">{label}</label>
     </Flex>
   );
 };

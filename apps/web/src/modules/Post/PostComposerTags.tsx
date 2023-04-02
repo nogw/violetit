@@ -55,6 +55,7 @@ export const PostComposerTags = ({ community, selectedTags, onSelectedChange }: 
 
   const handleClear = () => {
     onSelectedChange([]);
+    setShowPopup(false);
   };
 
   const handleSave = () => {
@@ -70,11 +71,13 @@ export const PostComposerTags = ({ community, selectedTags, onSelectedChange }: 
 
   return (
     <Box>
-      <Flex className="gap-1">
-        {selectedTags.map(value => {
-          return <Tag label={value.label} color={value.color} />;
-        })}
-      </Flex>
+      {selectedTags.length ? (
+        <Flex className="mb-4 gap-1">
+          {selectedTags.map(value => {
+            return <Tag label={value.label} color={value.color} />;
+          })}
+        </Flex>
+      ) : null}
       <Button size="md" variant="neutral" onClick={() => setShowPopup(true)} aria-label="Choose the tags for the post">
         <IoMdPricetags />
         Choose the tags
