@@ -12,7 +12,7 @@ export const CommunityPage = () => {
   const { community, tags } = useParams<CommunityPageParams>();
 
   return (
-    <CommunityLayout withInfo id={String(community)}>
+    <CommunityLayout withInfo key={community} id={String(community)}>
       <Feed community={String(community)} tags={tags} />
     </CommunityLayout>
   );

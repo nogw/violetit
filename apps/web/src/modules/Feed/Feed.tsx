@@ -11,8 +11,8 @@ import { FeedList } from './FeedList';
 import { useMemo, useState } from 'react';
 
 const feedPostsLazyLoadQuery = graphql`
-  query FeedPostsQuery {
-    ...FeedList_query
+  query FeedPostsQuery($filters: PostFilter) {
+    ...FeedList_query @arguments(filters: $filters)
   }
 `;
 
@@ -33,7 +33,7 @@ export const Feed = (props: FeedProps) => {
     variables: props,
   });
 
-  const query = useLazyLoadQuery<FeedListPaginationQuery>(feedPostsLazyLoadQuery, {});
+  const query = useLazyLoadQuery<FeedListPaginationQuery>(feedPostsLazyLoadQuery, { filters: props });
 
   const handleNewPosts = () => {
     setQueryVariables({
