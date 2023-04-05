@@ -4,9 +4,9 @@ import { AuthLayout } from './modules/Auth/AuthLayout';
 import { LoginRoutes } from './modules/User/LoginRoutes';
 
 import { CommunityPanelPage } from './modules/Community/CommunityPanelPage';
-import { CommunityPage } from './modules/Community/CommunityPage';
+import { PostComposerPage } from './modules/Post/PostComposerPage';
 import { PostDetailPage } from './modules/Post/PostPage';
-import { PostComposer } from './modules/Post/PostComposer';
+import { CommunityPage } from './modules/Community/CommunityPage';
 import { FeedPage } from './modules/Feed/FeedPage';
 
 export const Routes = () => {
@@ -15,7 +15,7 @@ export const Routes = () => {
       <Route path="/auth/*" element={<LoginRoutes />} />
       <Route element={<AuthLayout />}>
         <Route path="/" element={<FeedPage />} />
-        <Route path="/submit" element={<PostComposer />} />
+        <Route path="/submit" element={<PostComposerPage />} />
         <Route path="/r/:community/:tags?" element={<CommunityPage />} />
         <Route path="/r/:community/p/:post" element={<PostDetailPage />} />
         <Route path="/r/panel/:community" element={<CommunityPanelPage />} />

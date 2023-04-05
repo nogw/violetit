@@ -6,7 +6,7 @@ import InfiniteScroll from 'react-infinite-scroller';
 
 import { FeedListPaginationQuery } from './__generated__/FeedListPaginationQuery.graphql';
 import { FeedList_query$key } from './__generated__/FeedList_query.graphql';
-import { PostDetail } from 'src/modules/Post/PostDetail';
+import { PostDetail } from '../Post/PostDetail';
 
 const FeedListFragment = graphql`
   fragment FeedList_query on Query

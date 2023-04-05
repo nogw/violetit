@@ -30,6 +30,7 @@ const Wrapper = ({ to, children }: WrapperProps) => {
 
   return <Fragment>{children}</Fragment>;
 };
+
 export const PostDetail = (props: PostDetailProps) => {
   const { isDetail = false } = props;
 

@@ -3,8 +3,8 @@ import { Flex, Text } from '@violetit/ui';
 import { graphql, useFragment } from 'react-relay';
 
 import { PostHeader_post$key } from './__generated__/PostHeader_post.graphql';
-import { timeAgo } from 'src/utils/timeAgo';
-import { Link } from 'src/common/Link';
+import { timeAgo } from '../../utils/timeAgo';
+import { Link } from '../../common/Link';
 
 type PostHeaderProps = {
   post: PostHeader_post$key;

@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { useLazyLoadQuery } from 'react-relay';
-import { IoMdPricetags } from 'react-icons/io';
-import { useLocation } from 'react-router-dom';
+import { useFragment } from 'react-relay';
 import { graphql } from 'relay-runtime';
 
+import { IoMdPricetags } from 'react-icons/io';
+import { useLocation } from 'react-router-dom';
+
 import { Button, InfoText, Flex, Box, Popup, Checkbox, Tag } from '@violetit/ui';
-import { PostComposerTagsQuery } from './__generated__/PostComposerTagsQuery.graphql';
+import { PostComposerTags_query$key } from './__generated__/PostComposerTags_query.graphql';
 
 type TagValue = {
   id: string;
@@ -15,21 +16,19 @@ type TagValue = {
 };
 
 type PostComposerTagsProps = {
-  community: string;
+  community: PostComposerTags_query$key;
   selectedTags: Array<TagValue>;
   onSelectedChange: (selectedValues: Array<TagValue>) => void;
 };
 
 const QueryPostComposerTags = graphql`
-  query PostComposerTagsQuery($id: String!) {
-    community(id: $id) {
-      tags {
-        edges {
-          node {
-            id
-            label
-            color
-          }
+  fragment PostComposerTags_query on Community {
+    tags {
+      edges {
+        node {
+          id
+          label
+          color
         }
       }
     }
@@ -37,7 +36,7 @@ const QueryPostComposerTags = graphql`
 `;
 
 export const PostComposerTags = ({ community, selectedTags, onSelectedChange }: PostComposerTagsProps) => {
-  const data = useLazyLoadQuery<PostComposerTagsQuery>(QueryPostComposerTags, { id: community });
+  const data = useFragment<PostComposerTags_query$key>(QueryPostComposerTags, community);
 
   const [showPopup, setShowPopup] = useState(false);
   const location = useLocation();
@@ -62,11 +61,12 @@ export const PostComposerTags = ({ community, selectedTags, onSelectedChange }: 
     setShowPopup(false);
   };
 
-  if (!data.community?.tags || data.community.tags.edges.length === 0) {
+  if (!data?.tags || data.tags.edges.length === 0) {
     return <InfoText>This community has not created tags for posts</InfoText>;
   }
 
-  const communities = data.community.tags.edges.flatMap(edge => (edge?.node ? edge.node : []));
+  const communities = data.tags.edges.flatMap(edge => (edge?.node ? edge.node : []));
+
   const options = communities.map(node => ({ id: node.id, label: node.label, color: node.color }));
 
   return (
@@ -74,11 +74,17 @@ export const PostComposerTags = ({ community, selectedTags, onSelectedChange }: 
       {selectedTags.length ? (
         <Flex className="mb-4 gap-1">
           {selectedTags.map(value => {
-            return <Tag label={value.label} color={value.color} />;
+            return <Tag key={value.id} label={value.label} color={value.color} />;
           })}
         </Flex>
       ) : null}
-      <Button size="md" variant="neutral" onClick={() => setShowPopup(true)} aria-label="Choose the tags for the post">
+      <Button
+        type="button"
+        size="md"
+        variant="neutral"
+        onClick={() => setShowPopup(true)}
+        aria-label="Choose the tags for the post"
+      >
         <IoMdPricetags />
         Choose the tags
       </Button>
