@@ -60,12 +60,22 @@ export const SearchList = ({ search, query }: SearchListProps) => {
     });
   }, [search, refetch]);
 
+  if (!data.communities.edges.length) {
+    return (
+      <Card className="mt-2 w-auto flex-col p-0">
+        <Text variant="p4" color="secondary">
+          No community found for "{search}"
+        </Text>
+      </Card>
+    );
+  }
+
   return (
     <Card className="mt-2 w-auto flex-col p-0">
       {data.communities.edges.map(post => {
         return (
           <Link key={post?.node?.id} to={`r/${post?.node?.id}`} underline={false}>
-            <Flex key={post?.node?.id} className="m-1 flex-col rounded p-1 hover:bg-gray-100">
+            <Flex className="m-1 flex-col rounded p-1 hover:bg-gray-100 dark:hover:bg-neutral-800">
               <Text variant="p4" weight="semibold">
                 r/{post?.node?.name}
               </Text>
