@@ -1,5 +1,4 @@
 import { Heading, Button, Card, Flex, Box } from '@violetit/ui';
-
 import { MdClose } from 'react-icons/md';
 
 import { useClickOutside } from '../hooks/useClickOutside';
@@ -16,7 +15,7 @@ export const Popup = ({ title, handleClose, children }: PopupProps) => {
   });
 
   return (
-    <Box className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 transform shadow-md" ref={elementRef}>
+    <Box className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 transform shadow-md" ref={elementRef}>
       <Card className="flex-col">
         <Flex className="mb-2 items-center justify-between gap-4 border-b pb-2 dark:border-neutral-700">
           <Heading variant="h5">{title}</Heading>

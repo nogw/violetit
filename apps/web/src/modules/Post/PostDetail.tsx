@@ -1,4 +1,4 @@
-import { Card, CardContent, Flex, Heading, Tag, Text } from '@violetit/ui';
+import { Box, Card, CardContent, Flex, Heading, Tag, Text } from '@violetit/ui';
 
 import { graphql, useFragment } from 'react-relay';
 import { Fragment } from 'react';
@@ -8,6 +8,7 @@ import { VoteButtons } from '../Vote/VoteButtons';
 import { PostHeader } from './PostHeader';
 import { PostFooter } from './PostFooter';
 import { Link } from '../../common/Link';
+import { useNavigate } from 'react-router-dom';
 
 type WrapperProps = {
   to?: string;
@@ -20,11 +21,21 @@ type PostDetailProps = {
 };
 
 const Wrapper = ({ to, children }: WrapperProps) => {
+  const navigate = useNavigate();
+
   if (to) {
+    //TODO: find another way to prevent "<a> cannot appear as a descendant of <a>"
+    const handleRedirect = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+      const clickedElement = event.target as HTMLElement;
+      if (clickedElement.tagName !== 'A' && !clickedElement.closest('a')) {
+        navigate(to);
+      }
+    };
+
     return (
-      <Link className="hover:none" to={to}>
+      <Box className="cursor-pointer" onClick={handleRedirect}>
         {children}
-      </Link>
+      </Box>
     );
   }
 
@@ -62,7 +73,7 @@ export const PostDetail = (props: PostDetailProps) => {
 
   return (
     <Wrapper {...wrapperProps}>
-      <Card className="h-min px-0 py-0 hover:border-gray-400">
+      <Card className="h-min px-0 py-0 hover:border-gray-400 dark:hover:border-neutral-700">
         <VoteButtons post={post} />
         <CardContent className="pt-2">
           <PostHeader post={post} />

@@ -1,4 +1,4 @@
-import { Button, Flex } from '@violetit/ui';
+import { Button, Flex, Text } from '@violetit/ui';
 
 import { useContext } from 'react';
 import { RiMagicFill } from 'react-icons/ri';
@@ -19,27 +19,26 @@ export const Navbar = ({ title }: NavbarProps) => {
   const { theme, handleChange } = useContext(ThemeContext);
 
   const { signout } = useAuth();
+
   const navigate = useNavigate();
+
+  const handleSignOut = () => signout(() => navigate('/auth', { replace: true }));
 
   return (
     <Flex className="h-12 items-center justify-between bg-white px-4 dark:bg-neutral-900">
-      <Flex className="items-center justify-between gap-3">
+      <Link className="flex items-center justify-between gap-3" to={'/'}>
         <RiMagicFill className="h-6 w-6 text-orange-700" />
-        <Link className="text-lg font-bold dark:text-white" to={'/'}>
+        <Text variant="p2" weight="semibold">
           {title}
-        </Link>
-      </Flex>
+        </Text>
+      </Link>
       <Flex isFullHeight className="items-center gap-2">
         <SearchBar />
         <CommunityCreatePopup />
         <Button variant="neutral" aria-label="Switch theme" onClick={handleChange}>
           {theme === 'dark' ? 'Light' : 'Dark'}
         </Button>
-        <Button
-          variant="neutral"
-          aria-label="Log out"
-          onClick={() => signout(() => navigate('/auth', { replace: true }))}
-        >
+        <Button variant="neutral" aria-label="Log out" onClick={handleSignOut}>
           <MdExitToApp className="h-6 w-6" />
         </Button>
       </Flex>
