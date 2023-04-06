@@ -1,32 +1,43 @@
-import { Button, Box, Flex, TextField } from '@violetit/ui';
-import { useSnackbar } from 'notistack';
+import { Button, Box, Flex } from '@violetit/ui';
 
-import { useState } from 'react';
-import { useMutation } from 'react-relay';
 import { useNavigate } from 'react-router-dom';
+import { useMutation } from 'react-relay';
+import { useSnackbar } from 'notistack';
+import * as yup from 'yup';
 
 import { CommunityCreateMutation } from './mutations/__generated__/CommunityCreateMutation.graphql';
 import { CommunityCreate } from './mutations/CommunityCreateMutation';
+import { Form, FormikHelpers, FormikProvider, useFormik } from 'formik';
+import { InputField } from 'src/common/InputField';
+
+type CommunityFieldValues = {
+  name: string;
+  title: string;
+};
 
 export const CommunityComposer = () => {
   const navigate = useNavigate();
 
-  const [name, setName] = useState<string>('');
-  const [title, setTitle] = useState<string>('');
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
   const [communityCreate, isPending] = useMutation<CommunityCreateMutation>(CommunityCreate);
 
-  const onSubmit = () => {
+  const onSubmit = (values: CommunityFieldValues, actions: FormikHelpers<CommunityFieldValues>) => {
     closeSnackbar();
 
     communityCreate({
-      variables: {
-        name,
-        title,
-      },
+      variables: values,
       onCompleted: ({ communityCreate }) => {
         if (communityCreate?.error && communityCreate.error.message) {
+          const inputs: Array<keyof typeof values> = ['name', 'title'];
+
+          inputs.forEach(input => {
+            actions.setFieldValue(input, '', false);
+            actions.setFieldTouched(input, false);
+          });
+
+          actions.setSubmitting(false);
+
           enqueueSnackbar(communityCreate.error.message, { variant: 'error' });
         }
 
@@ -41,31 +52,35 @@ export const CommunityComposer = () => {
     });
   };
 
-  const isDisabled = title.length <= 3 || name.length <= 3 || isPending;
+  const formik = useFormik<CommunityFieldValues>({
+    initialValues: {
+      name: '',
+      title: '',
+    },
+    validateOnMount: true,
+    validationSchema: yup.object().shape({
+      name: yup.string().required('Title is required'),
+      title: yup.string().required('Content is required'),
+    }),
+    onSubmit,
+  });
+
+  const { isValid, isSubmitting } = formik;
+  const isDisabled = !isValid || isPending;
 
   return (
-    <Box>
-      <Flex direction="col" className="gap-2">
-        <TextField
-          label="Name"
-          placeholder="r/name"
-          value={name}
-          onChange={e => setName(e.target.value)}
-          aria-required
-        />
-        <TextField
-          label="Title"
-          placeholder="Community Title"
-          value={title}
-          onChange={e => setTitle(e.target.value)}
-          aria-required
-        />
-        <Box className="mt-2 ml-auto">
-          <Button aria-label="Create community" disabled={isDisabled} variant="secondary" onClick={onSubmit}>
-            Create
-          </Button>
-        </Box>
-      </Flex>
-    </Box>
+    <FormikProvider value={formik}>
+      <Form>
+        <Flex direction="col" className="gap-2">
+          <InputField name="name" label="Name" placeholder="r/name" aria-required aria-label="Community name" />
+          <InputField name="title" label="Title" placeholder="Title" aria-required aria-label="Community title" />
+          <Box className="mt-2 ml-auto">
+            <Button type="submit" aria-label="Create community" disabled={isDisabled} variant="secondary">
+              {isSubmitting ? 'Wait...' : 'Create'}
+            </Button>
+          </Box>
+        </Flex>
+      </Form>
+    </FormikProvider>
   );
 };

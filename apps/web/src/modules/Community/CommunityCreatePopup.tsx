@@ -1,11 +1,14 @@
-import { Box, Button, Popup } from '@violetit/ui';
+import { Box, Button } from '@violetit/ui';
 
+import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { useState } from 'react';
+import { useLocation } from 'react-router-dom';
 
 import { CommunityComposer } from './CommunityComposer';
+import { Popup } from '../../common/Popup';
 
 export const CommunityCreatePopup = () => {
+  const location = useLocation();
   const [showPopup, setShowPopup] = useState(false);
 
   const handleOpenPopup = () => {
@@ -15,6 +18,10 @@ export const CommunityCreatePopup = () => {
   const handleClosePopup = () => {
     setShowPopup(false);
   };
+
+  useEffect(() => {
+    handleClosePopup();
+  }, [location]);
 
   return (
     <Box>
