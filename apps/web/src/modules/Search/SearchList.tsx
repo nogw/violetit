@@ -1,4 +1,4 @@
-import { Card, Flex, Text } from '@violetit/ui';
+import { Flex, Text } from '@violetit/ui';
 
 import { graphql, usePaginationFragment } from 'react-relay';
 import { useEffect, useTransition } from 'react';
@@ -6,6 +6,7 @@ import { useEffect, useTransition } from 'react';
 import { SearchListPaginationQuery } from './__generated__/SearchListPaginationQuery.graphql';
 import { SearchList_query$key } from './__generated__/SearchList_query.graphql';
 import { Link } from '../../common/Link';
+import { useIsMounted } from 'src/hooks/useIsMounted';
 
 const SearchListFragment = graphql`
   fragment SearchList_query on Query
@@ -46,7 +47,8 @@ type SearchListProps = {
 };
 
 export const SearchList = ({ search, query }: SearchListProps) => {
-  const [, startTransition] = useTransition();
+  const [_, startTransition] = useTransition();
+  const isMounted = useIsMounted();
 
   const { data, refetch } = usePaginationFragment<SearchListPaginationQuery, SearchList_query$key>(
     SearchListFragment,
@@ -54,24 +56,24 @@ export const SearchList = ({ search, query }: SearchListProps) => {
   );
 
   useEffect(() => {
-    startTransition(() => {
-      const variables = { first: 5, filters: { search } };
-      refetch(variables, { fetchPolicy: 'store-or-network' });
-    });
-  }, [search, refetch]);
+    if (isMounted) {
+      startTransition(() => {
+        const variables = { first: 5, filters: { search } };
+        refetch(variables, { fetchPolicy: 'store-or-network' });
+      });
+    }
+  }, [isMounted, search, refetch]);
 
   if (!data.communities.edges.length) {
     return (
-      <Card className="mt-2 w-auto flex-col p-0">
-        <Text variant="p4" color="secondary">
-          No community found for "{search}"
-        </Text>
-      </Card>
+      <Text variant="p4" color="secondary">
+        No community found for "{search}"
+      </Text>
     );
   }
 
   return (
-    <Card className="mt-2 w-auto flex-col p-0">
+    <Flex isFullWidth direction="col">
       {data.communities.edges.map(post => {
         return (
           <Link key={post?.node?.id} to={`r/${post?.node?.id}`} underline={false}>
@@ -86,6 +88,6 @@ export const SearchList = ({ search, query }: SearchListProps) => {
           </Link>
         );
       })}
-    </Card>
+    </Flex>
   );
 };

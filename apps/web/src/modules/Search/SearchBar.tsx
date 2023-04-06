@@ -1,70 +1,64 @@
-import { Box, Flex, TextField } from '@violetit/ui';
+import { Card, Flex, Loading, TextField } from '@violetit/ui';
 
-import { Suspense, useCallback, useEffect, useRef, useState } from 'react';
+import { Suspense, useCallback, useEffect, useState } from 'react';
 import { graphql, useLazyLoadQuery } from 'react-relay';
-import { useLocation } from 'react-router-dom';
 
 import { SearchBarQuery } from './__generated__/SearchBarQuery.graphql';
 import { SearchList } from './SearchList';
+import { useClickOutside } from 'src/hooks/useClickOutside';
+import { useLocation } from 'react-router-dom';
+import { useDebounce } from 'use-debounce';
 
 export const SearchBar = () => {
-  const [showResults, setShowResults] = useState(false);
-  const [search, setSearch] = useState('');
   const location = useLocation();
+
+  const [isSearching, setIsSearching] = useState(false);
+  const [searchText, setSearchText] = useState('');
+
+  const [debouncedSearchText] = useDebounce(searchText, 200);
 
   const query = useLazyLoadQuery<SearchBarQuery>(
     graphql`
-      query SearchBarQuery {
-        ...SearchList_query
+      query SearchBarQuery($filters: CommunityFilters) {
+        ...SearchList_query @arguments(filters: $filters)
       }
     `,
-    {},
-  );
-
-  const inputRef = useRef<HTMLInputElement>(null);
-  const resultsRef = useRef<HTMLDivElement>(null);
-
-  const handleClickOutside = useCallback(
-    (event: MouseEvent) => {
-      if (resultsRef.current?.contains(event.target as Node) || inputRef.current?.contains(event.target as Node)) {
-        return;
-      }
-
-      setShowResults(false);
-    },
-    [resultsRef, inputRef],
+    { filters: { search: debouncedSearchText } },
   );
 
   useEffect(() => {
-    document.addEventListener('mousedown', handleClickOutside);
-    setShowResults(false);
-    setSearch('');
+    setIsSearching(false);
+    setSearchText('');
+  }, [location]);
 
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [handleClickOutside, location]);
+  const { elementRef } = useClickOutside<HTMLDivElement>(() => {
+    setIsSearching(false);
+  });
 
-  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearch(event.target.value);
-    setShowResults(true);
-  };
+  const handleSearch = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchText(event.target.value);
+    setIsSearching(true);
+  }, []);
+
+  const showSearchList = isSearching && debouncedSearchText && !!searchText.length;
 
   return (
-    <Flex className="relative">
+    <Flex className="relative" ref={elementRef}>
       <TextField
         placeholder="Search on Violetit"
-        value={search}
+        value={searchText}
         onChange={e => handleSearch(e)}
+        autoComplete="off"
+        role="search"
         aria-required={false}
         aria-label="Search communities on Violetit"
       />
-      {showResults && (
-        <Box className="absolute mt-8 w-full" ref={resultsRef}>
-          <Suspense fallback={<h1>a</h1>}>
-            <SearchList query={query} search={search} />
+      {showSearchList && (
+        <Card className="absolute mt-10 w-full flex-col p-0">
+          <Suspense fallback={<Loading />}>
+            <SearchList query={query} search={debouncedSearchText} />
           </Suspense>
-        </Box>
+        </Card>
       )}
     </Flex>
   );
