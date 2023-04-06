@@ -4,11 +4,11 @@ import clsx from 'clsx';
 import { Label } from './Label';
 import { Flex } from './Flex';
 
-type ColorFieldProps = React.InputHTMLAttributes<HTMLInputElement> & {
+export type ColorInputProps = React.InputHTMLAttributes<HTMLInputElement> & {
   label?: string;
 };
 
-export const ColorField = React.forwardRef<HTMLInputElement, ColorFieldProps>(({ label, ...props }, ref) => {
+export const ColorInput = React.forwardRef<HTMLInputElement, ColorInputProps>(({ label, ...props }, ref) => {
   return (
     <Flex direction="col">
       {label ? <Label>{label}</Label> : null}

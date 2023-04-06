@@ -1,13 +1,10 @@
 import clsx from 'clsx';
 import React from 'react';
 
-type SelectInputProps = React.SelectHTMLAttributes<HTMLSelectElement> & {
-  initial: string;
-  options: Array<{ value: string; text: string }>;
-};
+type SelectInputProps = React.SelectHTMLAttributes<HTMLSelectElement>;
 
 export const SelectInput = React.forwardRef<HTMLSelectElement, SelectInputProps>(
-  ({ className, initial, options, ...props }, ref) => {
+  ({ className, children, ...props }, ref) => {
     return (
       <select
         ref={ref}
@@ -20,12 +17,7 @@ export const SelectInput = React.forwardRef<HTMLSelectElement, SelectInputProps>
         )}
         {...props}
       >
-        <option defaultValue={initial}>{initial}</option>
-        {options.map((option, index) => (
-          <option key={index} value={option.value}>
-            {option.text}
-          </option>
-        ))}
+        {children}
       </select>
     );
   },
