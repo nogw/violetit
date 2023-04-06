@@ -38,7 +38,7 @@ export const Text = ({
     },
     underline: 'underline',
     uppercase: 'uppercase',
-    clamp: 'line-clamp-3',
+    clamp: 'line-clamp-3 break-words',
   };
 
   return (

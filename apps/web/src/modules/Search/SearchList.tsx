@@ -66,7 +66,7 @@ export const SearchList = ({ search, query }: SearchListProps) => {
 
   if (!data.communities.edges.length) {
     return (
-      <Text variant="p4" color="secondary">
+      <Text variant="p4" color="secondary" clamp>
         No community found for "{search}"
       </Text>
     );
