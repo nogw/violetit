@@ -13,7 +13,9 @@ export const TextAreaField = ({ name, ...props }: TextAreaFieldProps) => {
   const [field, meta] = useField(name);
   const { isSubmitting } = useFormikContext();
 
-  const hasAnErrorAndHasBeenTouched = !!meta.error && !!meta.touched;
+  const hasAnErrorAndHasBeenTouched = !!meta.error && meta.touched;
 
-  return <TextArea hasError={hasAnErrorAndHasBeenTouched} {...field} {...rest} disabled={isSubmitting} />;
+  return (
+    <TextArea border={hasAnErrorAndHasBeenTouched ? 'error' : 'default'} disabled={isSubmitting} {...field} {...rest} />
+  );
 };

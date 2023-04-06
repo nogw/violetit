@@ -5,9 +5,10 @@ import { useFormikContext, useField } from 'formik';
 
 type InputFieldProps = InputHTMLAttributes<HTMLInputElement> & {
   name: string;
+  label?: string;
 };
 
-export const InputField = ({ name, ...props }: InputFieldProps) => {
+export const InputField = ({ name, label, ...props }: InputFieldProps) => {
   const { className, ...rest } = props;
 
   const [field, meta] = useField(name);
@@ -15,5 +16,13 @@ export const InputField = ({ name, ...props }: InputFieldProps) => {
 
   const hasAnErrorAndHasBeenTouched = !!meta.error && !!meta.touched;
 
-  return <TextField hasError={hasAnErrorAndHasBeenTouched} {...field} {...rest} disabled={isSubmitting} />;
+  return (
+    <TextField
+      label={label}
+      border={hasAnErrorAndHasBeenTouched ? 'error' : 'default'}
+      {...field}
+      {...rest}
+      disabled={isSubmitting}
+    />
+  );
 };
