@@ -7,6 +7,6 @@
     "lib": ["DOM", "DOM.Iterable", "ESNext"],
     "module": "ESNext"
   },
-  "include": ["./src", "../../apps/web/src/common/Popup.tsx"],
+  "include": ["./src"],
   "exclude": ["node_modules"]
 }
