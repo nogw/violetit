@@ -333,6 +333,11 @@ input CommunityFilters {
   Filter by search.
   """
   search: String
+
+  """
+  Filter communities joined by the user in context.
+  """
+  joinedByMe: Boolean
 }
 
 """
