@@ -27,7 +27,12 @@ const Wrapper = ({ to, children }: WrapperProps) => {
     //TODO: find another way to prevent "<a> cannot appear as a descendant of <a>"
     const handleRedirect = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
       const clickedElement = event.target as HTMLElement;
-      if (clickedElement.tagName !== 'A' && !clickedElement.closest('a')) {
+      if (
+        clickedElement.tagName !== 'A' &&
+        clickedElement.tagName !== 'BUTTON' &&
+        !clickedElement.closest('a') &&
+        !clickedElement.closest('button')
+      ) {
         navigate(to);
       }
     };

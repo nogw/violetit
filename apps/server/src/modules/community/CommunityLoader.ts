@@ -13,6 +13,7 @@ const Loader = createLoader({
   defaultFilters: (_, args) => (args.filters?.joinedByMe ? {} : { orderBy: [{ field: 'createdAt', direction: -1 }] }),
 });
 
+// TODO: can i pass the context to communityFilterMapping and avoid writing this aggregate?
 export const loadCommunitiesJoinedByMe = (context: GraphQLContext) => {
   if (!context?.user) {
     return;
