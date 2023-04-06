@@ -1,4 +1,4 @@
-import { Card, Flex, Button, ErrorText, Box, InfoText } from '@violetit/ui';
+import { Card, Flex, Button, ErrorText, Box, InfoText, SelectInput } from '@violetit/ui';
 
 import { Form, useFormik, FormikProvider, FormikHelpers } from 'formik';
 import { graphql, useFragment, useMutation } from 'react-relay';
@@ -14,7 +14,6 @@ import { PostComposerTags } from './PostComposerTags';
 import { PostCreate } from './mutations/PostCreateMutation';
 
 import { TextAreaField } from '../../common/TextAreaField';
-import { SelectField } from '../../common/SelectField';
 import { InputField } from '../../common/InputField';
 
 type TagValue = {
@@ -52,6 +51,7 @@ export const PostComposer = ({ query }: PostComposerProps) => {
   const navigate = useNavigate();
 
   const [tags, setTags] = useState<TagValue[]>([]);
+
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
   const [postCreate, isPending] = useMutation<PostCreateMutation>(PostCreate);
@@ -76,7 +76,6 @@ export const PostComposer = ({ query }: PostComposerProps) => {
           actions.setSubmitting(false);
 
           enqueueSnackbar(postCreate.error.message, { variant: 'error' });
-          return;
         }
 
         if (!postCreate?.postEdge) {
@@ -88,7 +87,7 @@ export const PostComposer = ({ query }: PostComposerProps) => {
         const postId = postEdge.node?.id;
         const communityId = postEdge.node?.community?.id;
 
-        return navigate(`/r/${communityId}/p/${postId}`, {
+        navigate(`/r/${communityId}/p/${postId}`, {
           replace: true,
         });
       },
@@ -130,14 +129,14 @@ export const PostComposer = ({ query }: PostComposerProps) => {
   return (
     <FormikProvider value={formik}>
       <Form className="w-full">
-        <SelectField name="community">
+        <SelectInput name="community" value={values.community} onChange={formik.handleChange}>
           <option defaultValue={''}>Select a community</option>
           {communities.map((option, index) => (
             <option key={index} value={option.value.id}>
               r/{option.value.name}
             </option>
           ))}
-        </SelectField>
+        </SelectInput>
         <Card className="mt-2 px-4 py-4">
           <Flex direction="col" isFullWidth className="gap-4">
             <InputField name="title" placeholder="Title" aria-required aria-label="Post title" />

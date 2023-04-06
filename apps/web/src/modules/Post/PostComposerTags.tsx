@@ -1,13 +1,14 @@
+import { Button, InfoText, Flex, Box, Checkbox, Tag } from '@violetit/ui';
+
 import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { useFragment } from 'react-relay';
 import { graphql } from 'relay-runtime';
-
 import { IoMdPricetags } from 'react-icons/io';
 import { useLocation } from 'react-router-dom';
 
-import { Button, InfoText, Flex, Box, Popup, Checkbox, Tag } from '@violetit/ui';
 import { PostComposerTags_query$key } from './__generated__/PostComposerTags_query.graphql';
+import { Popup } from '../../common/Popup';
 
 type TagValue = {
   id: string;
