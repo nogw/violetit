@@ -70,7 +70,7 @@ export const TagPanel = (props: TagPanelProps) => {
   return (
     <Card className="w-full flex-col rounded p-2">
       <Box className="ml-auto mb-2">
-        <TagCreatePopup onCreateTag={handleCreate} communityId={community.id} />
+        <TagCreatePopup callbackTag={handleCreate} communityId={community.id} />
       </Box>
       <Flex direction="col" className="rounded border border-gray-300 dark:border-neutral-700">
         <Box className="rounded-t bg-gray-200 p-2 dark:bg-neutral-800">
