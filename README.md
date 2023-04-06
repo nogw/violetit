@@ -37,6 +37,7 @@
 ├── apps/
 |   └── server
 |   └── web
+|   └── next # wip
 ├── packages/
 |   └── babel
 |   └── types
