@@ -1,14 +1,8 @@
-import { GraphQLInputObjectType, GraphQLList, GraphQLNonNull, GraphQLString } from 'graphql';
+import { GraphQLBoolean, GraphQLInputObjectType, GraphQLList, GraphQLNonNull, GraphQLString } from 'graphql';
 import { buildSortFromArg, FILTER_CONDITION_TYPE } from '@entria/graphql-mongo-helpers';
 
 import { DateOrdering, DateOrderingInputType } from '../../graphql/filters';
-import { GraphQLArgFilter } from '../../types';
 import { escapeRegex } from '../../utils/escapeRegex';
-
-export type CommunitiesArgFilters = GraphQLArgFilter<{
-  orderBy?: DateOrdering[];
-  search?: string;
-}>;
 
 export const communityFilterMapping = {
   orderBy: {
@@ -19,13 +13,8 @@ export const communityFilterMapping = {
     type: FILTER_CONDITION_TYPE.CUSTOM_CONDITION,
     key: 'name',
     format: (value: string) => {
-      if (!value) return {};
-
       const search = escapeRegex(value);
-
-      return {
-        $or: [{ name: { $regex: search } }, { title: { $regex: search } }],
-      };
+      return value && { $or: [{ name: { $regex: search } }, { title: { $regex: search } }] };
     },
   },
 };
@@ -47,6 +36,10 @@ export const CommunityFiltersInputType: GraphQLInputObjectType = new GraphQLInpu
     search: {
       type: GraphQLString,
       description: 'Filter by search.',
+    },
+    joinedByMe: {
+      type: GraphQLBoolean,
+      description: 'Filter communities joined by the user in context.',
     },
   }),
 });

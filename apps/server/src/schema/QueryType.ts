@@ -12,7 +12,7 @@ import PostLoader, { loadTrendingPosts } from '../modules/post/PostLoader';
 
 import { CommunityConnection, CommunityType } from '../modules/community/CommunityType';
 import { CommunityFiltersInputType } from '../modules/community/CommunityFilterInputType';
-import CommunityLoader from '../modules/community/CommunityLoader';
+import CommunityLoader, { loadCommunitiesJoinedByMe } from '../modules/community/CommunityLoader';
 
 export const QueryType = new GraphQLObjectType({
   name: 'Query',
@@ -49,7 +49,13 @@ export const QueryType = new GraphQLObjectType({
         },
       },
       resolve: async (_, args, context) => {
-        return CommunityLoader.loadAll(context, args);
+        const { joinedByMe, ...rest } = args.filters || {};
+
+        if (joinedByMe && context?.user) {
+          return loadCommunitiesJoinedByMe(context);
+        }
+
+        return CommunityLoader.loadAll(context, { ...args, filters: rest });
       },
     },
     posts: {
