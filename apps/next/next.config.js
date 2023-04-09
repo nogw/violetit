@@ -1,6 +1,13 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  compiler: {
+    relay: require('./relay.config'),
+  },
+  experimental: {
+    concurrentFeatures: true,
+    appDir: true,
+  },
 };
 
 module.exports = nextConfig;
