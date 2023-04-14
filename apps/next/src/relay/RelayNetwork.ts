@@ -1,33 +1,27 @@
-import { CacheConfig, FetchFunction, QueryResponseCache, RequestParameters, Variables } from 'relay-runtime';
+import {
+  Network,
+  Variables,
+  CacheConfig,
+  FetchFunction,
+  ConcreteRequest,
+  RequestParameters,
+  QueryResponseCache,
+} from 'relay-runtime';
 
-enum operationKind {
-  MUTATION = 'mutation',
-  QUERY = 'query',
-}
+import { NetworkWithResponseCache } from './RelayTypes';
+import { isMutation, isQuery } from './RelayHelpers';
+import { InternalError } from '../utils/error';
 
-const ONE_MINUTE_IN_MS = 60 * 1000;
+const GRAPHQL_URL = process.env.NEXT_PUBLIC_GRAPHQL_URL as string;
 
-const isMutation = (request: RequestParameters): boolean => {
-  return request.operationKind === operationKind.MUTATION;
-};
-
-const isQuery = (request: RequestParameters): boolean => {
-  return request.operationKind === operationKind.QUERY;
-};
-
-const forceFetch = (cacheConfig: CacheConfig): boolean => {
-  return !!(cacheConfig && cacheConfig.force);
-};
-
-const GRAPHQL_URL = process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT as string;
-
-const fetchGraphQL = async (params: RequestParameters, variables: Variables, headers?: HeadersInit) => {
+async function fetchGraphQL(params: RequestParameters, variables: Variables, headers?: HeadersInit) {
   const response = await fetch(GRAPHQL_URL, {
     method: 'POST',
+    credentials: 'include',
     headers: {
+      ...headers,
       'Access-Control-Allow-Origin': '*',
       'Content-Type': 'application/json',
-      ...headers,
     },
     body: JSON.stringify({
       query: params.text,
@@ -37,42 +31,67 @@ const fetchGraphQL = async (params: RequestParameters, variables: Variables, hea
 
   const json = await response.json();
 
+  if (Array.isArray(json.errors)) {
+    const errorStr = JSON.stringify(json.errors);
+    const variableStr = JSON.stringify(json.variables);
+
+    throw new InternalError(`GraphQL: Error fetching "${params.name}" with variables "${variableStr}": ${errorStr}`);
+  }
+
   return json;
-};
+}
 
-const responseCache = new QueryResponseCache({
-  size: 250,
-  ttl: ONE_MINUTE_IN_MS,
-});
+const ONE_MINUTE_IN_MS = 60 * 1000;
 
-export const cacheHandler: FetchFunction = async (
-  operation: RequestParameters,
-  variables: Variables,
-  cacheConfig: CacheConfig,
-) => {
-  const id = operation.id || '';
+function createNetwork() {
+  const responseCache = new QueryResponseCache({
+    size: 100,
+    ttl: ONE_MINUTE_IN_MS,
+  });
 
-  if (isMutation(operation)) {
-    responseCache.clear();
+  const cacheHandler: FetchFunction = async (
+    operation: RequestParameters,
+    variables: Variables,
+    cacheConfig: CacheConfig,
+  ) => {
+    const queryId = operation.text || '';
+    const forceFetch = cacheConfig && cacheConfig.force;
 
-    const mutationResult = await fetchGraphQL(operation, variables);
-
-    return mutationResult;
-  }
-
-  if (isQuery(operation) && !forceFetch(cacheConfig)) {
-    const fromCache = responseCache.get(id, variables);
-
-    if (!fromCache) {
-      return Promise.resolve(fromCache);
+    if (isMutation(operation)) {
+      responseCache.clear();
+      return fetchGraphQL(operation, variables);
     }
-  }
 
-  const result = await fetchGraphQL(operation, variables);
+    if (isQuery(operation) && !forceFetch) {
+      const fromCache = responseCache.get(queryId, variables);
+      if (fromCache !== null) {
+        return Promise.resolve(fromCache);
+      }
+    }
 
-  if (result) {
-    responseCache.set(id, variables, result);
-  }
+    const response = await fetchGraphQL(operation, variables);
 
-  return result;
-};
+    if (response) {
+      responseCache.set(queryId, variables, response);
+    }
+
+    return response;
+  };
+
+  const network = Network.create(cacheHandler) as NetworkWithResponseCache;
+  network.responseCache = responseCache;
+
+  return network;
+}
+
+async function getPreloadedQuery({ params }: ConcreteRequest, variables: Variables, headers?: HeadersInit) {
+  const response = await fetchGraphQL(params, variables, headers);
+
+  return {
+    params,
+    variables,
+    response,
+  };
+}
+
+export { createNetwork, getPreloadedQuery };

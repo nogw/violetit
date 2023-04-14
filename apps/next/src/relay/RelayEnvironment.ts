@@ -1,10 +1,12 @@
-import { Environment, Network, RecordSource, Store } from 'relay-runtime';
-import { cacheHandler } from './RelayNetwork';
+import { Environment, RecordSource, Store } from 'relay-runtime';
+
+import { NetworkWithResponseCache } from './RelayTypes';
+import { createNetwork } from './RelayNetwork';
 
 const IS_SERVER = typeof window === typeof undefined;
 
 export const createRelayEnvironment = () => {
-  const network = Network.create(cacheHandler);
+  const network = createNetwork();
 
   const environment = new Environment({
     network,
@@ -12,9 +14,8 @@ export const createRelayEnvironment = () => {
     isServer: IS_SERVER,
   });
 
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  environment.getNetwork().responseCache = network.responseCache;
+  const environmentNetwork = environment.getNetwork() as NetworkWithResponseCache;
+  environmentNetwork.responseCache = network.responseCache;
 
   return environment;
 };

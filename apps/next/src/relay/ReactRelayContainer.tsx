@@ -2,9 +2,8 @@ import { ReactRelayContext, useRelayEnvironment } from 'react-relay';
 import { Fragment, Suspense, useMemo } from 'react';
 import type { NextPage } from 'next';
 
+import { NetworkWithResponseCache, PreloadedQueries, QueryRefs } from './RelayTypes';
 import { createRelayEnvironment } from './RelayEnvironment';
-import { PreloadedQueries, QueryRefs } from './RelayTypes';
-import { Loading } from '@violetit/ui';
 
 type NextPageWithLayout<T = undefined> = NextPage<{ queryRefs: QueryRefs } & T> & {
   getLayout?: (page: React.ReactElement) => React.ReactNode;
@@ -19,11 +18,11 @@ export function ReactRelayContainer<T, P extends { preloadedQueries?: PreloadedQ
   Component,
   props,
 }: ReactRelayProps<T, P>) {
-  const relayEnvironment = createRelayEnvironment();
+  const environment = useMemo(() => createRelayEnvironment(), []);
 
   return (
-    <ReactRelayContext.Provider value={{ environment: relayEnvironment }}>
-      <Suspense fallback={<Loading />}>
+    <ReactRelayContext.Provider value={{ environment }}>
+      <Suspense fallback={null}>
         <Hyderate Component={Component} props={props} />
       </Suspense>
     </ReactRelayContext.Provider>
@@ -47,30 +46,27 @@ function Hyderate<T, P extends { preloadedQueries?: PreloadedQueries }>({ Compon
 
     const queryRefs: QueryRefs = {};
     for (const [queryName, { params, variables, response }] of Object.entries(preloadedQueries)) {
-      const queryId = params.id || params.text;
+      const queryId = params.id || '';
+      const network = environment.getNetwork() as NetworkWithResponseCache;
+      network.responseCache.set(queryId, variables, response);
 
-      if (queryId) {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        environment.getNetwork().responseCache.set(params.id, variables, response);
-
-        queryRefs[queryName] = {
-          environment,
-          fetchKey: queryId,
-          fetchPolicy: 'store-or-network',
-          isDisposed: false,
-          name: params.name,
-          kind: 'PreloadedQuery',
-          variables,
-          // eslint-disable-next-line @typescript-eslint/no-empty-function
-          dispose: () => {},
-        };
-      }
+      queryRefs[queryName] = {
+        variables,
+        environment,
+        name: params.name,
+        kind: 'PreloadedQuery',
+        fetchKey: queryId,
+        fetchPolicy: 'store-or-network',
+        isDisposed: false,
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
+        dispose: () => {},
+      };
     }
 
     return { ...otherProps, queryRefs };
-  }, [environment, props]);
+  }, [props, environment]);
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return <Fragment>{getLayout(<Component {...(transformedProps as any)} />)}</Fragment>;
 }
 

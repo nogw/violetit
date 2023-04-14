@@ -1,7 +1,10 @@
 import { PreloadedQuery, Variables } from 'react-relay';
-import { GraphQLResponse, OperationType, RequestParameters } from 'relay-runtime';
+import { QueryResponseCache } from 'relay-runtime';
 
-export type QueryRefs<T extends OperationType = any> = Record<string, PreloadedQuery<T>>;
+import type { GraphQLResponse, OperationType, RequestParameters } from 'relay-runtime';
+import type { Network } from 'relay-runtime/lib/network/RelayNetworkTypes';
+
+export type QueryRefs<T extends OperationType = OperationType> = Record<string, PreloadedQuery<T>>;
 
 export type PreloadedQueries = Record<
   string,
@@ -11,3 +14,7 @@ export type PreloadedQueries = Record<
     variables: Variables;
   }
 >;
+
+export type NetworkWithResponseCache = Network & {
+  responseCache: QueryResponseCache;
+};
