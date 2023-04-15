@@ -1,4 +1,4 @@
-import Koa, { Request } from 'koa';
+import Koa, { Context, Request, Response } from 'koa';
 import { graphqlHTTP, OptionsData } from 'koa-graphql';
 import bodyParser from 'koa-bodyparser';
 import Router from '@koa/router';
@@ -12,8 +12,8 @@ import { GraphQLError } from 'graphql';
 const app = new Koa();
 const router = new Router();
 
-const graphQLSettingsPerReq = async (req: Request): Promise<OptionsData> => {
-  const user = await getUser(req.header.authorization);
+const graphQLSettingsPerReq = async (req: Request, res: Response, ctx: Context): Promise<OptionsData> => {
+  const user = await getUser(ctx);
 
   return {
     graphiql: true,
