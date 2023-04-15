@@ -19,7 +19,7 @@ export const useFeedFilter = (variables: FeedQueryVariables = {}) => {
   const { trending } = variables;
 
   const [feedSort, setFeedSort] = useState<FeedStateProps>({
-    current: 'Hot',
+    current: 'New',
     trending: trending ?? false,
   });
 

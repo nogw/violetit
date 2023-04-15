@@ -46,8 +46,9 @@ function Hyderate<T, P extends { preloadedQueries?: PreloadedQueries }>({ Compon
 
     const queryRefs: QueryRefs = {};
     for (const [queryName, { params, variables, response }] of Object.entries(preloadedQueries)) {
-      const queryId = params.id || '';
       const network = environment.getNetwork() as NetworkWithResponseCache;
+      const queryId = params.id || params.text || '';
+
       network.responseCache.set(queryId, variables, response);
 
       queryRefs[queryName] = {
