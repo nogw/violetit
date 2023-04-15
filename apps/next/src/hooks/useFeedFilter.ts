@@ -15,9 +15,11 @@ export type FeedStateProps = Omit<FeedSortFilter, 'variables'> & {
   trending: FeedQueryVariables['trending'];
 };
 
-export const useFeedFilter = ({ trending, ...variables }: FeedQueryVariables = {}) => {
+export const useFeedFilter = (variables: FeedQueryVariables = {}) => {
+  const { trending } = variables;
+
   const [feedSort, setFeedSort] = useState<FeedStateProps>({
-    current: 'New',
+    current: 'Hot',
     trending: trending ?? false,
   });
 
@@ -37,11 +39,13 @@ export const useFeedFilter = ({ trending, ...variables }: FeedQueryVariables = {
   }, [trending]);
 
   const feedFilter = useMemo<FeedSortFilter>(() => {
+    const { current, trending } = feedSort;
+
     return {
-      current: feedSort.current,
+      current,
       variables: { trending, ...variables },
     };
-  }, [feedSort, trending, variables]);
+  }, [feedSort, variables]);
 
   return { feedFilter, handleNewPosts, handleHotPosts };
 };
