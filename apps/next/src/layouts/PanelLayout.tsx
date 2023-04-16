@@ -30,7 +30,7 @@ const PanelLayout = ({ children, queryRef }: PanelLayoutProps) => {
   return (
     <main className="h-screen">
       <CommunityHeader fragmentKey={data.community} />
-      <Flex isFullWidth className="gap-2 px-2 pb-2">
+      <Flex fullWidth className="gap-2 px-2 pb-2">
         <Box>{children}</Box>
       </Flex>
     </main>

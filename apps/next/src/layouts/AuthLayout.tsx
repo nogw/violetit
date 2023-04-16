@@ -13,7 +13,7 @@ const AuthLayout = ({ children }: AuthLayoutProps) => {
 
   return (
     <main className={clsx('flex items-center justify-center', 'h-screen')}>
-      <Flex isFullWidth direction="col" className="max-w-xs">
+      <Flex fullWidth direction="col" className="max-w-xs">
         <Box className="mb-2">{children}</Box>
         <AuthLink pathname={pathname} />
       </Flex>
