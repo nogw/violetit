@@ -5,8 +5,8 @@ const nextConfig = {
     relay: require('./relay.config'),
   },
   experimental: {
+    externalDir: true,
     concurrentFeatures: true,
-    appDir: true,
   },
 };
 

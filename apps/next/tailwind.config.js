@@ -13,6 +13,12 @@ module.exports = {
       md: '768px',
       lg: '1024px',
       xl: '1280px',
+      colors: {
+        neutral: {
+          900: '#1B1B1B',
+          950: '#161716',
+        },
+      },
     },
   },
   plugins: [require('@tailwindcss/line-clamp'), require('@tailwindcss/typography')],
