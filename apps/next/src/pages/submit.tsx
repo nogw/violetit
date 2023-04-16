@@ -7,41 +7,35 @@ import { graphql } from 'relay-runtime';
 import { NextPageWithLayout } from 'src/relay/ReactRelayContainer';
 import { getPreloadedQuery } from 'src/relay/RelayNetwork';
 import { getHeadersCookie } from 'src/utils/cookies';
-import { useFeedFilter } from 'src/hooks/useFeedFilter';
-import { PostCreate } from 'src/components/Post/PostCreate';
-import { FeedFilter } from 'src/components/Feed/FeedFilter';
-import { FeedList } from 'src/components/Feed/FeedList';
+import { PostComposer } from 'src/components/Post/PostComposer';
 
 import rootLayoutQuery, { RootLayoutQuery as RootLayoutQueryType } from 'src/__generated__/RootLayoutQuery.graphql';
-import pageQuery, { pagesIndexQuery as pagesIndexQueryType } from 'src/__generated__/pagesIndexQuery.graphql';
+import pageQuery, { submitQuery as submitQueryType } from 'src/__generated__/submitQuery.graphql';
 import RootLayout from 'src/layouts/RootLayout';
 
-const pagesIndexQuery = graphql`
-  query pagesIndexQuery {
-    ...FeedListFragment
+const submitQuery = graphql`
+  query submitQuery {
+    ...PostComposer_query
   }
 `;
 
 interface HomeProps {
   queryRefs: {
-    pageQuery: PreloadedQuery<pagesIndexQueryType>;
+    pageQuery: PreloadedQuery<submitQueryType>;
     rootLayoutQuery: PreloadedQuery<RootLayoutQueryType>;
   };
 }
 
 const Home: NextPageWithLayout<HomeProps> = ({ queryRefs }) => {
-  const data = usePreloadedQuery(pagesIndexQuery, queryRefs.pageQuery);
+  const data = usePreloadedQuery(submitQuery, queryRefs.pageQuery);
 
-  const { feedFilter, ...handlers } = useFeedFilter();
-  const { variables } = feedFilter;
+  if (!data) {
+    return null;
+  }
 
   return (
-    <Flex className="p-2">
-      <Flex direction="col" fullWidth>
-        <PostCreate />
-        <FeedFilter feedFilter={feedFilter} {...handlers} />
-        <FeedList fragmentKey={data} queryVariables={variables} />
-      </Flex>
+    <Flex className="m-2 w-auto">
+      <PostComposer query={data} />
     </Flex>
   );
 };

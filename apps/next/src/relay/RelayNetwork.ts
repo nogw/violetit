@@ -19,11 +19,12 @@ async function fetchGraphQL(params: RequestParameters, variables: Variables, hea
     method: 'POST',
     credentials: 'include',
     headers: {
-      ...headers,
       'Access-Control-Allow-Origin': '*',
       'Content-Type': 'application/json',
+      ...headers,
     },
     body: JSON.stringify({
+      operationName: params.name,
       query: params.text,
       variables,
     }),

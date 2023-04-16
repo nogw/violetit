@@ -18,7 +18,7 @@ export const Feed = ({ fragmentKey, initialVariables = {} }: FeedProps) => {
   const { variables } = feedFilter;
 
   return (
-    <Flex direction="col" isFullWidth>
+    <Flex direction="col" fullWidth>
       <PostCreate />
       <FeedFilter feedFilter={feedFilter} {...handlers} />
       <FeedList fragmentKey={fragmentKey} queryVariables={variables} />

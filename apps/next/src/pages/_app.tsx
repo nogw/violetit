@@ -11,7 +11,7 @@ import { Loading } from '@violetit/ui';
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
-    <ThemeProvider attribute="class" defaultTheme="system" disableTransitionOnChange>
+    <ThemeProvider attribute="class" defaultTheme="dark" disableTransitionOnChange>
       <AuthProvider>
         <SnackbarProvider>
           <Suspense fallback={<Loading />}>
