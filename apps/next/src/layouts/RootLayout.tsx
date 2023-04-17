@@ -75,7 +75,7 @@ const RootLayout = ({ children, queryRef }: RootLayoutProps) => {
         <AnimatePresence>
           {modalOpen ? (
             <motion.div
-              className="fixed left-0 right-0 top-12 flex flex-col gap-2 px-2 py-2"
+              className="fixed left-0 right-0 top-12 flex w-full flex-col gap-2 px-2 py-2"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
