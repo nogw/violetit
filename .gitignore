@@ -12,7 +12,8 @@ npm-debug.log*
 yarn-*.log
 *.tsbuildinfo
 
-**/__generated__/
+**/next/src/__generated__/*.ts
+**/web/**/__generated__/
 
 # Env files
 .env*
