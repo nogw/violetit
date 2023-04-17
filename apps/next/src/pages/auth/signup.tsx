@@ -1,10 +1,10 @@
 import { Button, Flex } from '@violetit/ui';
 
 import { Form, useFormik, FormikProvider, FormikHelpers } from 'formik';
+import { useRouter } from 'next/router';
 import { useMutation } from 'react-relay';
 import { useSnackbar } from 'notistack';
 import { useContext } from 'react';
-import { useRouter } from 'next/router';
 import * as yup from 'yup';
 
 import { SignUpMutation, SignUpMutationType } from 'src/components/Auth/mutations/SignUpMutation';
@@ -32,7 +32,13 @@ const SignUp: NextPageWithLayout = () => {
     closeSnackbar();
 
     userRegister({
-      variables: { input: values },
+      variables: {
+        input: {
+          email: values.email,
+          username: values.username,
+          password: values.password,
+        },
+      },
       onCompleted: ({ userRegister }) => {
         if (userRegister?.error && userRegister.error.message) {
           const inputs: Array<keyof typeof values> = ['email', 'password', 'username', 'passwordConfirm'];

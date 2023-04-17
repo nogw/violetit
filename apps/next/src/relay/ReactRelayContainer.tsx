@@ -5,7 +5,8 @@ import type { NextPage } from 'next';
 import { NetworkWithResponseCache, PreloadedQueries, QueryRefs } from './RelayTypes';
 import { createRelayEnvironment } from './RelayEnvironment';
 
-type NextPageWithLayout<T = undefined> = NextPage<{ queryRefs: QueryRefs } & T> & {
+// eslint-disable-next-line @typescript-eslint/ban-types
+type NextPageWithLayout<T = {}> = NextPage<{ queryRefs: QueryRefs } & T> & {
   getLayout?: (page: React.ReactElement) => React.ReactNode;
 };
 
@@ -23,13 +24,13 @@ export function ReactRelayContainer<T, P extends { preloadedQueries?: PreloadedQ
   return (
     <ReactRelayContext.Provider value={{ environment }}>
       <Suspense fallback={null}>
-        <Hyderate Component={Component} props={props} />
+        <Hydrate Component={Component} props={props} />
       </Suspense>
     </ReactRelayContext.Provider>
   );
 }
 
-function Hyderate<T, P extends { preloadedQueries?: PreloadedQueries }>({ Component, props }: ReactRelayProps<T, P>) {
+function Hydrate<T, P extends { preloadedQueries?: PreloadedQueries }>({ Component, props }: ReactRelayProps<T, P>) {
   const environment = useRelayEnvironment();
   const getLayout = Component.getLayout ?? (page => page);
 
