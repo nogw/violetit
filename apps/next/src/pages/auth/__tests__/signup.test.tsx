@@ -19,7 +19,11 @@ describe('SignUp Page', () => {
   it('should navigate to /feed after signup correctly the user', async () => {
     const environment = createMockEnvironment();
 
-    render(<WithProviders relayEnvironment={environment}>{<SignUp queryRefs={{}} />}</WithProviders>);
+    render(
+      <WithProviders relayEnvironment={environment}>
+        <SignUp queryRefs={{}} />
+      </WithProviders>,
+    );
 
     const variables = {
       username: 'nogenoge',
@@ -59,7 +63,11 @@ describe('SignUp Page', () => {
   it('should keep the button disabled if the e-mail is not correct', async () => {
     const environment = createMockEnvironment();
 
-    render(<WithProviders relayEnvironment={environment}>{<SignUp queryRefs={{}} />}</WithProviders>);
+    render(
+      <WithProviders relayEnvironment={environment}>
+        <SignUp queryRefs={{}} />
+      </WithProviders>,
+    );
 
     const variables = {
       username: 'nogenoge',
@@ -86,21 +94,16 @@ describe('SignUp Page', () => {
     await waitFor(() => expect(screen.getByRole('button')).toBeDisabled());
   });
 
-  it('should keep the button disabled if the password is not correct', async () => {
-    const environment = createMockEnvironment();
+  it('disables sign-up button if password is incorrect', async () => {
+    const env = createMockEnvironment();
 
-    render(<WithProviders relayEnvironment={environment}>{<SignUp queryRefs={{}} />}</WithProviders>);
-
-    const variables = {
-      username: 'nogenoge',
-      email: 'wrongemail',
-      password: 'awesomepassword',
-    };
+    render(
+      <WithProviders relayEnvironment={env}>
+        <SignUp queryRefs={{}} />
+      </WithProviders>,
+    );
 
     await waitFor(() => expect(screen.getByRole('button')).toBeDisabled());
-
-    await userEvent.type(screen.getByPlaceholderText('Username'), variables.username);
-    await userEvent.type(screen.getByPlaceholderText('Email'), variables.email);
 
     const passwordInputElement = screen.getByPlaceholderText('Password');
 
@@ -109,13 +112,24 @@ describe('SignUp Page', () => {
 
     expect(screen.getByTestId('error-message-password')).toHaveTextContent('Password is required');
 
-    await userEvent.type(passwordInputElement, variables.password);
+    await waitFor(() => expect(screen.getByRole('button')).toBeDisabled());
+  });
 
-    const passwordConfirmInputElement = screen.getByPlaceholderText('Password Confirm');
+  it('keeps sign-up button disabled if password confirmation does not match', async () => {
+    const environment = createMockEnvironment();
 
-    await userEvent.type(passwordConfirmInputElement, 'different password');
-    await waitFor(() => passwordConfirmInputElement.blur());
+    render(
+      <WithProviders relayEnvironment={environment}>
+        <SignUp queryRefs={{}} />
+      </WithProviders>,
+    );
 
+    await waitFor(() => expect(screen.getByRole('button')).toBeDisabled());
+
+    await userEvent.type(screen.getByPlaceholderText('Password'), 'validpassword');
+    await userEvent.type(screen.getByPlaceholderText('Password Confirm'), 'differentpassword');
+
+    await waitFor(() => screen.getByPlaceholderText('Password Confirm').blur());
     expect(screen.getByTestId('error-message-passwordConfirm')).toHaveTextContent('Passwords must match');
 
     await waitFor(() => expect(screen.getByRole('button')).toBeDisabled());
@@ -124,7 +138,11 @@ describe('SignUp Page', () => {
   it('should display a generic error from server', async () => {
     const environment = createMockEnvironment();
 
-    render(<WithProviders relayEnvironment={environment}>{<SignUp queryRefs={{}} />}</WithProviders>);
+    render(
+      <WithProviders relayEnvironment={environment}>
+        <SignUp queryRefs={{}} />
+      </WithProviders>,
+    );
 
     const variables = {
       username: 'nogenoge',

@@ -19,7 +19,11 @@ describe('SignIn Page', () => {
   it('should navigate to /feed after signin correctly the user', async () => {
     const environment = createMockEnvironment();
 
-    render(<WithProviders relayEnvironment={environment}>{<SignIn queryRefs={{}} />}</WithProviders>);
+    render(
+      <WithProviders relayEnvironment={environment}>
+        <SignIn queryRefs={{}} />
+      </WithProviders>,
+    );
 
     const variables = {
       email: 'noge@gmail.com',
@@ -56,7 +60,11 @@ describe('SignIn Page', () => {
   it('should keep the button disabled if the e-mail is not correct', async () => {
     const environment = createMockEnvironment();
 
-    render(<WithProviders relayEnvironment={environment}>{<SignIn queryRefs={{}} />}</WithProviders>);
+    render(
+      <WithProviders relayEnvironment={environment}>
+        <SignIn queryRefs={{}} />
+      </WithProviders>,
+    );
 
     const variables = {
       email: 'wrongemail',
@@ -74,7 +82,11 @@ describe('SignIn Page', () => {
   it('should keep the button disabled if the password is not correct', async () => {
     const environment = createMockEnvironment();
 
-    render(<WithProviders relayEnvironment={environment}>{<SignIn queryRefs={{}} />}</WithProviders>);
+    render(
+      <WithProviders relayEnvironment={environment}>
+        <SignIn queryRefs={{}} />
+      </WithProviders>,
+    );
 
     const variables = {
       email: 'wrongemail',
@@ -95,7 +107,11 @@ describe('SignIn Page', () => {
   it('should display a generic error from server', async () => {
     const environment = createMockEnvironment();
 
-    render(<WithProviders relayEnvironment={environment}>{<SignIn queryRefs={{}} />}</WithProviders>);
+    render(
+      <WithProviders relayEnvironment={environment}>
+        <SignIn queryRefs={{}} />
+      </WithProviders>,
+    );
 
     const variables = {
       email: 'noge@gmail.com',
