@@ -1,19 +1,20 @@
 import { RelayEnvironmentProvider, Environment } from 'react-relay';
-
-import { createRelayEnvironment } from '../src/relay/RelayEnvironment';
+import { SnackbarProvider } from 'notistack';
 import { AuthProvider } from '../src/contexts/AuthContext';
 
 interface Props {
   children: React.ReactElement;
-  relayEnvironment?: Environment;
+  relayEnvironment: Environment;
 }
 
 export const WithProviders = ({ children, relayEnvironment }: Props) => {
-  const environment = relayEnvironment ?? createRelayEnvironment();
+  const environment = relayEnvironment;
 
   return (
     <RelayEnvironmentProvider environment={environment}>
-      <AuthProvider>{children}</AuthProvider>
+      <SnackbarProvider>
+        <AuthProvider>{children}</AuthProvider>
+      </SnackbarProvider>
     </RelayEnvironmentProvider>
   );
 };
