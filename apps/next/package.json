@@ -28,7 +28,7 @@
     "relay-runtime": "^14.0.0",
     "ts-jest": "^29.1.0",
     "use-debounce": "^9.0.4",
-    "yup": "^0.32.11"
+    "yup": "^1.1.1"
   },
   "devDependencies": {
     "@tailwindcss/aspect-ratio": "^0.4.2",
