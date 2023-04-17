@@ -1,4 +1,4 @@
-import { Box, Flex } from '@violetit/ui';
+import { Flex } from '@violetit/ui';
 
 import { PreloadedQuery, usePreloadedQuery } from 'react-relay';
 import { graphql } from 'relay-runtime';
@@ -31,7 +31,7 @@ const PanelLayout = ({ children, queryRef }: PanelLayoutProps) => {
     <main className="h-screen">
       <CommunityHeader fragmentKey={data.community} />
       <Flex fullWidth className="gap-2 px-2 pb-2">
-        <Box>{children}</Box>
+        {children}
       </Flex>
     </main>
   );

@@ -85,7 +85,7 @@ export const CommunityHeader = (props: CommunityHeaderProps) => {
             {buttonProps.text}
           </Button>
           {amIOwner ? (
-            <LinkButton href={`/community/panel/${id}`} variant="neutral" aria-label="Moderator tools">
+            <LinkButton href={`/community/${id}/panel`} variant="neutral" aria-label="Moderator tools">
               <BsFillGearFill /> Mod Tools
             </LinkButton>
           ) : null}

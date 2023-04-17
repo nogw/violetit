@@ -45,7 +45,7 @@ export const CommunityComposer = () => {
           return;
         }
 
-        router.push(`/r/${communityCreate.communityEdge.node?.id}`);
+        router.push(`/community/${communityCreate.communityEdge.node?.id}`);
       },
     });
   };

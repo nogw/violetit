@@ -2,7 +2,6 @@ import { Button, InfoText, Flex, Box, Checkbox, Tag } from '@violetit/ui';
 
 import { IoMdPricetags } from 'react-icons/io';
 import { useEffect, useState } from 'react';
-import { createPortal } from 'react-dom';
 import { useFragment } from 'react-relay';
 import { useRouter } from 'next/router';
 import { graphql } from 'relay-runtime';
@@ -89,32 +88,28 @@ export const PostComposerTags = ({ community, selectedTags, onSelectedChange }: 
         <IoMdPricetags />
         Choose the tags
       </Button>
-      {showPopup &&
-        createPortal(
-          <Popup title="Choose the appropriate tags" handleClose={() => setShowPopup(false)}>
-            <Flex direction="col" className="gap-2">
-              <Flex direction="col">
-                {options.map(option => (
-                  <Checkbox
-                    key={option.id}
-                    label={option.label}
-                    isChecked={selectedTags.some(tag => option.id === tag.id)}
-                    onCheckedChange={isChecked => handleChange(option, isChecked)}
-                  />
-                ))}
-              </Flex>
-              <Flex className="gap-2 border-t pt-3">
-                <Button variant="secondary" onClick={handleClear} aria-label="Clear tags">
-                  Clear
-                </Button>
-                <Button variant="primary" onClick={handleSave} aria-label="Save tags">
-                  Save
-                </Button>
-              </Flex>
-            </Flex>
-          </Popup>,
-          document.body,
-        )}
+      <Popup title="Choose the appropriate tags" isOpen={showPopup} handleClose={() => setShowPopup(false)}>
+        <Flex direction="col" className="gap-2">
+          <Flex direction="col">
+            {options.map(option => (
+              <Checkbox
+                key={option.id}
+                label={option.label}
+                isChecked={selectedTags.some(tag => option.id === tag.id)}
+                onCheckedChange={isChecked => handleChange(option, isChecked)}
+              />
+            ))}
+          </Flex>
+          <Flex className="gap-2 border-t pt-3">
+            <Button variant="secondary" onClick={handleClear} aria-label="Clear tags">
+              Clear
+            </Button>
+            <Button variant="primary" onClick={handleSave} aria-label="Save tags">
+              Save
+            </Button>
+          </Flex>
+        </Flex>
+      </Popup>
     </Box>
   );
 };

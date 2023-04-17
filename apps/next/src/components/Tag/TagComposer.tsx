@@ -76,7 +76,7 @@ export const TagComposer = ({ callbackTag, handleClose, communityId }: TagCompos
   return (
     <FormikProvider value={formik}>
       <Form>
-        <Flex direction="col" className="gap-2 border-b pb-2 dark:border-neutral-700">
+        <Flex direction="col" className="gap-2 border-b pb-4 dark:border-neutral-700">
           <InputField name="label" label="Tag label" placeholder="label" aria-required aria-label="Tag label" />
           <ColorInput
             name="color"

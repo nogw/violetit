@@ -35,7 +35,8 @@ export const TagPanel = (props: TagPanelProps) => {
 
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
-  const [currentTags, setCurrentTags] = useState(community.tags.edges.flatMap(edge => (edge?.node ? edge.node : [])));
+  const initialTags = community.tags.edges.flatMap(edge => (edge?.node ? edge.node : []));
+  const [currentTags, setCurrentTags] = useState(initialTags);
 
   const [commit] = useMutation<DeleteTagMutation>(DeleteTag);
 
