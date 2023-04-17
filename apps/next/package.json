@@ -24,7 +24,7 @@
     "react-dom": "^18.2.0",
     "react-icons": "^4.7.1",
     "react-infinite-scroller": "^1.2.6",
-    "react-relay": "^14.0.0",
+    "react-relay": "^15.0.0",
     "relay-runtime": "^14.0.0",
     "ts-jest": "^29.1.0",
     "use-debounce": "^9.0.4",
