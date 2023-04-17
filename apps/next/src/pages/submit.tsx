@@ -14,8 +14,8 @@ import pageQuery, { submitQuery as submitQueryType } from 'src/__generated__/sub
 import RootLayout from 'src/layouts/RootLayout';
 
 const submitQuery = graphql`
-  query submitQuery {
-    ...PostComposer_query
+  query submitQuery($filters: CommunityFilters) {
+    ...PostComposer_query @arguments(filters: $filters)
   }
 `;
 
@@ -35,7 +35,7 @@ const Home: NextPageWithLayout<HomeProps> = ({ queryRefs }) => {
 
   return (
     <Flex className="m-2 w-auto">
-      <PostComposer query={data} />
+      <PostComposer fragmentKey={data} />
     </Flex>
   );
 };
@@ -60,7 +60,7 @@ export const getServerSideProps: GetServerSideProps = async context => {
   return {
     props: {
       preloadedQueries: {
-        pageQuery: await getPreloadedQuery(pageQuery, {}, token),
+        pageQuery: await getPreloadedQuery(pageQuery, { filters: { joinedByMe: true } }, token),
         rootLayoutQuery: await getPreloadedQuery(rootLayoutQuery, {}, token),
       },
     },

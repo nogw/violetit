@@ -29,7 +29,7 @@ type PostValues = {
 };
 
 type PostComposerProps = {
-  query: PostComposer_query$key;
+  fragmentKey: PostComposer_query$key;
 };
 
 export const QueryPostComposer = graphql`
@@ -46,7 +46,7 @@ export const QueryPostComposer = graphql`
   }
 `;
 
-export const PostComposer = ({ query }: PostComposerProps) => {
+export const PostComposer = ({ fragmentKey }: PostComposerProps) => {
   const [postCreate, isPending] = useMutation<PostCreateMutation>(PostCreate);
   const [postTags, setPostTags] = useState<TagValue[]>([]);
 
@@ -105,7 +105,7 @@ export const PostComposer = ({ query }: PostComposerProps) => {
     onSubmit,
   });
 
-  const data = useFragment<PostComposer_query$key>(QueryPostComposer, query);
+  const data = useFragment<PostComposer_query$key>(QueryPostComposer, fragmentKey);
 
   if (!data) {
     return <ErrorText>You are not logged!</ErrorText>;
