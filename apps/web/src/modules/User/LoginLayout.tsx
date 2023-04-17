@@ -15,7 +15,7 @@ const SignUpOrLoginLink = ({ pathname }: { pathname: string }) => {
   };
 
   return (
-    <Text>
+    <Text className="text-xs">
       {redirectText} <Link to={link.to}>{link.text}</Link>
     </Text>
   );

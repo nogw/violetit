@@ -4,12 +4,12 @@ import React from 'react';
 type FlexProps = React.HTMLAttributes<HTMLDivElement> & {
   children: React.ReactNode | React.ReactNode[];
   direction?: 'row' | 'col' | 'colReverse' | 'rowReverse';
-  isFullHeight?: boolean;
-  isFullWidth?: boolean;
+  fullHeight?: boolean;
+  fullWidth?: boolean;
 };
 
 export const Flex = React.forwardRef<HTMLDivElement, FlexProps>(
-  ({ direction = 'row', isFullHeight, isFullWidth, children, className, ...props }, ref) => {
+  ({ direction = 'row', fullHeight, fullWidth, children, className, ...props }, ref) => {
     const styles = {
       direction: {
         row: 'flex-row',
@@ -17,8 +17,8 @@ export const Flex = React.forwardRef<HTMLDivElement, FlexProps>(
         rowReverse: 'flex-row-reverse',
         colReverse: 'flex-col-reverse',
       },
-      isFullHeight: 'h-full',
-      isFullWidth: 'w-full',
+      fullHeight: 'h-full',
+      fullWidth: 'w-full',
     };
 
     return (
@@ -27,12 +27,8 @@ export const Flex = React.forwardRef<HTMLDivElement, FlexProps>(
         className={clsx(
           'flex',
           styles.direction[direction],
-          {
-            [styles.isFullWidth]: isFullWidth,
-          },
-          {
-            [styles.isFullWidth]: isFullWidth,
-          },
+          { [styles.fullWidth]: fullWidth },
+          { [styles.fullHeight]: fullHeight },
           className,
         )}
         {...props}

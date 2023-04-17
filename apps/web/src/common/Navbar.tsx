@@ -32,7 +32,7 @@ export const Navbar = ({ title }: NavbarProps) => {
           {title}
         </Text>
       </Link>
-      <Flex isFullHeight className="items-center gap-2">
+      <Flex className="items-center gap-2">
         <SearchBar />
         <CommunityCreatePopup />
         <Button variant="neutral" aria-label="Switch theme" onClick={handleChange}>

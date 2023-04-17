@@ -17,7 +17,7 @@ export const CardTitled = React.forwardRef<HTMLDivElement, CardTitledProps>(
         <Flex className="mb-2 rounded-t bg-blue-500 p-2">
           <h1 className="text-sm font-semibold text-white">{title}</h1>
         </Flex>
-        <CardContent className="gap-3">{children}</CardContent>
+        <CardContent className="gap-3 px-2">{children}</CardContent>
       </Card>
     );
   },

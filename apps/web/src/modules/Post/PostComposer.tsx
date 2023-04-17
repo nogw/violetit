@@ -138,7 +138,7 @@ export const PostComposer = ({ query }: PostComposerProps) => {
           ))}
         </SelectInput>
         <Card className="mt-2 px-4 py-4">
-          <Flex direction="col" isFullWidth className="gap-4">
+          <Flex direction="col" fullWidth className="gap-4">
             <InputField name="title" placeholder="Title" aria-required aria-label="Post title" />
             <TextAreaField name="content" aria-required aria-label="Post content" />
             <Box>

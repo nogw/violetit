@@ -17,7 +17,9 @@ export const Text = ({
   underline,
   uppercase,
   clamp,
+  className,
   children,
+  ...props
 }: TextProps) => {
   const styles = {
     variant: {
@@ -50,7 +52,9 @@ export const Text = ({
         { [styles.underline]: underline },
         { [styles.uppercase]: uppercase },
         { [styles.clamp]: clamp },
+        className,
       )}
+      {...props}
     >
       {children}
     </span>

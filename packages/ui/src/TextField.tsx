@@ -11,7 +11,7 @@ export type TextFieldProps = React.InputHTMLAttributes<HTMLInputElement> & {
 };
 
 export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
-  ({ label, variant = 'md', border = 'default', ...props }, ref) => {
+  ({ label, variant = 'md', border = 'default', className, ...props }, ref) => {
     const styles = {
       border: {
         default: 'border-solid dark:border-neutral-700',
@@ -25,7 +25,7 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
     };
 
     return (
-      <Flex direction="col">
+      <Flex fullWidth direction="col">
         {label ? <Label>{label}</Label> : null}
         <input
           ref={ref}
@@ -37,7 +37,7 @@ export const TextField = React.forwardRef<HTMLInputElement, TextFieldProps>(
             'hover:border-sky-400 focus:border-sky-400',
             styles.variant[variant],
             styles.border[border],
-            props.className,
+            className,
           )}
           {...props}
         />

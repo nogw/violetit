@@ -11,9 +11,9 @@ export const InfoText = React.forwardRef<HTMLDivElement, InfoTextProps>(({ title
     <div
       ref={ref}
       className={clsx(
-        'rounded border-l-4 border-blue-500',
-        'bg-blue-100 text-blue-700 dark:bg-blue-800/10',
         'my-2 p-2',
+        'rounded border-l-4 border-blue-500',
+        'bg-blue-100 text-blue-700 dark:bg-blue-600/10',
       )}
       role="alert"
     >

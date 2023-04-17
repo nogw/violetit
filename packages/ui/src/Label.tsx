@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import React from 'react';
 
-type LabelProps = React.InputHTMLAttributes<HTMLLabelElement> & {
+type LabelProps = React.LabelHTMLAttributes<HTMLLabelElement> & {
   children: React.ReactNode;
 };
 
