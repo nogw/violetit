@@ -8,22 +8,21 @@ import { config } from './config';
 
 const AUTH_COOKIE_NAME = 'violetit.jwt';
 
-export const getUser = async (ctx: ParameterizedContext): Promise<Maybe<IUserDocument>> => {
+export const getUser = async (ctx: ParameterizedContext): Promise<{ user: Maybe<IUserDocument> }> => {
   const token = ctx.cookies.get(AUTH_COOKIE_NAME);
 
-  if (!token) return null;
-
   try {
-    const subToken = token.substring(4);
+    if (!token) return { user: null };
 
-    const decodedToken = jwt.verify(subToken, config.JWT_KEY) as {
-      id: string;
-    };
+    const subToken = token.substring(6); // TODO: resolve json
+    const decodedToken = jwt.verify(subToken, config.JWT_KEY);
+    const decodedId = decodedToken as { id: string };
 
-    const user = await UserModel.findOne({ _id: decodedToken.id });
-    return user;
+    const user = await UserModel.findOne({ _id: decodedId.id });
+
+    return { user };
   } catch (err) {
-    return null;
+    return { user: null };
   }
 };
 

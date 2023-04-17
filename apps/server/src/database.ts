@@ -1,10 +1,13 @@
 import mongoose from 'mongoose';
 
-import { config, isProd } from './config';
+import {
+  config,
+  // isProd
+} from './config';
 
 export const connectDatabase = async (): Promise<void> => {
   mongoose.set('strictQuery', true);
-  mongoose.set('debug', !isProd);
+  // mongoose.set('debug', !isProd);
 
   /* eslint-disable no-console */
   mongoose.connection

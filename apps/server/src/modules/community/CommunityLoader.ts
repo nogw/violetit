@@ -10,6 +10,7 @@ const Loader = createLoader({
   model: CommunityModel,
   loaderName: 'CommunityLoader',
   filterMapping: communityFilterMapping,
+  isAggregate: true,
   defaultFilters: (_, args) => (args.filters?.joinedByMe ? {} : { orderBy: [{ field: 'createdAt', direction: -1 }] }),
 });
 

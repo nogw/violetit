@@ -12,14 +12,14 @@ import { GraphQLError } from 'graphql';
 const app = new Koa();
 const router = new Router();
 
-const graphQLSettingsPerReq = async (req: Request, res: Response, ctx: Context): Promise<OptionsData> => {
-  const user = await getUser(ctx);
+const graphQLSettingsPerReq = async (_req: Request, _res: Response, ctx: Context): Promise<OptionsData> => {
+  const { user } = await getUser(ctx);
 
   return {
     graphiql: true,
     schema,
     pretty: true,
-    context: getContext({ user }),
+    context: await getContext({ ctx, user }),
     customFormatErrorFn: (error: GraphQLError) => {
       /* eslint-disable no-console */
       console.log(error.message);

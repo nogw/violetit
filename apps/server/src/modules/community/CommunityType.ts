@@ -56,7 +56,7 @@ export const CommunityType = new GraphQLObjectType<ICommunityDocument, GraphQLCo
     joined: {
       type: new GraphQLNonNull(GraphQLBoolean),
       resolve: async (community, _, context) => {
-        if (!context?.user) return false;
+        if (!context.user) return false;
         return community.members.some(member => member.equals(context.user?._id));
       },
     },
