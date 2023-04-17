@@ -1,7 +1,8 @@
-import { useFormikContext, useField } from 'formik';
+import { useFormikContext, useField, ErrorMessage } from 'formik';
 import { InputHTMLAttributes } from 'react';
 
-import { TextField } from '@violetit/ui';
+import { Box, Flex, Text, TextField } from '@violetit/ui';
+import { MdError } from 'react-icons/md';
 
 type InputFieldProps = InputHTMLAttributes<HTMLInputElement> & {
   name: string;
@@ -17,12 +18,24 @@ export const InputField = ({ name, label, ...props }: InputFieldProps) => {
   const hasAnErrorAndHasBeenTouched = !!meta.error && !!meta.touched;
 
   return (
-    <TextField
-      label={label}
-      border={hasAnErrorAndHasBeenTouched ? 'error' : 'default'}
-      {...field}
-      {...rest}
-      disabled={isSubmitting}
-    />
+    <Box>
+      <TextField
+        label={label}
+        border={hasAnErrorAndHasBeenTouched ? 'error' : 'default'}
+        {...field}
+        {...rest}
+        disabled={isSubmitting}
+      />
+      <ErrorMessage name={name} data-testid={`error-message-${name}`}>
+        {error => (
+          <Flex className="items-center gap-1">
+            <MdError className="text-red-600" />
+            <Text data-testid={`error-message-${name}`} className="text-red-600">
+              {error}
+            </Text>
+          </Flex>
+        )}
+      </ErrorMessage>
+    </Box>
   );
 };

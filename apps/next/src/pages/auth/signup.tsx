@@ -72,13 +72,13 @@ const SignUp: NextPageWithLayout = () => {
     validateOnMount: true,
     validationSchema: yup.object().shape({
       username: yup.string().min(4).max(24).required('Email is required'),
-      email: yup.string().email().required('Email is required'),
+      email: yup.string().email('Invalid email').required('Email is required'),
       password: yup.string().required('Password is required'),
       passwordConfirm: yup
         .string()
         .min(8)
-        .oneOf([yup.ref('password')], 'passwords must match')
-        .required('password is required'),
+        .oneOf([yup.ref('password')], 'Passwords must match')
+        .required('Password is required'),
     }),
     onSubmit,
   });
