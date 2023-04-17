@@ -10,7 +10,7 @@ type InputFieldProps = InputHTMLAttributes<HTMLInputElement> & {
 };
 
 export const InputField = ({ name, label, ...props }: InputFieldProps) => {
-  const { className, ...rest } = props;
+  const { ...rest } = props;
 
   const [field, meta] = useField(name);
   const { isSubmitting } = useFormikContext();

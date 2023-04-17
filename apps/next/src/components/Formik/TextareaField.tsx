@@ -9,7 +9,7 @@ type TextareaFieldProps = TextareaHTMLAttributes<HTMLTextAreaElement> & {
 };
 
 export const TextareaField = ({ name, ...props }: TextareaFieldProps) => {
-  const { className, ...rest } = props;
+  const { ...rest } = props;
 
   const [field, meta] = useField(name);
   const { isSubmitting } = useFormikContext();
