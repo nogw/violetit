@@ -48,7 +48,7 @@
     "jest": "28.1.2",
     "jest-environment-node": "28.1.2",
     "supertest": "^6.3.3",
-    "webpack": "^5.76.2",
+    "webpack": "^5.84.1",
     "webpack-cli": "^5.0.1",
     "webpack-node-externals": "^3.0.0"
   }
